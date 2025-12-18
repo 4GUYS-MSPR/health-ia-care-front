@@ -1,0 +1,53 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement
+labels: [enhancement]
+
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: One-line description of your feature
+      placeholder: "Add offline caching for dashboard data"
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Problem / Motivation
+      description: Why is this needed? What problem does it solve? Who benefits?
+      placeholder: "Users on poor connections wait ~10s each launch; caching reduces perceived latency."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution / Approach
+      description: High-level outline of how this could be implemented (not low-level code yet).
+      placeholder: "Introduce local Hive cache layer keyed by user + endpoint; prewarm on login; fallback to stale-while-revalidate pattern."
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      placeholder: A clear and concise description of any alternative solutions or features you've considered.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context / Screenshots
+      description: Any mockups, research notes, or references.
+      placeholder: "Figma: https://www.figma.com/file/..."
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Pre-Submission Checklist
+      description: Please confirm.
+      options:
+        - label: I've searched existing issues to avoid duplicates.
+          required: true
+        - label: I described the problem before the solution.
+          required: true

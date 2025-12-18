@@ -1,0 +1,44 @@
+name: 📋 Task
+description: Planned work or internal improvement
+labels: [task]
+
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: Short description of the planned work
+      placeholder: "Implement theme system"
+    validations:
+      required: true
+  
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: "Describe what needs to be done and why"
+      placeholder: "Implement a light/dark theme system with dynamic switching..."
+ 
+  - type: textarea
+    id: subtasks
+    attributes:
+      label: Subtasks
+      placeholder: |
+        - [ ] Step 1
+        - [ ] Step 2
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes / References
+      description: Links, documents, diagrams, or anything else helpful.
+      placeholder: "Pub dependencies, External docs..."
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Pre-Work Checklist
+      description: Please confirm basic hygiene.
+      options:
+        - label: No existing issue covers this work.
+          required: true
