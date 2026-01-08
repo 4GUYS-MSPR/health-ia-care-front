@@ -62,6 +62,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.0"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -75,6 +80,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.2.0"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      sha256: "3df61194eb431efc39c4ceba583b95633a403f46c9fd341e550ce0bfa50e9aa5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.20.2"
+  language_code:
+    dependency: "direct main"
+    description:
+      name: language_code
+      sha256: "3993948ea689ec3bc4d3d9286fade89a9f865da38d94d34b5d06d268d4f32fa5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.5"
   leak_tracker:
     dependency: transitive
     description:
