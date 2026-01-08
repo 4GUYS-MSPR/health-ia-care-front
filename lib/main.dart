@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:health_ia_care_app/core/theme/app_theme.dart';
 
 import 'core/extensions/l10n_extension.dart';
 import 'core/service_locator/service_locator.dart';
@@ -33,6 +34,10 @@ class MainApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: selectedLocale,
+      theme: AppTheme.lightMediumContrast,
+      darkTheme: AppTheme.dark,
+      highContrastTheme: AppTheme.lightHighContrast,
+      highContrastDarkTheme: AppTheme.darkHighContrast,
       home: HomePage(),
     );
   }
