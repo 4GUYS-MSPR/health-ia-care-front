@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTypographies {
   // Google Fonts families names
-  static const String _displayFont = 'Oxanium';
-  static const String _headlineFont = 'Oxanium';
+  static const String _displayFont = 'Inter';
+  static const String _headlineFont = 'Inter';
   static const String _titleFont = 'Inter';
   static const String _bodyFont = 'Inter';
 
