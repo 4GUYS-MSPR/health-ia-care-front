@@ -19,6 +19,7 @@ dependencies:
   hydrated_bloc: ^10.1.1
   intl: ^0.20.2
   language_code: ^0.5.5
+  material_symbols_icons: ^4.2892.0
   mocktail: ^1.0.4
   path_provider: ^2.1.5
 
