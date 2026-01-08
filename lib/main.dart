@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:health_ia_care_app/core/theme/app_theme.dart';
 
 import 'core/extensions/l10n_extension.dart';
 import 'core/service_locator/service_locator.dart';
 import 'core/shared/cubits/locale_cubit/locale_cubit.dart';
+import 'core/shared/cubits/theme_cubit/theme_cubit.dart';
+import 'core/theme/app_theme.dart';
 import 'l10n/generated/app_localizations.dart';
 
 Future<void> main() async {
@@ -17,6 +18,9 @@ Future<void> main() async {
         BlocProvider(
           create: (context) => sl<LocaleCubit>(),
         ),
+        BlocProvider(
+          create: (context) => sl<ThemeCubit>(),
+        ),
       ],
       child: const MainApp(),
     ),
@@ -28,6 +32,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeMode themeMode = context.watch<ThemeCubit>().state;
     Locale? selectedLocale = context.watch<LocaleCubit>().state;
     return MaterialApp(
       onGenerateTitle: (context) => context.l10n.appTitle,
@@ -38,6 +43,7 @@ class MainApp extends StatelessWidget {
       darkTheme: AppTheme.dark,
       highContrastTheme: AppTheme.lightHighContrast,
       highContrastDarkTheme: AppTheme.darkHighContrast,
+      themeMode: themeMode,
       home: HomePage(),
     );
   }
