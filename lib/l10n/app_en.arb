@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "appTitle": "Health IA Care",
+  "@appTitle": {
+    "description": "Application title"
+  },
+  "helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "A greeting message displayed to the user."
+  }
+}
