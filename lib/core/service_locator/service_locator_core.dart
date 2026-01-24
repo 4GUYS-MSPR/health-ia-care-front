@@ -7,9 +7,9 @@ import 'modules/cubits_module.dart';
 
 Future<void> registerCoreDependencies(GetIt sl) async {
   // Inits
-  await initHydratedStorage();
-  await initLogger(sl);
   await initDotenv();
+  await initLogger(sl);
+  await initHydratedStorage();
 
   // Modules
   registerCubits(sl);
