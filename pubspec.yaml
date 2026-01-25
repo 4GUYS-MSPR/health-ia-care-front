@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   bloc: ^9.2.0
+  bloc_concurrency: ^0.3.0
   equatable: ^2.0.8
   flutter:
     sdk: flutter
@@ -16,6 +17,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_native_splash: ^2.4.7
+  fpdart: ^1.2.0
   get_it: ^9.2.0
   go_router: ^17.0.1
   google_fonts: ^7.0.0
