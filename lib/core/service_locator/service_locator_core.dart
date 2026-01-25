@@ -4,6 +4,7 @@ import 'init/dotenv_init.dart';
 import 'init/hydrated_storage_init.dart';
 import 'init/logger_init.dart';
 import 'modules/cubits_module.dart';
+import 'modules/router_module.dart';
 
 Future<void> registerCoreDependencies(GetIt sl) async {
   // Inits
@@ -13,4 +14,5 @@ Future<void> registerCoreDependencies(GetIt sl) async {
 
   // Modules
   registerCubits(sl);
+  registerRouter(sl);
 }
