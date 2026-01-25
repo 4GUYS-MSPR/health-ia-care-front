@@ -1,57 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:logging/logging.dart';
 
-import 'core/extensions/l10n_extension.dart';
-import 'core/router/app_router.dart';
+import 'core/apps/main_app.dart';
+import 'core/logging/app_logger.dart';
 import 'core/service_locator/service_locator.dart';
-import 'core/shared/cubits/locale_cubit/locale_cubit.dart';
-import 'core/shared/cubits/theme_cubit/theme_cubit.dart';
-import 'core/theme/app_theme.dart';
-import 'l10n/generated/app_localizations.dart';
 
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  await initServiceLocator();
-
-  runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => sl<LocaleCubit>(),
-        ),
-        BlocProvider(
-          create: (context) => sl<ThemeCubit>(),
-        ),
-      ],
-      child: const MainApp(),
-    ),
-  );
-
-  FlutterNativeSplash.remove();
+  try {
+    await _initializeApp();
+    runApp(const MainApp());
+  } catch (error, stackTrace) {
+    _logStartupError(error, stackTrace);
+  } finally {
+    FlutterNativeSplash.remove();
+  }
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+Future<void> _initializeApp() async {
+  _log('Starting app initialization...');
+  _log('Initializing service locator...');
 
-  @override
-  Widget build(BuildContext context) {
-    ThemeMode themeMode = context.watch<ThemeCubit>().state;
-    Locale? selectedLocale = context.watch<LocaleCubit>().state;
-    final appRouter = sl<AppRouter>();
-    return MaterialApp.router(
-      onGenerateTitle: (context) => context.l10n.appTitle,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      locale: selectedLocale,
-      theme: AppTheme.lightMediumContrast,
-      darkTheme: AppTheme.dark,
-      highContrastTheme: AppTheme.lightHighContrast,
-      highContrastDarkTheme: AppTheme.darkHighContrast,
-      themeMode: themeMode,
-      routerConfig: appRouter.router,
-    );
+  await initServiceLocator();
+
+  _log('Service locator initialized', level: .FINE);
+  _log('App initialization completed successfully');
+}
+
+void _logStartupError(Object error, StackTrace stackTrace) {
+  _log(
+    'App initialization failed',
+    level: Level.SHOUT,
+    error: error,
+    stackTrace: stackTrace,
+  );
+}
+
+/// Logs a message using AppLogger if initialized, otherwise uses debugPrint.
+void _log(
+  String message, {
+  Level level = Level.INFO,
+  Object? error,
+  StackTrace? stackTrace,
+}) {
+  if (AppLogger.instance.isInitialized) {
+    final logger = AppLogger.instance.getLogger('Main');
+    logger.log(level, message, error, stackTrace);
+  } else {
+    debugPrint('[Main][${level.name}] $message');
+    if (error != null) debugPrint('Error: $error');
+    if (stackTrace != null) debugPrint('$stackTrace');
   }
 }
