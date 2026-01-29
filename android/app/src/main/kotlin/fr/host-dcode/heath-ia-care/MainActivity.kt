@@ -1,4 +1,4 @@
-package com.example.health_ia_care_app
+package fr.host-dcode.heath-ia-care
 
 import io.flutter.embedding.android.FlutterActivity
 
