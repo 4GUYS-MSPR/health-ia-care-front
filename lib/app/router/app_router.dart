@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 
-import '../shared/pages/home_page.dart';
+import '../../core/shared/pages/home_page.dart';
 import 'app_routes.dart';
 
 class AppRouter {

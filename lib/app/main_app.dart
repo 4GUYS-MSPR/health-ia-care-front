@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../l10n/generated/app_localizations.dart';
-import '../extensions/l10n_extension.dart';
-import '../router/app_router.dart';
-import '../service_locator/service_locator.dart';
-import '../shared/cubits/locale_cubit/locale_cubit.dart';
-import '../shared/cubits/theme_cubit/theme_cubit.dart';
-import '../theme/app_theme.dart';
+import '../core/extensions/l10n_extension.dart';
+import '../core/shared/cubits/locale_cubit/locale_cubit.dart';
+import '../core/shared/cubits/theme_cubit/theme_cubit.dart';
+import '../core/theme/app_theme.dart';
+import '../l10n/generated/app_localizations.dart';
+import 'router/app_router.dart';
+import 'service_locator/service_locator.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});

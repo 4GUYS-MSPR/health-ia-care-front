@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 
-import '../../logging/app_logger.dart';
-import '../../logging/log_config.dart';
+import '../../../core/logging/app_logger.dart';
+import '../../../core/logging/log_config.dart';
 
 /// Initializes the logging system.
 ///
