@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:logging/logging.dart';
 
-import 'core/apps/main_app.dart';
+import 'app/main_app.dart';
 import 'core/logging/app_logger.dart';
-import 'core/service_locator/service_locator.dart';
+import 'app/service_locator/service_locator.dart';
 
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
