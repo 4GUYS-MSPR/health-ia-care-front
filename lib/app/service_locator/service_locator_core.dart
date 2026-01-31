@@ -6,6 +6,7 @@ import 'init/logger_init.dart';
 import 'modules/cubits_module.dart';
 import 'modules/network_module.dart';
 import 'modules/router_module.dart';
+import 'modules/storage_module.dart';
 
 Future<void> registerCoreDependencies(GetIt sl) async {
   // Inits
@@ -15,6 +16,7 @@ Future<void> registerCoreDependencies(GetIt sl) async {
 
   // Modules
   registerNetwork(sl);
+  registerStorage(sl);
   registerCubits(sl);
   registerRouter(sl);
 }
