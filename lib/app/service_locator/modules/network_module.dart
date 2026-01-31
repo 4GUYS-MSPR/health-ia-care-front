@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
@@ -9,5 +11,23 @@ void registerNetwork(GetIt sl) {
   sl.registerLazySingleton<NetworkInfo>(
     () => NetworkInfoImpl(connectionChecker: connectionChecker),
   );
-}
 
+  final baseUrl = dotenv.get(
+    "API_URL",
+    fallback: "https://health-ia.host-dcode.fr",
+  );
+
+  sl.registerLazySingleton<Dio>(
+    () => Dio(
+      BaseOptions(
+        baseUrl: baseUrl,
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ),
+    ),
+  );
+}
