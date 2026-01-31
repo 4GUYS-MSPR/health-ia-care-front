@@ -87,7 +87,7 @@ class AuthRemoteDatasourceImpl with LoggerMixin implements AuthRemoteDatasource 
         ),
       );
 
-      return UserModel.fromJson(res.data);
+      return UserModel.fromMap(res.data);
     } on DioException catch (e) {
       throw ServerErrorFailure(debugMessage: e.message);
     }
