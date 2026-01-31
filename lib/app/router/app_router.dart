@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_ia_care_app/features/health/presentation/pages/nutrition_page.dart';
 
 import '../../core/shared/layouts/main_layout.dart';
 import '../../core/shared/pages/home_page.dart';
@@ -52,6 +53,11 @@ class AppRouter {
         path: '/login',
         name: AppRoutes.login,
         builder: (context, state) => LoginPage(),
+      ),
+      GoRoute(
+        path: '/nutrition',
+        name: AppRoutes.nutrition,
+        builder: (context, state) => NutritionPage(),
       ),
     ],
   );
