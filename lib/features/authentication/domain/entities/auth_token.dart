@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-class AuthResponse extends Equatable {
+class AuthToken extends Equatable {
   final String token;
 
-  const AuthResponse({
+  const AuthToken({
     required this.token,
   });
 
