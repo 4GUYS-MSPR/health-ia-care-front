@@ -1,11 +1,87 @@
 {
-  "@@locale": "en",
-  "appTitle": "Health IA Care",
-  "@appTitle": {
-    "description": "Application title"
-  },
-  "helloWorld": "Hello World!",
-  "@helloWorld": {
-    "description": "A greeting message displayed to the user."
-  }
+    "@@locale": "en",
+    "appTitle": "Health IA Care",
+    "@appTitle": {
+        "description": "Application title"
+    },
+    "helloWorld": "Hello World!",
+    "@helloWorld": {
+        "description": "A greeting message displayed to the user."
+    },
+    "authUsernameFormFieldLabel": "Username",
+    "@authUsernameFormFieldLabel": {
+        "description": "Auth Username field label"
+    },
+    "authUsernameFormFieldHint": "Enter your username",
+    "@authUsernameFormFieldHint": {
+        "description": "Auth username field hint"
+    },
+    "authPasswordFormFieldLabel": "Password",
+    "@authPasswordFormFieldLabel": {
+        "description": "Auth password field label"
+    },
+    "authPasswordFormFieldHint": "Enter your password",
+    "@authPasswordFormFieldHint": {
+        "description": "Auth password field hint"
+    },
+    "authLoginButtonLabel": "Sign In",
+    "@authLoginButtonLabel": {
+        "description": "Auth sign in button"
+    },
+    "authLoginPageTitle": "Login",
+    "@authLoginPageTitle": {
+        "description": "Title of the login page"
+    },
+    "authLoginPageDescription": "Please sign in to access the Health IA Care app admin panel. Use your administrator credentials to manage your users, settings, and app data.",
+    "@authLoginPageDescription": {
+        "description": "Informational text displayed on the login page prompting users to authenticate"
+    },
+    "authErrorInvalidCredentials": "Invalid email or password",
+    "@authErrorInvalidCredentials": {
+        "description": "Error shown when credentials are invalid"
+    },
+    "authErrorEmptyCredentials": "Please provide an email and password",
+    "@authErrorEmptyCredentials": {
+        "description": "Error shown when one or more credentials are missing"
+    },
+    "authErrorNoInternet": "No internet connection",
+    "@authErrorNoInternet": {
+        "description": "Error shown when there is no network connectivity"
+    },
+    "authErrorServerUnavailable": "Service is unavailable, please try again later",
+    "@authErrorServerUnavailable": {
+        "description": "Error shown when the authentication service is down"
+    },
+    "authErrorUnknown": "An unknown error occurred",
+    "@authErrorUnknown": {
+        "description": "Fallback authentication error message"
+    },
+    "authFieldValidationUsernameRequired": "Please enter an username",
+    "@authFieldValidationUsernameRequired": {
+        "description": "Validation message when the username field is empty"
+    },
+    "authFieldValidationPasswordRequired": "Please enter a password",
+    "@authFieldValidationPasswordRequired": {
+        "description": "Validation message when the password field is empty"
+    },
+    "authLogoutIconButtonTooltip": "Logout",
+    "@authLogoutIconButtonTooltip": {
+        "description": "Auth logout icon button tooltip"
+    },
+    "authLogoutDialogTitle": "Logout",
+    "@authLogoutDialogTitle": {
+        "description": "Title for logout confirmation dialog"
+    },
+    "authLogoutDialogContent": "Do you really want to sign out?",
+    "@authLogoutDialogContent": {
+        "description": "Confirmation message shown in logout dialog"
+    },
+    "authLogoutDialogCancelButton": "Cancel",
+    "@authLogoutDialogCancelButton": {
+        "description": "Label for a cancel button"
+    },
+    "authLogoutDialogConfirmButton": "Sign Out",
+    "@authLogoutDialogConfirmButton": {
+        "description": "Label for the logout confirmation button"
+    }
 }

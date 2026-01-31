@@ -1,5 +1,24 @@
 {
   "@@locale": "fr",
   "appTitle": "Health IA Care",
-  "helloWorld": "Bonjour le monde !"
+  "helloWorld": "Bonjour le monde !",
+  "authUsernameFormFieldLabel": "Nom d'utilisateur",
+  "authUsernameFormFieldHint": "Saisissez votre nom d'utilisateur",
+  "authPasswordFormFieldLabel": "Mot de passe",
+  "authPasswordFormFieldHint": "Saisissez votre mot de passe",
+  "authLoginButtonLabel": "Se connecter",
+  "authLoginPageTitle": "Connexion",
+  "authLoginPageDescription": "Veuillez vous connecter pour accéder au panneau d'administration de l'application Health IA Care. Utilisez vos identifiants d'administrateur pour gérer vos utilisateurs, les paramètres et les données de l'application.",
+  "authErrorInvalidCredentials": "Email ou mot de passe invalide",
+  "authErrorEmptyCredentials": "Veuillez fournir un email et un mot de passe",
+  "authErrorNoInternet": "Pas de connexion Internet",
+  "authErrorServerUnavailable": "Service momentanément indisponible, veuillez réessayer plus tard",
+  "authErrorUnknown": "Une erreur est survenue",
+  "authFieldValidationUsernameRequired": "Veuillez saisir un nom d'utilisateur",
+  "authFieldValidationPasswordRequired": "Veuillez saisir un mot de passe",
+  "authLogoutDialogTitle": "Déconnexion",
+  "authLogoutDialogContent": "Souhaitez-vous vous déconnecter ?",
+  "authLogoutDialogCancelButton": "Annuler",
+  "authLogoutDialogConfirmButton": "Se déconnecter",
+  "authLogoutIconButtonTooltip": "Se déconnecter"
 }
