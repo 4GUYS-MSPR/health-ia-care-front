@@ -22,7 +22,7 @@ class UsernameFormField extends StatelessWidget {
 
     String? validator(String? value) {
       if (value == null || value.trim().isEmpty) {
-        return context.l10n.authFieldValidationPasswordRequired;
+        return context.l10n.authFieldValidationUsernameRequired;
       }
       return null;
     }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:health_ia_care_app/app/router/app_routes.dart';
 import 'package:health_ia_care_app/features/authentication/presentation/layouts/login_large_layout.dart';
 
 import '../../../../app/service_locator/service_locator.dart';
@@ -56,13 +54,6 @@ class _LoginPageState extends State<LoginPage> {
       ],
       child: MultiBlocListener(
         listeners: [
-          BlocListener<AuthBloc, AuthState>(
-            listener: (context, state) {
-              if (state is AuthAuthenticatedState) {
-                context.goNamed(AppRoutes.home);
-              }
-            },
-          ),
           // When login succeeds, notify AuthBloc
           BlocListener<LoginProcessCubit, LoginProcessState>(
             listener: (context, state) {
