@@ -20,5 +20,13 @@
   "authLogoutDialogContent": "Souhaitez-vous vous déconnecter ?",
   "authLogoutDialogCancelButton": "Annuler",
   "authLogoutDialogConfirmButton": "Se déconnecter",
-  "authLogoutIconButtonTooltip": "Se déconnecter"
+  "authLogoutIconButtonTooltip": "Se déconnecter",
+
+  "accountMenuThemeLabel": "Thème",
+  "accountMenuThemeDark": "Sombre",
+  "accountMenuThemeLight": "Clair",
+  "accountMenuThemeSystem": "Système",
+  "accountMenuLanguageLabel": "Langue",
+  "accountMenuLogoutLabel": "Se déconnecter",
+  "navigationDestinationHome": "Accueil"
 }

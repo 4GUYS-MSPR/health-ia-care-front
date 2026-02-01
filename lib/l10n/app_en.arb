@@ -83,5 +83,39 @@
     "authLogoutDialogConfirmButton": "Sign Out",
     "@authLogoutDialogConfirmButton": {
         "description": "Label for the logout confirmation button"
+    },
+
+    "accountMenuThemeLabel": "Theme",
+    "@accountMenuThemeLabel": {
+        "description": "Label for the theme submenu"
+    },
+
+    "accountMenuThemeDark": "Dark",
+    "@accountMenuThemeDark": {
+        "description": "Dark theme option label"
+    },
+
+    "accountMenuThemeLight": "Light",
+    "@accountMenuThemeLight": {
+        "description": "Light theme option label"
+    },
+
+    "accountMenuThemeSystem": "System",
+    "@accountMenuThemeSystem": {
+        "description": "System theme option label"
+    },
+
+    "accountMenuLanguageLabel": "Language",
+    "@accountMenuLanguageLabel": {
+        "description": "Label for the language submenu"
+    },
+
+    "accountMenuLogoutLabel": "Logout",
+    "@accountMenuLogoutLabel": {
+        "description": "Label for the logout menu item"
+    },
+    "navigationDestinationHome": "Home",
+    "@navigationDestinationHome": {
+        "description": "Navigation destination label for the home page"
     }
 }
