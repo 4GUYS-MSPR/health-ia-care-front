@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/health/presentation/pages/nutrition_page.dart';
+import '../../features/members/presentation/pages/members_page.dart';
 
 import '../../core/shared/layouts/main_layout.dart';
 import '../../core/shared/pages/home_page.dart';
@@ -33,6 +34,7 @@ class AppRouter {
       return null;
     },
     routes: [
+      GoRoute(path: '/', redirect: (context, state) => '/home'),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return MainLayout(navigationShell: navigationShell);
@@ -41,9 +43,18 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               ProtectedGoRoute(
-                path: '/',
+                path: '/home',
                 name: AppRoutes.home,
                 builder: (context, state) => HomePage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              ProtectedGoRoute(
+                path: '/members',
+                name: AppRoutes.members,
+                builder: (context, state) => MembersPage(),
               ),
             ],
           ),
