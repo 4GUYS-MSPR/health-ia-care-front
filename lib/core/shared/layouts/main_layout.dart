@@ -52,6 +52,10 @@ class _MainLayoutNavigationRail extends StatelessWidget {
       NavigationDestination(
         destination: context.l10n.navigationDestinationNutrition,
         icon: Symbols.nutrition,
+      ), 
+      NavigationDestination(
+        destination: context.l10n.navigationDestinationMembers,
+        icon: Symbols.group,
       ),
     ];
 
