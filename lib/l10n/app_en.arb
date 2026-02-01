@@ -109,6 +109,10 @@
     "@accountMenuLogoutLabel": {
         "description": "Label for the logout menu item"
     },
+    "navigationDestinationMembers": "Members",
+    "@navigationDestinationMembers": {
+        "description": "Navigation destination label for the members page"
+    },
     "navigationDestinationHome": "Home",
     "@navigationDestinationHome": {
         "description": "Navigation destination label for the home page"
