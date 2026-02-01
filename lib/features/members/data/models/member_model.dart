@@ -86,8 +86,8 @@ class MemberModel extends Member {
       gender: parseGender(map['gender'] as int),
       level: Level.values[map['level'] as int? ?? 0],
       subscription: Subscription.values[map['subscription'] as int? ?? 0],
-      objectives: (map['objectives'] as List<Map<String, dynamic>>)
-          .map((objective) => ObjectiveModel.fromMap(objective))
+      objectives: (map['objectives'] as List<dynamic>? ?? [])
+          .map((objective) => ObjectiveModel.fromMap(objective as Map<String, dynamic>))
           .toList(),
     );
   }

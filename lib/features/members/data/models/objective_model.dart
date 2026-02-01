@@ -18,7 +18,7 @@ class ObjectiveModel extends Objective {
   factory ObjectiveModel.fromMap(Map<String, dynamic> map) {
     return ObjectiveModel(
       description: map['description'] as String,
-      createdAt: DateTime.parse(map['create_at'] as String),
+      createdAt: DateTime.parse(map['created_at'] as String),
     );
   }
 
