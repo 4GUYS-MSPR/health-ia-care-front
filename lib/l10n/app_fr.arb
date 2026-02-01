@@ -93,5 +93,6 @@
   "foodTableColumnFat": "Lipides",
   "foodTableColumnCategory": "Catégorie",
   "foodTableColumnActions": "Actions",
-  "foodTableViewTooltip": "Voir"
+  "foodTableViewTooltip": "Voir",
+  "navigationDestinationMembers": "Membres"
 }
