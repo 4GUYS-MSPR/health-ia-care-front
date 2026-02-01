@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-import '../../../../app/router/app_routes.dart';
 import '../../../../core/extensions/l10n_extension.dart';
 import '../blocs/auth_bloc/auth_bloc.dart';
 
@@ -45,7 +44,7 @@ class _ConfirmButton extends StatelessWidget {
     return FilledButton.icon(
       onPressed: () {
         context.read<AuthBloc>().add(AuthLogoutEvent());
-        context.goNamed(AppRoutes.home);
+        context.pop();
       },
       icon: Icon(Symbols.logout),
       label: Text(context.l10n.authLogoutDialogConfirmButton),
