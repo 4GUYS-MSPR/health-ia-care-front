@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../core/network/network_info.dart';
-import '../data/datasources/auth_local_datasource.dart';
 import '../data/datasources/auth_remote_datasource.dart';
 import '../data/repositories/auth_repository_impl.dart';
 import '../domain/repositories/auth_repository.dart';
@@ -21,12 +20,6 @@ void registerAuthenticationFeature(GetIt sl) {
 }
 
 void _registerDatasources(GetIt sl) {
-  sl.registerFactory<AuthLocalDatasource>(
-    () => AuthLocalDatasourceImpl(
-      secureStorage: sl(),
-    ),
-  );
-
   sl.registerFactory<AuthRemoteDatasource>(
     () => AuthRemoteDatasourceImpl(
       authClient: sl<Dio>(),
