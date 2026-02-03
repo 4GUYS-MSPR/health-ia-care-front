@@ -5,5 +5,5 @@ import '../../features/health/di/health_injection.dart';
 
 Future<void> registerFeatureDependencies(GetIt sl) async {
   registerAuthenticationFeature(sl);
-  registerHealthDependencies(sl);
+  registerNutritionFeature(sl);
 }
