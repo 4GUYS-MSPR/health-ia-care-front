@@ -11,12 +11,7 @@ void registerHealthDependencies(GetIt sl) {
   // Data sources
   sl.registerLazySingleton<NutritionRemoteDataSource>(
     () => NutritionRemoteDataSourceImpl(
-      client: Dio(
-        BaseOptions(
-          baseUrl: 'http://localhost:5555',
-          headers: {},
-        ),
-      ),
+      client: sl<Dio>(),
     ),
   );
 
