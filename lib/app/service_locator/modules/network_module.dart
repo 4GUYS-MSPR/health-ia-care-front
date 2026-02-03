@@ -4,6 +4,8 @@ import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import '../../../core/network/network_info.dart';
+import '../../../features/authentication/data/datasources/auth_local_datasource.dart';
+import '../interceptors/auth_interceptor.dart';
 
 void registerNetwork(GetIt sl) {
   final connectionChecker = InternetConnectionChecker.createInstance();
@@ -18,16 +20,25 @@ void registerNetwork(GetIt sl) {
   );
 
   sl.registerLazySingleton<Dio>(
-    () => Dio(
-      BaseOptions(
-        baseUrl: baseUrl,
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 10),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      ),
-    ),
+    () {
+      final dio = Dio(
+        BaseOptions(
+          baseUrl: baseUrl,
+          connectTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      // Add auth interceptor to automatically include token in requests
+      dio.interceptors.add(
+        AuthInterceptor(authLocalDatasource: sl<AuthLocalDatasource>()),
+      );
+
+      return dio;
+    },
   );
 }
