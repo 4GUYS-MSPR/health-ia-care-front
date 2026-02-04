@@ -1,0 +1,17 @@
+build/
+.android/
+.ios/
+linux/
+macos/
+windows/
+web/
+.idea/
+*.iml
+.git/
+.gitignore
+.dart_tool/
+.pub-cache/
+.pub/
+packages/
+coverage/
+*.log
