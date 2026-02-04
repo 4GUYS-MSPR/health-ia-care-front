@@ -20,7 +20,7 @@ abstract interface class AuthRemoteDatasource {
 
 class AuthRemoteDatasourceImpl with LoggerMixin implements AuthRemoteDatasource {
   static const _loginEndpoint = '/api/token/';
-  static const _userEndpoint = '/api/users/me/';
+  static const _userEndpoint = '/api/user/me/';
 
   final Dio authClient;
 
