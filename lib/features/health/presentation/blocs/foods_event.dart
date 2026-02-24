@@ -124,3 +124,27 @@ final class DeleteFoodRequested extends FoodsEvent {
   @override
   List<Object?> get props => [id];
 }
+
+/// Event to get a specific page of foods with pagination.
+final class GetFoodsPageRequested extends FoodsEvent {
+  final int offset;
+  final int limit;
+
+  const GetFoodsPageRequested({
+    required this.offset,
+    required this.limit,
+  });
+
+  @override
+  List<Object?> get props => [offset, limit];
+}
+
+/// Event to load the next page of foods.
+final class NextPageRequested extends FoodsEvent {
+  const NextPageRequested();
+}
+
+/// Event to load the previous page of foods.
+final class PreviousPageRequested extends FoodsEvent {
+  const PreviousPageRequested();
+}

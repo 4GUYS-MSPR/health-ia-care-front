@@ -21,12 +21,17 @@ final class FoodsLoading extends FoodsState {
 /// Loaded state with foods list.
 final class FoodsLoaded extends FoodsState {
   final List<NutritionFood> foods;
+  final PaginationInfo? pagination;
 
-  const FoodsLoaded({required this.foods});
+  const FoodsLoaded({
+    required this.foods,
+    this.pagination,
+  });
 
   @override
-  List<Object?> get props => [foods];
+  List<Object?> get props => [foods, pagination];
 }
+
 
 /// Error state with failure information.
 final class FoodsError extends FoodsState {
