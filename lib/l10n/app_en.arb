@@ -144,6 +144,11 @@
     "@errorAppViewDetails": {
         "description": "Button text to view error details"
     },
+    "navigationDestinationNutrition": "Nutrition",
+    "@navigationDestinationNutrition": {
+        "description": "Navigation destination label for the nutrition page"
+    },
+
     "foodCardCalories": "Calories",
     "@foodCardCalories": {
         "description": "Food card calories label"

@@ -36,6 +36,7 @@
   "errorAppMessage": "L'application n'a pas pu démarrer",
   "errorAppTitle": "Erreur de démarrage",
   "errorAppViewDetails": "Voir les détails",
+  "navigationDestinationNutrition": "Nutrition",
   "foodCardCalories": "Calories",
   "foodCardProtein": "Protéine",
   "foodCardCarbs": "Glucides",
