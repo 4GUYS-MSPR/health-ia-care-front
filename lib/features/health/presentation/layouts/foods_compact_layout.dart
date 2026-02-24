@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/extensions/l10n_extension.dart';
 import '../../../../core/extensions/theme_extension.dart';
+import '../../../../core/shared/models/pagination_info.dart';
+import '../../../../core/shared/widgets/pagination_controls.dart';
 import '../../domain/entities/nutrition_food.dart';
 import '../widgets/foods_data_table.dart';
 
@@ -19,6 +21,9 @@ class FoodsCompactLayout extends StatelessWidget {
     required this.onFoodDelete,
     required this.onAddFood,
     required this.onRefresh,
+    this.pagination,
+    required this.onNextPage,
+    required this.onPreviousPage,
   });
 
   final List<NutritionFood> foods;
@@ -31,6 +36,9 @@ class FoodsCompactLayout extends StatelessWidget {
   final void Function(int foodId) onFoodDelete;
   final VoidCallback onAddFood;
   final VoidCallback onRefresh;
+  final PaginationInfo? pagination;
+  final VoidCallback onNextPage;
+  final VoidCallback onPreviousPage;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +70,12 @@ class FoodsCompactLayout extends StatelessWidget {
               ],
             ),
           ),
+          if (pagination != null)
+            PaginationControls(
+              pagination: pagination!,
+              onNext: onNextPage,
+              onPrevious: onPreviousPage,
+            ),
         ],
       ),
     );
