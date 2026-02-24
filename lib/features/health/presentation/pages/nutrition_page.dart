@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import '../../../../core/extensions/l10n_extension.dart';
 import '../../../../core/extensions/theme_extension.dart';
 import '../../../../core/shared/layouts/responsive_layout_builder.dart';
+import '../../../../core/shared/models/pagination_info.dart';
 import '../../domain/entities/nutrition_food.dart';
 import '../blocs/foods_bloc.dart';
 import '../layouts/foods_compact_layout.dart';
@@ -41,6 +42,7 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
   // Selection state
   NutritionFood? _selectedFood;
   bool _showCreateForm = false;
+  PaginationInfo? _lastKnownPagination;
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +53,14 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
           listener: _handleStateChanges,
           builder: (context, state) {
             final foods = _getFoodsFromState(state);
+            final pagination = _getPaginationFromState(state);
             final isLoading = _isLoadingState(state);
             final sortedFoods = _sortFoods(foods);
 
             return ResponsiveLayoutBuilder(
               compact: FoodsCompactLayout(
                 foods: sortedFoods,
+                pagination: pagination,
                 isLoading: isLoading,
                 sortColumnIndex: _sortColumnIndex,
                 sortAscending: _sortAscending,
@@ -66,9 +70,12 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
                 onFoodDelete: _showDeleteDialog,
                 onAddFood: _showCreateDialog,
                 onRefresh: _onRefresh,
+                onNextPage: _onNextPage,
+                onPreviousPage: _onPreviousPage,
               ),
               medium: FoodsMediumLayout(
                 foods: sortedFoods,
+                pagination: pagination,
                 isLoading: isLoading,
                 sortColumnIndex: _sortColumnIndex,
                 sortAscending: _sortAscending,
@@ -78,9 +85,12 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
                 onFoodDelete: _showDeleteDialog,
                 onAddFood: _showCreateDialog,
                 onRefresh: _onRefresh,
+                onNextPage: _onNextPage,
+                onPreviousPage: _onPreviousPage,
               ),
               large: FoodsLargeLayout(
                 foods: sortedFoods,
+                pagination: pagination,
                 selectedFood: _selectedFood,
                 isLoading: isLoading,
                 sortColumnIndex: _sortColumnIndex,
@@ -95,12 +105,21 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
                 onCloseDetails: _onCloseDetails,
                 onToggleCreateForm: _onToggleCreateForm,
                 onFoodCreated: _onFoodCreated,
+                onNextPage: _onNextPage,
+                onPreviousPage: _onPreviousPage,
               ),
             );
           },
         ),
       ),
     );
+  }
+
+  PaginationInfo? _getPaginationFromState(FoodsState state) {
+    return switch (state) {
+      FoodsLoaded(:final pagination) => _lastKnownPagination = pagination,
+      _ => _lastKnownPagination,
+    };
   }
 
   List<NutritionFood> _getFoodsFromState(FoodsState state) {
@@ -299,5 +318,13 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
         DeleteFoodRequested(id: foodId),
       );
     }
+  }
+
+  void _onNextPage() {
+    context.read<FoodsBloc>().add(const NextPageRequested());
+  }
+
+  void _onPreviousPage() {
+    context.read<FoodsBloc>().add(const PreviousPageRequested());
   }
 }
