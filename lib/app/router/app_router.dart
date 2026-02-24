@@ -47,17 +47,21 @@ class AppRouter {
               ),
             ],
           ),
+          StatefulShellBranch(
+            routes: [
+              ProtectedGoRoute(
+                path: '/nutrition',
+                name: AppRoutes.nutrition,
+                builder: (context, state) => NutritionPage(),
+              ),
+            ],
+          ),
         ],
       ),
       GoRoute(
         path: '/login',
         name: AppRoutes.login,
         builder: (context, state) => LoginPage(),
-      ),
-      GoRoute(
-        path: '/nutrition',
-        name: AppRoutes.nutrition,
-        builder: (context, state) => NutritionPage(),
       ),
     ],
   );
