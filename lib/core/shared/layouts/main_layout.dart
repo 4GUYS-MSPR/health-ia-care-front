@@ -49,6 +49,10 @@ class _MainLayoutNavigationRail extends StatelessWidget {
         destination: context.l10n.navigationDestinationHome,
         icon: Symbols.home,
       ),
+      NavigationDestination(
+        destination: context.l10n.navigationDestinationNutrition,
+        icon: Symbols.nutrition,
+      ),
     ];
 
     List<NavigationRailDestination> getDestinations(List<NavigationDestination> destinations) {
