@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 
+import '../../data/datasources/nutrition_remote_data_source.dart';
 import '../../domain/entities/nutrition_food.dart';
 
 /// Form data for creating/editing a food.
@@ -69,8 +71,12 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
   late final TextEditingController _sodiumController;
   late final TextEditingController _cholesterolController;
   late final TextEditingController _waterIntakeController;
-  late final TextEditingController _categoryController;
-  late final TextEditingController _mealTypeController;
+
+  late final Future<List<String>> _categoryOptionsFuture;
+  late final Future<List<String>> _mealTypeOptionsFuture;
+
+  String? _selectedCategory;
+  String? _selectedMealType;
 
   bool get _isEditing => widget.food != null;
 
@@ -89,8 +95,19 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
     _sodiumController = TextEditingController(text: food?.sodium.toString() ?? '');
     _cholesterolController = TextEditingController(text: food?.cholesterol.toString() ?? '');
     _waterIntakeController = TextEditingController(text: food?.waterIntake.toString() ?? '');
-    _categoryController = TextEditingController(text: food?.category ?? '');
-    _mealTypeController = TextEditingController(text: food?.mealType ?? '');
+
+    _selectedCategory = food?.category;
+    _selectedMealType = food?.mealType;
+
+    final datasource = GetIt.I<NutritionRemoteDataSource>();
+    _categoryOptionsFuture = _loadOptions(
+      datasource.getFoodCategories,
+      _selectedCategory,
+    );
+    _mealTypeOptionsFuture = _loadOptions(
+      datasource.getMealTypes,
+      _selectedMealType,
+    );
   }
 
   @override
@@ -105,8 +122,6 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
     _sodiumController.dispose();
     _cholesterolController.dispose();
     _waterIntakeController.dispose();
-    _categoryController.dispose();
-    _mealTypeController.dispose();
     super.dispose();
   }
 
@@ -123,11 +138,24 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
         sodium: int.parse(_sodiumController.text),
         cholesterol: int.parse(_cholesterolController.text),
         waterIntake: int.parse(_waterIntakeController.text),
-        category: _categoryController.text,
-        mealType: _mealTypeController.text,
+        category: _selectedCategory!,
+        mealType: _selectedMealType!,
       );
       Navigator.of(context).pop(data);
     }
+  }
+
+  Future<List<String>> _loadOptions(
+    Future<List<String>> Function() loader,
+    String? selected,
+  ) async {
+    final options = await loader();
+
+    if (selected != null && selected.isNotEmpty && !options.contains(selected)) {
+      return [selected, ...options];
+    }
+
+    return options;
   }
 
   @override
@@ -430,34 +458,50 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
     );
   }
 
+  // Affiche la liste des catégories (plus débutant)
   Widget _buildCategoryField() {
-    return TextFormField(
-      controller: _categoryController,
-      decoration: const InputDecoration(
-        labelText: 'Category',
-        border: OutlineInputBorder(),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Required';
-        }
-        return null;
+    return FutureBuilder<List<String>>(
+      future: _categoryOptionsFuture,
+      builder: (context, asyncData) {
+        // On récupère les options reçues
+        final options = asyncData.data ?? <String>[];
+        final currentValue = options.contains(_selectedCategory) ? _selectedCategory : null;
+        // On affiche le menu déroulant
+        return DropdownButtonFormField<String>(
+          value: currentValue,
+          decoration: const InputDecoration(
+            labelText: 'Category',
+            border: OutlineInputBorder(),
+          ),
+          items: options.map((value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
+          onChanged: asyncData.connectionState == ConnectionState.done
+              ? (value) => setState(() => _selectedCategory = value)
+              : null,
+          validator: (value) => value == null || value.isEmpty ? 'Required' : null,
+        );
       },
     );
   }
 
+  // Affiche la liste des types de repas (plus débutant)
   Widget _buildMealTypeField() {
-    return TextFormField(
-      controller: _mealTypeController,
-      decoration: const InputDecoration(
-        labelText: 'Meal Type',
-        border: OutlineInputBorder(),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Required';
-        }
-        return null;
+    return FutureBuilder<List<String>>(
+      future: _mealTypeOptionsFuture,
+      builder: (context, asyncData) {
+        final options = asyncData.data ?? <String>[];
+        final currentValue = options.contains(_selectedMealType) ? _selectedMealType : null;
+        return DropdownButtonFormField<String>(
+          value: currentValue,
+          decoration: const InputDecoration(
+            labelText: 'Meal Type',
+            border: OutlineInputBorder(),
+          ),
+          items: options.map((value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
+          onChanged: asyncData.connectionState == ConnectionState.done
+              ? (value) => setState(() => _selectedMealType = value)
+              : null,
+          validator: (value) => value == null || value.isEmpty ? 'Required' : null,
+        );
       },
     );
   }
