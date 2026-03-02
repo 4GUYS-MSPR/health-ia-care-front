@@ -2,12 +2,14 @@ import 'package:dio/dio.dart';
 
 import '../../../../core/errors/server_failures.dart';
 import '../../../../core/logging/logger_mixin.dart';
+import '../../../../core/shared/models/pagination_info.dart';
 import '../../domain/errors/nutrition_failure.dart';
 import '../models/nutrition_food_model.dart';
 
 /// Remote datasource for nutrition foods API operations.
-abstract interface class NutritionRemoteDataSource {
-  /// Creates a new food.
+abstract class NutritionRemoteDataSource {
+  Future<List<String>> getFoodCategories();
+  Future<List<String>> getMealTypes();
   Future<NutritionFoodModel> createFood({
     required String label,
     required int calories,
@@ -22,19 +24,11 @@ abstract interface class NutritionRemoteDataSource {
     required String category,
     required String mealType,
   });
-
-  /// Deletes a food by [id].
   Future<void> deleteFood(int id);
-
-  /// Gets all foods.
   Future<List<NutritionFoodModel>> getFoods();
-
-  /// Gets a single food by [id].
+  Future<(List<NutritionFoodModel>, PaginationInfo)> getFoodsPage({required int offset, required int limit});
   Future<NutritionFoodModel> getFood(int id);
-
-  /// Updates a food by [id] with partial data.
-  Future<NutritionFoodModel> updateFood(
-    int id, {
+  Future<NutritionFoodModel> updateFood(int id, {
     String? label,
     int? calories,
     double? protein,
@@ -50,18 +44,18 @@ abstract interface class NutritionRemoteDataSource {
   });
 }
 
-class NutritionRemoteDataSourceImpl with LoggerMixin implements NutritionRemoteDataSource {
-  static const _foodsEndpoint = '/api/foods/';
-
+class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
+  static const _foodsEndpoint = '/api/food/';
+  static const _enumEndpoint = '/api/enum/';
+  static const _foodCategoryModel = 'FoodCategory';
+  static const _mealTypeModel = 'MealType';
   final Dio client;
-
-  NutritionRemoteDataSourceImpl({
-    required this.client,
-  });
+  NutritionRemoteDataSourceImpl({required this.client});
 
   @override
-  String get loggerName => 'Health.Data.NutritionRemoteDataSource';
-
+  Future<List<String>> getFoodCategories() => _fetchEnumValues(_foodCategoryModel);
+  @override
+  Future<List<String>> getMealTypes() => _fetchEnumValues(_mealTypeModel);
   @override
   Future<NutritionFoodModel> createFood({
     required String label,
@@ -77,116 +71,73 @@ class NutritionRemoteDataSourceImpl with LoggerMixin implements NutritionRemoteD
     required String category,
     required String mealType,
   }) async {
-    logger.finest('createFood called');
-    logger.finer('Sending POST to $_foodsEndpoint');
-
+    final data = {
+      'label': label,
+      'calories': calories,
+      'protein': protein,
+      'carbohydrates': carbohydrates,
+      'fat': fat,
+      'fiber': fiber,
+      'sugars': sugars,
+      'sodium': sodium,
+      'cholesterol': cholesterol,
+      'water_intake': waterIntake,
+      'category': await _findEnumId(_foodCategoryModel, category),
+      'meal_type': await _findEnumId(_mealTypeModel, mealType),
+    };
     try {
-      final data = <String, dynamic>{
-        'label': label,
-        'calories': calories,
-        'protein': protein,
-        'carbohydrates': carbohydrates,
-        'fat': fat,
-        'fiber': fiber,
-        'sugars': sugars,
-        'sodium': sodium,
-        'cholesterol': cholesterol,
-        'water_intake': waterIntake,
-        'category': category,
-        'meal_type': mealType,
-      };
-
-      final res = await client.post(
-        _foodsEndpoint,
-        data: data,
-      );
-
-      logger.fine('Food created successfully');
+      final res = await client.post(_foodsEndpoint, data: data);
       return NutritionFoodModel.fromJson(res.data as Map<String, dynamic>);
-    } on DioException catch (e, st) {
-      logger.severe('Failed to create food', e, st);
-      if (e.response?.statusCode == 400) {
-        throw const FoodCreationFailure(
-          debugMessage: 'Invalid food data',
-        );
-      }
-      throw ServerErrorFailure(
-        statusCode: e.response?.statusCode,
-        debugMessage: e.message,
-      );
+    } on DioException catch (e) {
+      throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
   }
 
   @override
   Future<void> deleteFood(int id) async {
-    logger.finest('deleteFood called for id=$id');
-    logger.finer('Sending DELETE to $_foodsEndpoint$id/');
-
     try {
       await client.delete('$_foodsEndpoint$id/');
-      logger.fine('Food $id deleted successfully');
-    } on DioException catch (e, st) {
-      logger.severe('Failed to delete food $id', e, st);
-      if (e.response?.statusCode == 404) {
-        throw FoodNotFoundException(
-          foodId: id,
-          debugMessage: 'Food not found',
-        );
-      }
-      throw ServerErrorFailure(
-        statusCode: e.response?.statusCode,
-        debugMessage: e.message,
-      );
+    } on DioException catch (e) {
+      throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
   }
 
   @override
   Future<List<NutritionFoodModel>> getFoods() async {
-    logger.finest('getFoods called');
-    logger.finer('Sending GET to $_foodsEndpoint');
-
     try {
       final res = await client.get(_foodsEndpoint);
-      final data = res.data as List<dynamic>;
-
-      logger.fine('Retrieved ${data.length} foods');
+      final data = _extractResults(res.data);
       return data.map((item) => NutritionFoodModel.fromJson(item)).toList();
-    } on DioException catch (e, st) {
-      logger.severe('Failed to fetch foods', e, st);
-      throw ServerErrorFailure(
-        statusCode: e.response?.statusCode,
-        debugMessage: e.message,
-      );
+    } on DioException catch (e) {
+      throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
+    }
+  }
+
+  @override
+  Future<(List<NutritionFoodModel>, PaginationInfo)> getFoodsPage({required int offset, required int limit}) async {
+    try {
+      final res = await client.get(_foodsEndpoint, queryParameters: {'offset': offset, 'limit': limit});
+      final data = _extractResults(res.data);
+      final foods = data.map((item) => NutritionFoodModel.fromJson(item)).toList();
+      final pagination = PaginationInfo.fromResponse(res.data is Map<String, dynamic> ? res.data : {'results': data}, offset, limit);
+      return (foods, pagination);
+    } on DioException catch (e) {
+      throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
   }
 
   @override
   Future<NutritionFoodModel> getFood(int id) async {
-    logger.finest('getFood called for id=$id');
-    logger.finer('Sending GET to $_foodsEndpoint$id/');
-
     try {
       final res = await client.get('$_foodsEndpoint$id/');
-      logger.fine('Retrieved food $id');
       return NutritionFoodModel.fromJson(res.data as Map<String, dynamic>);
-    } on DioException catch (e, st) {
-      logger.severe('Failed to fetch food $id', e, st);
-      if (e.response?.statusCode == 404) {
-        throw FoodNotFoundException(
-          foodId: id,
-          debugMessage: 'Food not found',
-        );
-      }
-      throw ServerErrorFailure(
-        statusCode: e.response?.statusCode,
-        debugMessage: e.message,
-      );
+    } on DioException catch (e) {
+      throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
   }
-
+  
   @override
-  Future<NutritionFoodModel> updateFood(
-    int id, {
+  Future<NutritionFoodModel> updateFood(int id, {
     String? label,
     int? calories,
     double? protein,
@@ -200,50 +151,55 @@ class NutritionRemoteDataSourceImpl with LoggerMixin implements NutritionRemoteD
     String? category,
     String? mealType,
   }) async {
-    logger.finest('updateFood called for id=$id');
-    logger.finer('Sending PATCH to $_foodsEndpoint$id/');
-
+    final data = <String, dynamic>{};
+    if (label != null) data['label'] = label;
+    if (calories != null) data['calories'] = calories;
+    if (protein != null) data['protein'] = protein;
+    if (carbohydrates != null) data['carbohydrates'] = carbohydrates;
+    if (fat != null) data['fat'] = fat;
+    if (fiber != null) data['fiber'] = fiber;
+    if (sugars != null) data['sugars'] = sugars;
+    if (sodium != null) data['sodium'] = sodium;
+    if (cholesterol != null) data['cholesterol'] = cholesterol;
+    if (waterIntake != null) data['water_intake'] = waterIntake;
+    if (category != null) data['category'] = await _findEnumId(_foodCategoryModel, category);
+    if (mealType != null) data['meal_type'] = await _findEnumId(_mealTypeModel, mealType);
     try {
-      final data = <String, dynamic>{};
-
-      if (label != null) data['label'] = label;
-      if (calories != null) data['calories'] = calories;
-      if (protein != null) data['protein'] = protein;
-      if (carbohydrates != null) data['carbohydrates'] = carbohydrates;
-      if (fat != null) data['fat'] = fat;
-      if (fiber != null) data['fiber'] = fiber;
-      if (sugars != null) data['sugars'] = sugars;
-      if (sodium != null) data['sodium'] = sodium;
-      if (cholesterol != null) data['cholesterol'] = cholesterol;
-      if (waterIntake != null) data['water_intake'] = waterIntake;
-      if (category != null) data['category'] = category;
-      if (mealType != null) data['meal_type'] = mealType;
-
-      final res = await client.patch(
-        '$_foodsEndpoint$id/',
-        data: data,
-      );
-
-      logger.fine('Food $id updated successfully');
+      final res = await client.patch('$_foodsEndpoint$id/', data: data);
       return NutritionFoodModel.fromJson(res.data as Map<String, dynamic>);
-    } on DioException catch (e, st) {
-      logger.severe('Failed to update food $id', e, st);
-      if (e.response?.statusCode == 404) {
-        throw FoodNotFoundException(
-          foodId: id,
-          debugMessage: 'Food not found',
-        );
-      }
-      if (e.response?.statusCode == 400) {
-        throw FoodUpdateFailure(
-          foodId: id,
-          debugMessage: 'Invalid update data',
-        );
-      }
-      throw ServerErrorFailure(
-        statusCode: e.response?.statusCode,
-        debugMessage: e.message,
-      );
+    } on DioException catch (e) {
+      throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
+  }
+
+  // Helpers privés ultra-courts
+  Future<int> _findEnumId(String model, String value) async {
+    final parsedId = int.tryParse(value.trim());
+    if (parsedId != null) return parsedId;
+    final res = await client.get('$_enumEndpoint$model/');
+    final results = (res.data as Map<String, dynamic>)['results'] as List<dynamic>?;
+    if (results == null) throw ServerErrorFailure(debugMessage: 'Invalid enum payload for $model');
+    for (final item in results) {
+      if (item is Map<String, dynamic>) {
+        final itemValue = (item['value'] as String?)?.trim().toLowerCase();
+        if (itemValue == value.trim().toLowerCase()) return item['id'] as int;
+      }
+    }
+    throw ServerErrorFailure(debugMessage: 'Unknown value $value for $model');
+  }
+
+  Future<List<String>> _fetchEnumValues(String model) async {
+    final res = await client.get('$_enumEndpoint$model/');
+    final results = (res.data as Map<String, dynamic>)['results'] as List<dynamic>?;
+    if (results == null) throw ServerErrorFailure(debugMessage: 'Invalid enum payload for $model');
+    return [for (final item in results) if (item is Map<String, dynamic> && item['value'] != null) item['value'].toString().trim()];
+  }
+
+  List<dynamic> _extractResults(dynamic payload) {
+    if (payload is List) return payload;
+    if (payload is Map && payload['results'] is List) return payload['results'];
+    if (payload is Map && payload['data'] is List) return payload['data'];
+    if (payload is Map && payload['data'] is Map && payload['data']['results'] is List) return payload['data']['results'];
+    throw ServerErrorFailure(debugMessage: 'Unexpected foods payload format: ${payload.runtimeType}');
   }
 }
