@@ -18,6 +18,9 @@ class NutritionFoodModel extends NutritionFood {
   });
 
   factory NutritionFoodModel.fromJson(Map<String, dynamic> json) {
+    final category = json['category'];
+    final mealType = json['meal_type'];
+
     return NutritionFoodModel(
       id: json['id'] as int,
       label: json['label'] as String,
@@ -30,8 +33,16 @@ class NutritionFoodModel extends NutritionFood {
       sodium: json['sodium'] as int,
       cholesterol: json['cholesterol'] as int,
       waterIntake: json['water_intake'] as int,
-      category: json['category'] as String? ?? 'Uncategorized',
-      mealType: json['meal_type'] as String? ?? 'Unknown',
+      category: switch (category) {
+        Map<String, dynamic>() => category['value'] as String? ?? 'Uncategorized',
+        String() => category,
+        _ => 'Uncategorized',
+      },
+      mealType: switch (mealType) {
+        Map<String, dynamic>() => mealType['value'] as String? ?? 'Unknown',
+        String() => mealType,
+        _ => 'Unknown',
+      },
     );
   }
 
