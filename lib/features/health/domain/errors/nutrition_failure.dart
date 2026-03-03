@@ -1,11 +1,11 @@
 import '../../../../core/errors/failures.dart';
 
-/// Base class for member-related failures.
+/// Base class for food-related failures.
 sealed class NutritionFailure extends Failure {
   const NutritionFailure({super.debugMessage});
 }
 
-/// Member was not found.
+/// Food was not found.
 class FoodNotFoundException extends NutritionFailure {
   final int foodId;
 
@@ -21,12 +21,12 @@ class FoodNotFoundException extends NutritionFailure {
   ];
 }
 
-/// Failed to create a new member.
+/// Failed to create a new food.
 class FoodCreationFailure extends NutritionFailure {
   const FoodCreationFailure({super.debugMessage});
 }
 
-/// Failed to update member.
+/// Failed to update food.
 class FoodUpdateFailure extends NutritionFailure {
   final int foodId;
 
@@ -42,7 +42,7 @@ class FoodUpdateFailure extends NutritionFailure {
   ];
 }
 
-/// Failed to delete member.
+/// Failed to delete food.
 class FoodDeleteFailure extends NutritionFailure {
   final int foodId;
 
@@ -58,12 +58,12 @@ class FoodDeleteFailure extends NutritionFailure {
   ];
 }
 
-/// Failed to fetch members list.
+/// Failed to fetch foods list.
 class FoodsFetchFailure extends NutritionFailure {
   const FoodsFetchFailure({super.debugMessage});
 }
 
-/// Validation error for member data.
+/// Validation error for food data.
 class FoodValidationFailure extends NutritionFailure {
   final String field;
 
