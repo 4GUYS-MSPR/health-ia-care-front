@@ -19,13 +19,14 @@ class RestoreUserUsecase with LoggerMixin implements Usecase<User?, NoParams> {
   @override
   String get loggerName => 'Authentication.Domain.RestoreUserUsecase';
 
-  /// Attempts to refresh the token and retrieve the current user.
+  /// Attempts to refresh the token and then retrieve the current user.
   @override
   TaskEither<Failure, User?> call([NoParams? params]) {
     logger.finest('RestoreUserUsecase called');
     logger.finer('Requesting token refresh');
-    repository.refreshToken();
-    logger.fine('Retrieving user from repository');
-    return repository.retrieveUser();
+    return repository.refreshToken().flatMap((_) {
+      logger.fine('Token refreshed, retrieving user from repository');
+      return repository.retrieveUser();
+    });
   }
 }
