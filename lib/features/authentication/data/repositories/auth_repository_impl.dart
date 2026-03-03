@@ -5,6 +5,7 @@ import '../../../../core/errors/network_failures.dart';
 import '../../../../core/errors/server_failures.dart';
 import '../../../../core/logging/logger_mixin.dart';
 import '../../../../core/network/network_info.dart';
+import '../../domain/entities/auth_token.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/errors/auth_failures.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -13,13 +14,13 @@ import '../datasources/auth_remote_datasource.dart';
 import '../models/user_model.dart';
 
 /// Repository implementation coordinating local cache, remote datasource,
-/// encryption, and network checks for authentication flows.
+/// and network checks for JWT authentication flows.
 ///
 /// Responsibilities:
 /// - Validate network availability before remote calls
 /// - Delegate authentication to [AuthRemoteDatasource]
 /// - Persist session state via [AuthLocalDatasource]
-/// - Use [AuthEncryptionService] to encrypt passwords when required
+/// - Handle JWT access/refresh token lifecycle
 class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
   final AuthLocalDatasource localDatasource;
   final AuthRemoteDatasource remoteDatasource;
@@ -44,8 +45,8 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
 
     return _checkInternetConnection()
         .flatMap((_) => _remoteLogin(email: email, password: password))
-        .flatMap((token) => _fetchUserProfile(token))
-        .flatMap((result) => _cacheSession(token: result.$1, user: result.$2));
+        .flatMap((authToken) => _fetchUserProfile(authToken))
+        .flatMap((result) => _cacheSession(authToken: result.$1, user: result.$2));
   }
 
   @override
@@ -70,15 +71,20 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
     logger.finest('refreshToken called');
     return TaskEither.tryCatch(
       () async {
-        final token = await localDatasource.getLastToken();
-        if (token == null) {
-          logger.warning('No cached token available to refresh');
-          throw AuthSessionExpiredFailure(debugMessage: 'No cached token');
+        final refreshToken = await localDatasource.getLastRefreshToken();
+        if (refreshToken == null) {
+          logger.warning('No cached refresh token available');
+          throw AuthSessionExpiredFailure(debugMessage: 'No cached refresh token');
         }
 
-        logger.fine('Returning cached token');
-        logger.finer('Token length=${token.length}');
-        return token;
+        logger.fine('Refreshing access token via remote');
+        final newTokenPair = await remoteDatasource.refreshToken(refreshToken);
+
+        logger.fine('Caching new access token');
+        await localDatasource.cacheAccessToken(newTokenPair.accessToken);
+
+        logger.finer('New access token length=${newTokenPair.accessToken.length}');
+        return newTokenPair.accessToken;
       },
       (error, stackTrace) {
         if (error is AuthFailure) return error;
@@ -93,13 +99,13 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
     logger.finest('retrieveToken called');
     return TaskEither.tryCatch(
       () async {
-        final token = await localDatasource.getLastToken();
+        final token = await localDatasource.getLastAccessToken();
         if (token != null && token.isNotEmpty) {
-          logger.fine('Token retrieved');
+          logger.fine('Access token retrieved');
           logger.finer('Token length=${token.length}');
           return token;
         }
-        logger.fine('No token found');
+        logger.fine('No access token found');
         throw AuthSessionExpiredFailure();
       },
       (error, stackTrace) {
@@ -130,16 +136,17 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
   }
 
   TaskEither<Failure, User> _cacheSession({
-    required String token,
+    required AuthToken authToken,
     required UserModel user,
   }) {
     logger.finest('cacheSession called for ${user.email}');
-    logger.finer('Token length=${token.length}');
+    logger.finer('Access token length=${authToken.accessToken.length}');
 
     return TaskEither.tryCatch(
       () async {
         logger.fine('Caching user session');
-        await localDatasource.cacheToken(token);
+        await localDatasource.cacheAccessToken(authToken.accessToken);
+        await localDatasource.cacheRefreshToken(authToken.refreshToken);
         await localDatasource.cacheUser(user);
         logger.fine('User session cached successfully');
         return user;
@@ -175,7 +182,7 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
     );
   }
 
-  TaskEither<Failure, String> _remoteLogin({
+  TaskEither<Failure, AuthToken> _remoteLogin({
     required String email,
     required String password,
   }) {
@@ -188,7 +195,7 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
           username: email,
           password: password,
         );
-        return authToken.token;
+        return authToken as AuthToken;
       },
       (error, stackTrace) {
         // Preserve known auth, network or server failures
@@ -202,15 +209,15 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
     );
   }
 
-  TaskEither<Failure, (String, UserModel)> _fetchUserProfile(String token) {
+  TaskEither<Failure, (AuthToken, UserModel)> _fetchUserProfile(AuthToken authToken) {
     logger.finest('fetchUserProfile called');
 
     return TaskEither.tryCatch(
       () async {
-        logger.fine('Fetching user profile with token');
-        final user = await remoteDatasource.getUserProfile(token);
+        logger.fine('Fetching user profile with access token');
+        final user = await remoteDatasource.getUserProfile(authToken.accessToken);
         logger.fine('User profile retrieved: ${user.email}');
-        return (token, user);
+        return (authToken, user);
       },
       (error, stackTrace) {
         // Preserve known auth, network or server failures

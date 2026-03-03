@@ -34,8 +34,12 @@ void registerNetwork(GetIt sl) {
       );
 
       // Add auth interceptor to automatically include token in requests
+      // and handle 401 refresh+retry
       dio.interceptors.add(
-        AuthInterceptor(authLocalDatasource: sl<AuthLocalDatasource>()),
+        AuthInterceptor(
+          authLocalDatasource: sl<AuthLocalDatasource>(),
+          dio: dio,
+        ),
       );
 
       return dio;
