@@ -102,6 +102,6 @@ class AuthInterceptor extends Interceptor with LoggerMixin {
   }
 
   bool _isTokenEndpoint(String path) {
-    return path.contains('/api/token-jwt/') || path.contains('/api/token/');
+    return path.contains('/api/token/');
   }
 }
