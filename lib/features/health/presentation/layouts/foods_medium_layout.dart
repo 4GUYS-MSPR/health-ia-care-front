@@ -44,51 +44,54 @@ class FoodsMediumLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Column(
-      children: [
-        if (foods.isNotEmpty)
-          SizedBox(
-            height: 100,
-            child: _buildQuickStats(context, l10n),
-          ),
-        if (foods.isNotEmpty) const SizedBox(height: 16),
-        Expanded(
-          child: Card(
-            margin: EdgeInsets.zero,
-            child: Column(
-              children: [
-                _buildHeader(context, l10n),
-                const Divider(height: 1),
-                Expanded(
-                  child: Stack(
-                    children: [
-                      if (foods.isEmpty)
-                        _buildEmptyState(context, l10n)
-                      else
-                        FoodsDataTable(
-                          foods: foods,
-                          sortColumnIndex: sortColumnIndex,
-                          sortAscending: sortAscending,
-                          onSort: onSort,
-                          onFoodTap: onFoodSelected,
-                          onFoodEdit: onFoodEdit,
-                          onFoodDelete: onFoodDelete,
-                        ),
-                      if (isLoading) _buildLoadingOverlay(context),
-                    ],
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        children: [
+          if (foods.isNotEmpty)
+            SizedBox(
+              height: 100,
+              child: _buildQuickStats(context, l10n),
+            ),
+          if (foods.isNotEmpty) const SizedBox(height: 16),
+          Expanded(
+            child: Card(
+              margin: EdgeInsets.zero,
+              child: Column(
+                children: [
+                  _buildHeader(context, l10n),
+                  const Divider(height: 1),
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        if (foods.isEmpty)
+                          _buildEmptyState(context, l10n)
+                        else
+                          FoodsDataTable(
+                            foods: foods,
+                            sortColumnIndex: sortColumnIndex,
+                            sortAscending: sortAscending,
+                            onSort: onSort,
+                            onFoodTap: onFoodSelected,
+                            onFoodEdit: onFoodEdit,
+                            onFoodDelete: onFoodDelete,
+                          ),
+                        if (isLoading) _buildLoadingOverlay(context),
+                      ],
+                    ),
                   ),
-                ),
-                if (pagination != null)
-                  PaginationControls(
-                    pagination: pagination!,
-                    onNext: onNextPage,
-                    onPrevious: onPreviousPage,
-                  ),
-              ],
+                  if (pagination != null)
+                    PaginationControls(
+                      pagination: pagination!,
+                      onNext: onNextPage,
+                      onPrevious: onPreviousPage,
+                    ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

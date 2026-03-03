@@ -46,72 +46,67 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: BlocConsumer<FoodsBloc, FoodsState>(
-          listener: _handleStateChanges,
-          builder: (context, state) {
-            final foods = _getFoodsFromState(state);
-            final pagination = _getPaginationFromState(state);
-            final isLoading = _isLoadingState(state);
-            final sortedFoods = _sortFoods(foods);
-
-            return ResponsiveLayoutBuilder(
-              compact: FoodsCompactLayout(
-                foods: sortedFoods,
-                pagination: pagination,
-                isLoading: isLoading,
-                sortColumnIndex: _sortColumnIndex,
-                sortAscending: _sortAscending,
-                onSort: _onSort,
-                onFoodSelected: _onFoodSelected,
-                onFoodEdit: _showEditDialog,
-                onFoodDelete: _showDeleteDialog,
-                onAddFood: _showCreateDialog,
-                onRefresh: _onRefresh,
-                onNextPage: _onNextPage,
-                onPreviousPage: _onPreviousPage,
-              ),
-              medium: FoodsMediumLayout(
-                foods: sortedFoods,
-                pagination: pagination,
-                isLoading: isLoading,
-                sortColumnIndex: _sortColumnIndex,
-                sortAscending: _sortAscending,
-                onSort: _onSort,
-                onFoodSelected: _onFoodSelected,
-                onFoodEdit: _showEditDialog,
-                onFoodDelete: _showDeleteDialog,
-                onAddFood: _showCreateDialog,
-                onRefresh: _onRefresh,
-                onNextPage: _onNextPage,
-                onPreviousPage: _onPreviousPage,
-              ),
-              large: FoodsLargeLayout(
-                foods: sortedFoods,
-                pagination: pagination,
-                selectedFood: _selectedFood,
-                isLoading: isLoading,
-                sortColumnIndex: _sortColumnIndex,
-                sortAscending: _sortAscending,
-                showCreateForm: _showCreateForm,
-                onSort: _onSort,
-                onFoodSelected: _onFoodSelected,
-                onFoodEdit: _showEditDialog,
-                onFoodDelete: _showDeleteDialog,
-                onAddFood: _showCreateDialog,
-                onRefresh: _onRefresh,
-                onCloseDetails: _onCloseDetails,
-                onToggleCreateForm: _onToggleCreateForm,
-                onFoodCreated: _onFoodCreated,
-                onNextPage: _onNextPage,
-                onPreviousPage: _onPreviousPage,
-              ),
-            );
-          },
-        ),
-      ),
+    return BlocConsumer<FoodsBloc, FoodsState>(
+      listener: _handleStateChanges,
+      builder: (context, state) {
+        final foods = _getFoodsFromState(state);
+        final pagination = _getPaginationFromState(state);
+        final isLoading = _isLoadingState(state);
+        final sortedFoods = _sortFoods(foods);
+    
+        return ResponsiveLayoutBuilder(
+          compact: FoodsCompactLayout(
+            foods: sortedFoods,
+            pagination: pagination,
+            isLoading: isLoading,
+            sortColumnIndex: _sortColumnIndex,
+            sortAscending: _sortAscending,
+            onSort: _onSort,
+            onFoodSelected: _onFoodSelected,
+            onFoodEdit: _showEditDialog,
+            onFoodDelete: _showDeleteDialog,
+            onAddFood: _showCreateDialog,
+            onRefresh: _onRefresh,
+            onNextPage: _onNextPage,
+            onPreviousPage: _onPreviousPage,
+          ),
+          medium: FoodsMediumLayout(
+            foods: sortedFoods,
+            pagination: pagination,
+            isLoading: isLoading,
+            sortColumnIndex: _sortColumnIndex,
+            sortAscending: _sortAscending,
+            onSort: _onSort,
+            onFoodSelected: _onFoodSelected,
+            onFoodEdit: _showEditDialog,
+            onFoodDelete: _showDeleteDialog,
+            onAddFood: _showCreateDialog,
+            onRefresh: _onRefresh,
+            onNextPage: _onNextPage,
+            onPreviousPage: _onPreviousPage,
+          ),
+          large: FoodsLargeLayout(
+            foods: sortedFoods,
+            pagination: pagination,
+            selectedFood: _selectedFood,
+            isLoading: isLoading,
+            sortColumnIndex: _sortColumnIndex,
+            sortAscending: _sortAscending,
+            showCreateForm: _showCreateForm,
+            onSort: _onSort,
+            onFoodSelected: _onFoodSelected,
+            onFoodEdit: _showEditDialog,
+            onFoodDelete: _showDeleteDialog,
+            onAddFood: _showCreateDialog,
+            onRefresh: _onRefresh,
+            onCloseDetails: _onCloseDetails,
+            onToggleCreateForm: _onToggleCreateForm,
+            onFoodCreated: _onFoodCreated,
+            onNextPage: _onNextPage,
+            onPreviousPage: _onPreviousPage,
+          ),
+        );
+      },
     );
   }
 

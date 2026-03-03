@@ -55,19 +55,22 @@ class FoodsLargeLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 3,
-          child: _buildMainContent(context),
-        ),
-        const SizedBox(width: 24),
-        Expanded(
-          flex: 2,
-          child: _buildSidePanel(context),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 3,
+            child: _buildMainContent(context),
+          ),
+          const SizedBox(width: 24),
+          Expanded(
+            flex: 2,
+            child: _buildSidePanel(context),
+          ),
+        ],
+      ),
     );
   }
 
