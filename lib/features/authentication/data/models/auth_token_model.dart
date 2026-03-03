@@ -4,18 +4,21 @@ import '../../domain/entities/auth_token.dart';
 
 class AuthTokenModel extends AuthToken {
   const AuthTokenModel({
-    required super.token,
+    required super.accessToken,
+    required super.refreshToken,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'token': token,
+      'access': accessToken,
+      'refresh': refreshToken,
     };
   }
 
   factory AuthTokenModel.fromMap(Map<String, dynamic> map) {
     return AuthTokenModel(
-      token: map['token'] as String,
+      accessToken: map['access'] as String,
+      refreshToken: map['refresh'] as String,
     );
   }
 
@@ -27,7 +30,8 @@ class AuthTokenModel extends AuthToken {
 
   factory AuthTokenModel.fromEntity(AuthToken authToken) {
     return AuthTokenModel(
-      token: authToken.token,
+      accessToken: authToken.accessToken,
+      refreshToken: authToken.refreshToken,
     );
   }
 }
