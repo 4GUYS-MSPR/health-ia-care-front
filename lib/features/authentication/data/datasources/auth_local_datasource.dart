@@ -10,24 +10,31 @@ import '../models/user_model.dart';
 /// sensitive values (raw passwords or token contents); logs should indicate
 /// only presence/absence or non-sensitive metadata.
 abstract interface class AuthLocalDatasource {
-  /// Persists [token] in secure storage for later retrieval.
-  Future<void> cacheToken(String token);
+  /// Persists the JWT [accessToken] in secure storage for later retrieval.
+  Future<void> cacheAccessToken(String accessToken);
+
+  /// Persists the JWT [refreshToken] in secure storage for later retrieval.
+  Future<void> cacheRefreshToken(String refreshToken);
 
   /// Persists [user] in secure storage.
   Future<void> cacheUser(UserModel user);
 
-  /// Clears any stored authentication-related data (token, user).
+  /// Clears any stored authentication-related data (tokens, user).
   Future<void> clearSession();
 
-  /// Retrieves the last cached token, or `null` if none is present.
-  Future<String?> getLastToken();
+  /// Retrieves the last cached access token, or `null` if none is present.
+  Future<String?> getLastAccessToken();
+
+  /// Retrieves the last cached refresh token, or `null` if none is present.
+  Future<String?> getLastRefreshToken();
 
   /// Retrieves the last cached [UserModel], or `null` if none is present.
   Future<UserModel?> getLastUser();
 }
 
 class AuthLocalDatasourceImpl with LoggerMixin implements AuthLocalDatasource {
-  static const _cachedToken = 'CACHED_TOKEN';
+  static const _cachedAccessToken = 'CACHED_ACCESS_TOKEN';
+  static const _cachedRefreshToken = 'CACHED_REFRESH_TOKEN';
   static const _cachedUser = 'CACHED_USER';
 
   final FlutterSecureStorage secureStorage;
@@ -40,15 +47,29 @@ class AuthLocalDatasourceImpl with LoggerMixin implements AuthLocalDatasource {
   String get loggerName => 'Authentication.Data.AuthLocalDatasource';
 
   @override
-  Future<void> cacheToken(String token) async {
-    logger.finest('cacheToken called');
+  Future<void> cacheAccessToken(String accessToken) async {
+    logger.finest('cacheAccessToken called');
 
-    logger.fine('Caching user token to secure storage');
+    logger.fine('Caching access token to secure storage');
     try {
-      await secureStorage.write(key: _cachedToken, value: token);
-      logger.fine('Token cached successfully');
+      await secureStorage.write(key: _cachedAccessToken, value: accessToken);
+      logger.fine('Access token cached successfully');
     } catch (e, st) {
-      logger.severe('Failed to cache token', e, st);
+      logger.severe('Failed to cache access token', e, st);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> cacheRefreshToken(String refreshToken) async {
+    logger.finest('cacheRefreshToken called');
+
+    logger.fine('Caching refresh token to secure storage');
+    try {
+      await secureStorage.write(key: _cachedRefreshToken, value: refreshToken);
+      logger.fine('Refresh token cached successfully');
+    } catch (e, st) {
+      logger.severe('Failed to cache refresh token', e, st);
       rethrow;
     }
   }
@@ -76,8 +97,11 @@ class AuthLocalDatasourceImpl with LoggerMixin implements AuthLocalDatasource {
       logger.finer('Deleting cached user under $_cachedUser');
       await secureStorage.delete(key: _cachedUser);
 
-      logger.finer('Deleting cached token under $_cachedToken');
-      await secureStorage.delete(key: _cachedToken);
+      logger.finer('Deleting cached access token under $_cachedAccessToken');
+      await secureStorage.delete(key: _cachedAccessToken);
+
+      logger.finer('Deleting cached refresh token under $_cachedRefreshToken');
+      await secureStorage.delete(key: _cachedRefreshToken);
 
       logger.fine('Session cleared successfully');
     } catch (e, st) {
@@ -87,21 +111,41 @@ class AuthLocalDatasourceImpl with LoggerMixin implements AuthLocalDatasource {
   }
 
   @override
-  Future<String?> getLastToken() async {
-    logger.finest('getLastToken called');
+  Future<String?> getLastAccessToken() async {
+    logger.finest('getLastAccessToken called');
     
-    logger.fine('Retrieving last token from secure storage');
+    logger.fine('Retrieving last access token from secure storage');
     try {
-      final token = await secureStorage.read(key: _cachedToken);
+      final token = await secureStorage.read(key: _cachedAccessToken);
       if (token != null) {
-        logger.fine('Token retrieved');
+        logger.fine('Access token retrieved');
         logger.finer('Token length=${token.length}');
       } else {
-        logger.fine('No token found');
+        logger.fine('No access token found');
       }
       return token;
     } catch (e, st) {
-      logger.severe('Failed to retrieve token', e, st);
+      logger.severe('Failed to retrieve access token', e, st);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String?> getLastRefreshToken() async {
+    logger.finest('getLastRefreshToken called');
+    
+    logger.fine('Retrieving last refresh token from secure storage');
+    try {
+      final token = await secureStorage.read(key: _cachedRefreshToken);
+      if (token != null) {
+        logger.fine('Refresh token retrieved');
+        logger.finer('Token length=${token.length}');
+      } else {
+        logger.fine('No refresh token found');
+      }
+      return token;
+    } catch (e, st) {
+      logger.severe('Failed to retrieve refresh token', e, st);
       rethrow;
     }
   }
