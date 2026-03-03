@@ -21,6 +21,16 @@ class NutritionFoodModel extends NutritionFood {
     final category = json['category'];
     final mealType = json['meal_type'];
 
+    String parseValue(dynamic field, {String fallback = 'Unknown'}) {
+      if (field == null) return fallback;
+      if (field is String) return field;
+      if (field is Map<String, dynamic> && field.containsKey('value')) {
+        final v = field['value'];
+        if (v is String && v.isNotEmpty) return v;
+      }
+      return fallback;
+    }
+
     return NutritionFoodModel(
       id: json['id'] as int,
       label: json['label'] as String,
@@ -33,16 +43,8 @@ class NutritionFoodModel extends NutritionFood {
       sodium: json['sodium'] as int,
       cholesterol: json['cholesterol'] as int,
       waterIntake: json['water_intake'] as int,
-      category: switch (category) {
-        Map<String, dynamic>() => category['value'] as String? ?? 'Uncategorized',
-        String() => category,
-        _ => 'Uncategorized',
-      },
-      mealType: switch (mealType) {
-        Map<String, dynamic>() => mealType['value'] as String? ?? 'Unknown',
-        String() => mealType,
-        _ => 'Unknown',
-      },
+      category: parseValue(category, fallback: 'Uncategorized'),
+      mealType: parseValue(mealType, fallback: 'Unknown'),
     );
   }
 
