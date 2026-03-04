@@ -52,7 +52,7 @@ class AppRouter {
               ProtectedGoRoute(
                 path: '/nutrition',
                 name: AppRoutes.nutrition,
-                builder: (context, state) => NutritionPage(),
+                builder: (context, state) => const NutritionPage(),
               ),
             ],
           ),
