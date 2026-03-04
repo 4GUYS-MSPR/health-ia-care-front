@@ -98,7 +98,7 @@ class FoodDetailsPanel extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Nutrition Info',
+          l10n.foodDetailsNutrition,
           style: context.textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.bold,
             color: context.colorScheme.primary,
@@ -108,37 +108,37 @@ class FoodDetailsPanel extends StatelessWidget {
         _buildInfoRow(
           context,
           Icons.local_fire_department,
-          'Calories',
+          l10n.foodCardCalories,
           '${food.calories} kcal',
         ),
         _buildInfoRow(
           context,
           Icons.egg_outlined,
-          'Protein',
+          l10n.foodCardProtein,
           '${food.protein.toStringAsFixed(1)}g',
         ),
         _buildInfoRow(
           context,
           Icons.grain,
-          'Carbohydrates',
+          l10n.foodCardCarbs,
           '${food.carbohydrates.toStringAsFixed(1)}g',
         ),
         _buildInfoRow(
           context,
           Icons.opacity_outlined,
-          'Fat',
+          l10n.foodCardFat,
           '${food.fat.toStringAsFixed(1)}g',
         ),
         _buildInfoRow(
           context,
           Icons.fiber_manual_record_outlined,
-          'Fiber',
+          l10n.foodCardFiber,
           '${food.fiber.toStringAsFixed(1)}g',
         ),
         _buildInfoRow(
           context,
           Icons.water_drop_outlined,
-          'Water Intake',
+          l10n.foodCardWaterIntake,
           '${food.waterIntake} ml',
         ),
       ],
@@ -150,7 +150,7 @@ class FoodDetailsPanel extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Details',
+          l10n.foodDetailsInfo,
           style: context.textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.bold,
             color: context.colorScheme.primary,
@@ -160,25 +160,25 @@ class FoodDetailsPanel extends StatelessWidget {
         _buildInfoRow(
           context,
           Icons.tag_outlined,
-          'Label',
+          l10n.foodTableColumnLabel,
           food.label,
         ),
         _buildInfoRow(
           context,
           Icons.category_outlined,
-          'Category',
+          l10n.foodCardCategory,
           food.category,
         ),
         _buildInfoRow(
           context,
           Icons.restaurant_menu,
-          'Meal Type',
+          l10n.foodCardMealType,
           food.mealType,
         ),
         _buildInfoRow(
           context,
           Icons.info_outline,
-          'ID',
+          l10n.foodTableColumnId,
           '#${food.id}',
         ),
       ],
@@ -195,7 +195,7 @@ class FoodDetailsPanel extends StatelessWidget {
               onPressed: onDelete,
               icon: Icon(Icons.delete_outlined, color: context.colorScheme.error),
               label: Text(
-                'Delete',
+                l10n.foodDetailsDelete,
                 style: TextStyle(color: context.colorScheme.error),
               ),
             ),
@@ -205,7 +205,7 @@ class FoodDetailsPanel extends StatelessWidget {
             child: FilledButton.icon(
               onPressed: onEdit,
               icon: const Icon(Icons.edit_outlined),
-              label: const Text('Edit'),
+              label: Text(l10n.foodDetailsEdit),
             ),
           ),
         ],
