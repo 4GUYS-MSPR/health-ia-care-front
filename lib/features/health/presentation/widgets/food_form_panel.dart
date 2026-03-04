@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import '../../data/datasources/nutrition_remote_data_source.dart';
 import '../blocs/foods_bloc.dart';
+import '../../../../core/extensions/l10n_extension.dart';
 
 /// A panel widget for creating a new food inline (for large layouts).
 // Un formulaire simple pour ajouter un aliment, version débutant
@@ -82,7 +83,7 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
 
   @override
   Widget build(BuildContext context) {
-    // Tout est dans le build pour simplifier
+    final l10n = context.l10n;
     return Card(
       margin: EdgeInsets.zero,
       child: Column(
@@ -94,7 +95,7 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
               children: [
                 Icon(Icons.restaurant_menu_outlined, color: Colors.blue),
                 const SizedBox(width: 12),
-                Text('Ajouter un aliment', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                Text(l10n.foodFormCreateTitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                 const Spacer(),
                 IconButton(icon: const Icon(Icons.close), onPressed: widget.onCancel),
               ],
@@ -117,63 +118,63 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _caloriesController,
-                      decoration: InputDecoration(labelText: 'Calories', border: OutlineInputBorder()),
+                      decoration: InputDecoration(labelText: l10n.foodFormCaloriesLabel, border: OutlineInputBorder()),
                       keyboardType: TextInputType.number,
                       validator: (value) => value == null || value.isEmpty ? 'Requis' : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _proteinController,
-                      decoration: InputDecoration(labelText: 'Protéines (g)', border: OutlineInputBorder()),
+                      decoration: InputDecoration(labelText: l10n.foodFormProteinLabel, border: OutlineInputBorder()),
                       keyboardType: TextInputType.number,
                       validator: (value) => value == null || value.isEmpty ? 'Requis' : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _carbohydratesController,
-                      decoration: InputDecoration(labelText: 'Glucides (g)', border: OutlineInputBorder()),
+                      decoration: InputDecoration(labelText: l10n.foodFormCarbsLabel, border: OutlineInputBorder()),
                       keyboardType: TextInputType.number,
                       validator: (value) => value == null || value.isEmpty ? 'Requis' : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _fatController,
-                      decoration: InputDecoration(labelText: 'Lipides (g)', border: OutlineInputBorder()),
+                      decoration: InputDecoration(labelText: l10n.foodFormFatLabel, border: OutlineInputBorder()),
                       keyboardType: TextInputType.number,
                       validator: (value) => value == null || value.isEmpty ? 'Requis' : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _fiberController,
-                      decoration: InputDecoration(labelText: 'Fibres (g)', border: OutlineInputBorder()),
+                      decoration: InputDecoration(labelText: l10n.foodFormFiberLabel, border: OutlineInputBorder()),
                       keyboardType: TextInputType.number,
                       validator: (value) => value == null || value.isEmpty ? 'Requis' : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _sugarsController,
-                      decoration: InputDecoration(labelText: 'Sucres (g)', border: OutlineInputBorder()),
+                      decoration: InputDecoration(labelText: l10n.foodFormSugarsLabel, border: OutlineInputBorder()),
                       keyboardType: TextInputType.number,
                       validator: (value) => value == null || value.isEmpty ? 'Requis' : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _sodiumController,
-                      decoration: InputDecoration(labelText: 'Sodium (mg)', border: OutlineInputBorder()),
+                      decoration: InputDecoration(labelText: l10n.foodFormSodiumLabel, border: OutlineInputBorder()),
                       keyboardType: TextInputType.number,
                       validator: (value) => value == null || value.isEmpty ? 'Requis' : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _cholesterolController,
-                      decoration: InputDecoration(labelText: 'Cholestérol (mg)', border: OutlineInputBorder()),
+                      decoration: InputDecoration(labelText: l10n.foodFormCholesterolLabel, border: OutlineInputBorder()),
                       keyboardType: TextInputType.number,
                       validator: (value) => value == null || value.isEmpty ? 'Requis' : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _waterIntakeController,
-                      decoration: InputDecoration(labelText: 'Eau (ml)', border: OutlineInputBorder()),
+                      decoration: InputDecoration(labelText: l10n.foodFormWaterIntakeLabel, border: OutlineInputBorder()),
                       keyboardType: TextInputType.number,
                       validator: (value) => value == null || value.isEmpty ? 'Requis' : null,
                     ),
@@ -185,7 +186,7 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
                         final options = snapshot.data ?? [];
                         return DropdownButtonFormField<String>(
                           value: _selectedCategory,
-                          decoration: InputDecoration(labelText: 'Catégorie', border: OutlineInputBorder()),
+                          decoration: InputDecoration(labelText: l10n.foodFormCategoryLabel, border: OutlineInputBorder()),
                           items: options.map((value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
                           onChanged: (value) => setState(() => _selectedCategory = value),
                           validator: (value) => value == null || value.isEmpty ? 'Requis' : null,
@@ -200,7 +201,7 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
                         final options = snapshot.data ?? [];
                         return DropdownButtonFormField<String>(
                           value: _selectedMealType,
-                          decoration: InputDecoration(labelText: 'Type de repas', border: OutlineInputBorder()),
+                          decoration: InputDecoration(labelText: l10n.foodFormMealTypeLabel, border: OutlineInputBorder()),
                           items: options.map((value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
                           onChanged: (value) => setState(() => _selectedMealType = value),
                           validator: (value) => value == null || value.isEmpty ? 'Requis' : null,
@@ -217,9 +218,9 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                Expanded(child: OutlinedButton(onPressed: widget.onCancel, child: const Text('Annuler'))),
+                Expanded(child: OutlinedButton(onPressed: widget.onCancel, child: Text(l10n.foodFormCancelButton))),
                 const SizedBox(width: 12),
-                Expanded(child: ElevatedButton.icon(onPressed: _onSave, icon: const Icon(Icons.save_outlined), label: const Text('Créer'))),
+                Expanded(child: ElevatedButton.icon(onPressed: _onSave, icon: const Icon(Icons.save_outlined), label: Text(l10n.foodFormCreateButton))),
               ],
             ),
           ),
