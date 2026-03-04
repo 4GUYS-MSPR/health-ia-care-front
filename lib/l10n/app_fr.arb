@@ -28,5 +28,13 @@
   "accountMenuThemeSystem": "Système",
   "accountMenuLanguageLabel": "Langue",
   "accountMenuLogoutLabel": "Se déconnecter",
-  "navigationDestinationHome": "Accueil"
+  "navigationDestinationHome": "Accueil",
+  "errorAppClose": "Fermer",
+  "errorAppCloseTooltip": "Fermer",
+  "errorAppCopiedToClipboard": "Copié dans le presse-papiers",
+  "errorAppCopyToClipboard": "Copier dans le presse-papiers",
+  "errorAppDetailsTitle": "Détails de l'erreur",
+  "errorAppMessage": "L'application n'a pas pu démarrer",
+  "errorAppTitle": "Erreur de démarrage",
+  "errorAppViewDetails": "Voir les détails"
 }

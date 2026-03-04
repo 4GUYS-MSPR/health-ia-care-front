@@ -117,5 +117,37 @@
     "navigationDestinationHome": "Home",
     "@navigationDestinationHome": {
         "description": "Navigation destination label for the home page"
+    },
+    "errorAppClose": "Close",
+    "@errorAppClose": {
+        "description": "Button text to close the error details dialog"
+    },
+    "errorAppCloseTooltip": "Close",
+    "@errorAppCloseTooltip": {
+        "description": "Tooltip for the close button"
+    },
+    "errorAppCopiedToClipboard": "Copied to clipboard",
+    "@errorAppCopiedToClipboard": {
+        "description": "Message shown when error details are copied to clipboard"
+    },
+    "errorAppCopyToClipboard": "Copy to clipboard",
+    "@errorAppCopyToClipboard": {
+        "description": "Tooltip for the copy to clipboard button"
+    },
+    "errorAppDetailsTitle": "Error Details",
+    "@errorAppDetailsTitle": {
+        "description": "Title of the error details dialog"
+    },
+    "errorAppMessage": "The application failed to start",
+    "@errorAppMessage": {
+        "description": "Message shown on the error app when startup fails"
+    },
+    "errorAppTitle": "Startup Error",
+    "@errorAppTitle": {
+        "description": "Title shown on the error app when startup fails"
+    },
+    "errorAppViewDetails": "View details",
+    "@errorAppViewDetails": {
+        "description": "Button text to view error details"
     }
 }
