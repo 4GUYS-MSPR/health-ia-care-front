@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/health/presentation/pages/nutrition_page.dart';
 
 import '../../core/shared/layouts/main_layout.dart';
 import '../../core/shared/pages/home_page.dart';
@@ -43,6 +44,15 @@ class AppRouter {
                 path: '/',
                 name: AppRoutes.home,
                 builder: (context, state) => HomePage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              ProtectedGoRoute(
+                path: '/nutrition',
+                name: AppRoutes.nutrition,
+                builder: (context, state) => const NutritionPage(),
               ),
             ],
           ),

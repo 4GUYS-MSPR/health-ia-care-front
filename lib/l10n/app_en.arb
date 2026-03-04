@@ -1,5 +1,6 @@
 {
     "@@locale": "en",
+
     "appTitle": "Health IA Care",
     "@appTitle": {
         "description": "Application title"
@@ -84,32 +85,26 @@
     "@authLogoutDialogConfirmButton": {
         "description": "Label for the logout confirmation button"
     },
-
     "accountMenuThemeLabel": "Theme",
     "@accountMenuThemeLabel": {
         "description": "Label for the theme submenu"
     },
-
     "accountMenuThemeDark": "Dark",
     "@accountMenuThemeDark": {
         "description": "Dark theme option label"
     },
-
     "accountMenuThemeLight": "Light",
     "@accountMenuThemeLight": {
         "description": "Light theme option label"
     },
-
     "accountMenuThemeSystem": "System",
     "@accountMenuThemeSystem": {
         "description": "System theme option label"
     },
-
     "accountMenuLanguageLabel": "Language",
     "@accountMenuLanguageLabel": {
         "description": "Label for the language submenu"
     },
-
     "accountMenuLogoutLabel": "Logout",
     "@accountMenuLogoutLabel": {
         "description": "Label for the logout menu item"
@@ -149,5 +144,240 @@
     "errorAppViewDetails": "View details",
     "@errorAppViewDetails": {
         "description": "Button text to view error details"
+    },
+    "navigationDestinationNutrition": "Nutrition",
+    "@navigationDestinationNutrition": {
+        "description": "Navigation destination label for the nutrition page"
+    },
+
+    "foodCardCalories": "Calories",
+    "@foodCardCalories": {
+        "description": "Food card calories label"
+    },
+    "foodCardProtein": "Protein",
+    "@foodCardProtein": {
+        "description": "Food card protein label"
+    },
+    "foodCardCarbs": "Carbs",
+    "@foodCardCarbs": {
+        "description": "Food card carbohydrates label"
+    },
+    "foodCardFat": "Fat",
+    "@foodCardFat": {
+        "description": "Food card fat label"
+    },
+    "foodCardFiber": "Fiber",
+    "@foodCardFiber": {
+        "description": "Food card fiber label"
+    },
+    "foodCardWaterIntake": "Water",
+    "@foodCardWaterIntake": {
+        "description": "Food card water intake label"
+    },
+    "foodCardCategory": "Category",
+    "@foodCardCategory": {
+        "description": "Food card category label"
+    },
+    "foodCardMealType": "Meal Type",
+    "@foodCardMealType": {
+        "description": "Food card meal type label"
+    },
+    "foodFormEditTitle": "Edit Food",
+    "@foodFormEditTitle": {
+        "description": "Title for the edit food form"
+    },
+    "foodFormCreateTitle": "Add Food",
+    "@foodFormCreateTitle": {
+        "description": "Title for the create food form"
+    },
+    "foodFormCreateButton": "Create",
+    "@foodFormCreateButton": {
+        "description": "Button label to create a new food"
+    },
+    "foodFormSaveButton": "Save",
+    "@foodFormSaveButton": {
+        "description": "Button label to save a food"
+    },
+    "foodFormCancelButton": "Cancel",
+    "@foodFormCancelButton": {
+        "description": "Button label to cancel form submission"
+    },
+    "foodFormLabelLabel": "Name",
+    "@foodFormLabelLabel": {
+        "description": "Food form name field label"
+    },
+    "foodFormCaloriesLabel": "Calories",
+    "@foodFormCaloriesLabel": {
+        "description": "Food form calories field label"
+    },
+    "foodFormProteinLabel": "Protein (g)",
+    "@foodFormProteinLabel": {
+        "description": "Food form protein field label"
+    },
+    "foodFormCarbsLabel": "Carbs (g)",
+    "@foodFormCarbsLabel": {
+        "description": "Food form carbohydrates field label"
+    },
+    "foodFormFatLabel": "Fat (g)",
+    "@foodFormFatLabel": {
+        "description": "Food form fat field label"
+    },
+    "foodFormFiberLabel": "Fiber (g)",
+    "@foodFormFiberLabel": {
+        "description": "Food form fiber field label"
+    },
+    "foodFormSugarsLabel": "Sugars (g)",
+    "@foodFormSugarsLabel": {
+        "description": "Food form sugars field label"
+    },
+    "foodFormSodiumLabel": "Sodium (mg)",
+    "@foodFormSodiumLabel": {
+        "description": "Food form sodium field label"
+    },
+    "foodFormCholesterolLabel": "Cholesterol (mg)",
+    "@foodFormCholesterolLabel": {
+        "description": "Food form cholesterol field label"
+    },
+    "foodFormWaterIntakeLabel": "Water (ml)",
+    "@foodFormWaterIntakeLabel": {
+        "description": "Food form water intake field label"
+    },
+    "foodFormCategoryLabel": "Category",
+    "@foodFormCategoryLabel": {
+        "description": "Food form category field label"
+    },
+    "foodFormMealTypeLabel": "Meal Type",
+    "@foodFormMealTypeLabel": {
+        "description": "Food form meal type field label"
+    },
+    "foodFieldValidationRequired": "Required field",
+    "@foodFieldValidationRequired": {
+        "description": "Validation message when a food form field is required"
+    },
+
+    "foodDeleteDialogTitle": "Delete Food",
+    "@foodDeleteDialogTitle": {
+        "description": "Title for the delete food confirmation dialog"
+    },
+    "foodDeleteDialogContent": "Are you sure you want to delete this food?",
+    "@foodDeleteDialogContent": {
+        "description": "Confirmation message for deleting a food"
+    },
+    "foodDeleteDialogCancelButton": "Cancel",
+    "@foodDeleteDialogCancelButton": {
+        "description": "Cancel button label in delete dialog"
+    },
+    "foodDeleteDialogConfirmButton": "Delete",
+    "@foodDeleteDialogConfirmButton": {
+        "description": "Confirm button label to delete a food"
+    },
+    "foodDetailsNutrition": "Nutrition Information",
+    "@foodDetailsNutrition": {
+        "description": "Section title for nutrition details"
+    },
+    "foodDetailsInfo": "Food Details",
+    "@foodDetailsInfo": {
+        "description": "Section title for food details"
+    },
+    "foodDetailsEdit": "Edit",
+    "@foodDetailsEdit": {
+        "description": "Button label to edit food details"
+    },
+    "foodDetailsDelete": "Delete",
+    "@foodDetailsDelete": {
+        "description": "Button label to delete a food"
+    },
+    "foodSuccessCreated": "Food created successfully",
+    "@foodSuccessCreated": {
+        "description": "Snackbar message when a food is created"
+    },
+    "foodSuccessUpdated": "Food updated successfully",
+    "@foodSuccessUpdated": {
+        "description": "Snackbar message when a food is updated"
+    },
+    "foodSuccessDeleted": "Food deleted successfully",
+    "@foodSuccessDeleted": {
+        "description": "Snackbar message when a food is deleted"
+    },
+    "foodsErrorLoading": "Error while loading foods",
+    "@foodsErrorLoading": {
+        "description": "Error shown when foods fail to load"
+    },
+    "foodsPageTitle": "Foods",
+    "@foodsPageTitle": {
+        "description": "Title for foods page"
+    },
+    "foodsAddButton": "Add",
+    "@foodsAddButton": {
+        "description": "Button label to add a food"
+    },
+    "foodsRefreshButton": "Refresh",
+    "@foodsRefreshButton": {
+        "description": "Tooltip for refreshing foods"
+    },
+    "foodsEmptyState": "No foods yet",
+    "@foodsEmptyState": {
+        "description": "Empty state title when there are no foods"
+    },
+    "foodsEmptyStateDescription": "Start by adding foods and track their nutrition values.",
+    "@foodsEmptyStateDescription": {
+        "description": "Empty state description when there are no foods"
+    },
+
+    "foodStatsTitle": "Nutrition Stats",
+    "@foodStatsTitle": {
+        "description": "Title for the nutrition stats card"
+    },
+    "foodStatsTotal": "Total",
+    "@foodStatsTotal": {
+        "description": "Label for total foods in stats"
+    },
+    "foodStatsAvgCalories": "Avg Calories",
+    "@foodStatsAvgCalories": {
+        "description": "Label for average calories"
+    },
+    "foodStatsAvgProtein": "Avg Protein",
+    "@foodStatsAvgProtein": {
+        "description": "Label for average protein"
+    },
+    "foodStatsAvgCarbs": "Avg Carbs",
+    "@foodStatsAvgCarbs": {
+        "description": "Label for average carbs"
+    },
+    "foodTableColumnId": "ID",
+    "@foodTableColumnId": {
+        "description": "Foods table column label for ID"
+    },
+    "foodTableColumnLabel": "Name",
+    "@foodTableColumnLabel": {
+        "description": "Foods table column label for name"
+    },
+    "foodTableColumnCalories": "Calories",
+    "@foodTableColumnCalories": {
+        "description": "Foods table column label for calories"
+    },
+    "foodTableColumnProtein": "Protein",
+    "@foodTableColumnProtein": {
+        "description": "Foods table column label for protein"
+    },
+    "foodTableColumnCarbs": "Carbs",
+    "@foodTableColumnCarbs": {
+        "description": "Foods table column label for carbohydrates"
+    },
+    "foodTableColumnFat": "Fat",
+    "@foodTableColumnFat": {
+        "description": "Foods table column label for fat"
+    },
+    "foodTableColumnCategory": "Category",
+    "@foodTableColumnCategory": {
+        "description": "Foods table column label for category"
+    },
+    "foodTableColumnActions": "Actions",
+    "@foodTableColumnActions": {
+        "description": "Foods table column label for actions"
+    },
+    "foodTableViewTooltip": "View",
+    "@foodTableViewTooltip": {
+        "description": "Tooltip for viewing a food"
     }
 }
