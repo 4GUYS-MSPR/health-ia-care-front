@@ -80,6 +80,7 @@
   "foodsRefreshButton": "Rafraîchir",
   "foodsEmptyState": "Aucun aliment",
   "foodsEmptyStateDescription": "Commencez par ajouter des aliments et suivez leurs valeurs nutritionnelles.",
+  "foodStatsTitle": "Statistiques nutritionnelles",
   "foodStatsTotal": "Total",
   "foodStatsAvgCalories": "Calories moy.",
   "foodStatsAvgProtein": "Protéines moy.",

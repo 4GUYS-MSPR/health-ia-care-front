@@ -323,6 +323,11 @@
     "@foodsEmptyStateDescription": {
         "description": "Empty state description when there are no foods"
     },
+
+    "foodStatsTitle": "Nutrition Stats",
+    "@foodStatsTitle": {
+        "description": "Title for the nutrition stats card"
+    },
     "foodStatsTotal": "Total",
     "@foodStatsTotal": {
         "description": "Label for total foods in stats"

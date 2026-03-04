@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/extensions/theme_extension.dart';
+import '../../../../core/extensions/l10n_extension.dart';
 import '../../domain/entities/nutrition_food.dart';
 
 /// A card widget displaying aggregated food nutrition statistics.
@@ -31,7 +32,7 @@ class FoodStatsCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  'Nutrition Stats',
+                  context.l10n.foodStatsTitle,
                   style: context.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
