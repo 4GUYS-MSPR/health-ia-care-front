@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:logging/logging.dart';
 
+import 'app/error_app.dart';
 import 'app/main_app.dart';
-import 'core/logging/app_logger.dart';
 import 'app/service_locator/service_locator.dart';
+import 'core/logging/app_logger.dart';
 
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +16,7 @@ Future<void> main() async {
     runApp(const MainApp());
   } catch (error, stackTrace) {
     _logStartupError(error, stackTrace);
+    runApp(ErrorApp(error: error, stackTrace: stackTrace));
   } finally {
     FlutterNativeSplash.remove();
   }
