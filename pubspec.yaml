@@ -9,6 +9,7 @@ environment:
 dependencies:
   bloc: ^9.2.0
   bloc_concurrency: ^0.3.0
+  device_info_plus: ^12.3.0
   dio: ^5.9.1
   equatable: ^2.0.8
   flutter:
@@ -30,6 +31,7 @@ dependencies:
   logging: ^1.3.0
   material_symbols_icons: ^4.2892.0
   mocktail: ^1.0.4
+  package_info_plus: ^9.0.0
   path_provider: ^2.1.5
 
 dev_dependencies:
