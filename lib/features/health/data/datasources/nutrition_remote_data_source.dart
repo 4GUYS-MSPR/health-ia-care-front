@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../../../core/errors/server_failures.dart';
-import '../../../../core/logging/logger_mixin.dart';
 import '../../../../core/shared/models/pagination_info.dart';
-import '../../domain/errors/nutrition_failure.dart';
 import '../models/nutrition_food_model.dart';
 
 /// Remote datasource for nutrition foods API operations.

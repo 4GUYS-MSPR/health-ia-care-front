@@ -18,7 +18,7 @@ part 'foods_state.dart';
 
 /// Bloc responsible for managing food operations.
 class FoodsBloc extends Bloc<FoodsEvent, FoodsState> with LoggerMixin {
-  static const int _defaultPageSize = 2;
+  static const int _defaultPageSize = 20;
 
   final GetAllFoodsUsecase getAllFoodsUsecase;
   final CreateFoodUsecase createFoodUsecase;
