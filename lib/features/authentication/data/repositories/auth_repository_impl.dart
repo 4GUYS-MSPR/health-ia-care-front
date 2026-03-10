@@ -45,6 +45,7 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
 
     return _checkInternetConnection()
         .flatMap((_) => _remoteLogin(email: email, password: password))
+        .flatMap((authToken) => _cacheTokens(authToken))
         .flatMap((authToken) => _fetchUserProfile(authToken))
         .flatMap((result) => _cacheSession(authToken: result.$1, user: result.$2));
   }
@@ -130,6 +131,26 @@ class AuthRepositoryImpl with LoggerMixin implements AuthRepository {
       },
       (error, stackTrace) {
         logger.severe('Failed to retrieve user', error, stackTrace);
+        return UnknownFailure(debugMessage: error.toString());
+      },
+    );
+  }
+
+  /// Persists tokens to local storage so that they are available to the
+  /// [AuthInterceptor] for subsequent HTTP requests (e.g. fetching the
+  /// user profile right after login).
+  TaskEither<Failure, AuthToken> _cacheTokens(AuthToken authToken) {
+    logger.finest('cacheTokens called');
+    return TaskEither.tryCatch(
+      () async {
+        logger.fine('Caching tokens to secure storage');
+        await localDatasource.cacheAccessToken(authToken.accessToken);
+        await localDatasource.cacheRefreshToken(authToken.refreshToken);
+        logger.fine('Tokens cached successfully');
+        return authToken;
+      },
+      (error, stackTrace) {
+        logger.severe('Failed to cache tokens', error, stackTrace);
         return UnknownFailure(debugMessage: error.toString());
       },
     );
