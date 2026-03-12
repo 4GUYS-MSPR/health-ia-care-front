@@ -10,6 +10,7 @@ import '../../widgets/dashboard/graph_card.dart';
 import '../../widgets/dashboard/legend_item.dart';
 import '../../widgets/dashboard/generic_pie_chart.dart';
 import '../../widgets/dashboard/generic_bar_chart.dart';
+import '../../../extensions/l10n_extension.dart';
 
 class NutritionDashboard extends StatelessWidget {
   const NutritionDashboard({super.key});
@@ -58,27 +59,26 @@ class _NutritionContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Titre principal
-          const Text('Nutrition', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+          Text(context.l10n.nutritionDashboardTitle, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
           const SizedBox(height: 4),
           // Affiche le nombre d'aliments chargés
-          Text('${foods.length} aliments chargés', style: const TextStyle(color: Colors.grey)),
+          Text('${foods.length} ${context.l10n.nutritionDashboardFoodsLoaded}', style: const TextStyle(color: Colors.grey)),
           const SizedBox(height: 24),
           // Affiche les indicateurs clés (KPI)
-          _buildKpiCards(),
+          _buildKpiCards(context),
           const SizedBox(height: 32),
           // Affiche les graphiques de catégories et types de repas
-          _buildResponsiveRow(_buildCategoriesCamembert(), _buildTypeRepasBarres()),
+          _buildResponsiveRow(context, _buildCategoriesCamembert(context), _buildTypeRepasBarres(context)),
           const SizedBox(height: 16),
           // Affiche les graphiques de macronutriments et micronutriments
-          _buildResponsiveRow(_buildMacronutrimentsCamembert(), _buildMicronutrimentsCamembert()),
+          _buildResponsiveRow(context, _buildMacronutrimentsCamembert(context), _buildMicronutrimentsCamembert(context)),
         ],
       ),
     );
   }
 
-  Widget _buildResponsiveRow(Widget gauche, Widget droite) => LayoutBuilder(
-    // Permet d'afficher deux widgets côte à côte sur grand écran, ou en colonne sur petit écran
-    builder: (context, contraintes) => contraintes.maxWidth > 700
+  Widget _buildResponsiveRow(BuildContext context, Widget gauche, Widget droite) => LayoutBuilder(
+    builder: (layoutContext, contraintes) => contraintes.maxWidth > 700
         ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Expanded(child: gauche), const SizedBox(width: 16), Expanded(child: droite),
           ])
@@ -86,19 +86,18 @@ class _NutritionContent extends StatelessWidget {
   );
 
 
-  Widget _buildKpiCards() => Row(
-    // Affiche les indicateurs clés sous forme de cartes
+  Widget _buildKpiCards(BuildContext context) => Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Expanded(child: _kpiCard(Icons.restaurant_menu,       'Total aliments',  '${foods.length}',                                                             Colors.blue)),
+      Expanded(child: _kpiCard(Icons.restaurant_menu,       context.l10n.nutritionDashboardKpiTotalFoods,  '${foods.length}', Colors.blue)),
       const SizedBox(width: 32),
-      Expanded(child: _kpiCard(Icons.local_fire_department, 'Moy. Calories',   '${moyenne(foods, (aliment) => aliment.calories.toDouble()).toStringAsFixed(0)} kcal', Colors.orange)),
+      Expanded(child: _kpiCard(Icons.local_fire_department, context.l10n.nutritionDashboardKpiAvgCalories,   '${moyenne(foods, (aliment) => aliment.calories.toDouble()).toStringAsFixed(0)} kcal', Colors.orange)),
       const SizedBox(width: 32),
-      Expanded(child: _kpiCard(Icons.egg_outlined,          'Moy. Protéines',  '${moyenne(foods, (aliment) => aliment.protein).toStringAsFixed(1)}g',               Colors.red)),
+      Expanded(child: _kpiCard(Icons.egg_outlined,          context.l10n.nutritionDashboardKpiAvgProtein,  '${moyenne(foods, (aliment) => aliment.protein).toStringAsFixed(1)}g', Colors.red)),
       const SizedBox(width: 32),
-      Expanded(child: _kpiCard(Icons.grain,                 'Moy. Glucides',   '${moyenne(foods, (aliment) => aliment.carbohydrates).toStringAsFixed(1)}g',         Colors.amber)),
+      Expanded(child: _kpiCard(Icons.grain,                 context.l10n.nutritionDashboardKpiAvgCarbs,   '${moyenne(foods, (aliment) => aliment.carbohydrates).toStringAsFixed(1)}g', Colors.amber)),
       const SizedBox(width: 32),
-      Expanded(child: _kpiCard(Icons.opacity_outlined,      'Moy. Lipides',    '${moyenne(foods, (aliment) => aliment.fat).toStringAsFixed(1)}g',                   Colors.indigo)),
+      Expanded(child: _kpiCard(Icons.opacity_outlined,      context.l10n.nutritionDashboardKpiAvgFat,    '${moyenne(foods, (aliment) => aliment.fat).toStringAsFixed(1)}g', Colors.indigo)),
     ],
   );
 
@@ -124,15 +123,15 @@ class _NutritionContent extends StatelessWidget {
   );
 
 
-  Widget _buildCategoriesCamembert() {
+  Widget _buildCategoriesCamembert(BuildContext context) {
     // Graphique camembert par catégorie d'aliments
     final parCategorie = compterParGroupe(foods, (aliment) => aliment.category).entries.toList();
     final values = parCategorie.map((e) => e.value.toDouble()).toList();
     final labels = parCategorie.map((e) => e.key).toList();
     return GraphCard(
-      title: 'Par catégorie',
+      title: context.l10n.nutritionDashboardPieCategoryTitle,
       child: foods.isEmpty
-          ? const Center(child: Text('Aucune donnée'))
+          ? Center(child: Text(context.l10n.nutritionDashboardPieCategoryNoData))
           : Row(children: [
               Expanded(child: GenericPieChart(values: values, labels: labels, colors: _couleurs)),
               const SizedBox(width: 12),
@@ -151,21 +150,21 @@ class _NutritionContent extends StatelessWidget {
     );
   }
 
-  Widget _buildTypeRepasBarres() {
+  Widget _buildTypeRepasBarres(BuildContext context) {
     // Graphique barres par type de repas
     final parTypeRepas = compterParGroupe(foods, (aliment) => aliment.mealType).entries.toList()
       ..sort((a, b) => a.key.compareTo(b.key));
     final values = parTypeRepas.map((e) => e.value.toDouble()).toList();
     final labels = parTypeRepas.map((e) => e.key).toList();
     return GraphCard(
-      title: 'Par type de repas',
+      title: context.l10n.nutritionDashboardPieMealTypeTitle,
       child: foods.isEmpty
-          ? const Center(child: Text('Aucune donnée'))
+          ? Center(child: Text(context.l10n.nutritionDashboardPieCategoryNoData))
           : GenericBarChart(labels: labels, values: values, colors: _couleurs),
     );
   }
 
-  Widget _buildMacronutrimentsCamembert() {
+  Widget _buildMacronutrimentsCamembert(BuildContext context) {
     // Graphique camembert pour la répartition des macronutriments
     double totalProteines = 0, totalGlucides = 0, totalLipides = 0;
     for (final aliment in foods) {
@@ -177,10 +176,10 @@ class _NutritionContent extends StatelessWidget {
     final labels = ['Protéines', 'Glucides', 'Lipides'];
     final colors = [Colors.red, Colors.amber, Colors.indigo];
     return GraphCard(
-      title: 'Répartition macronutriments',
-      subtitle: 'Protéines / Glucides / Lipides (% de la masse totale)',
+      title: context.l10n.nutritionDashboardPieMacrosTitle,
+      subtitle: context.l10n.nutritionDashboardPieMacrosSubtitle,
       child: foods.isEmpty
-          ? const Center(child: Text('Aucune donnée'))
+          ? Center(child: Text(context.l10n.nutritionDashboardPieCategoryNoData))
           : Row(children: [
               Expanded(child: GenericPieChart(values: values, labels: labels, colors: colors)),
               const SizedBox(width: 12),
@@ -188,18 +187,18 @@ class _NutritionContent extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  LegendItem(colors[0], 'Protéines : ${totalProteines.toStringAsFixed(0)}g'),
+                  LegendItem(colors[0], '${context.l10n.nutritionDashboardPieMacrosLegendProtein} : ${totalProteines.toStringAsFixed(0)}g'),
                   const SizedBox(height: 6),
-                  LegendItem(colors[1], 'Glucides : ${totalGlucides.toStringAsFixed(0)}g'),
+                  LegendItem(colors[1], '${context.l10n.nutritionDashboardPieMacrosLegendCarbs} : ${totalGlucides.toStringAsFixed(0)}g'),
                   const SizedBox(height: 6),
-                  LegendItem(colors[2], 'Lipides : ${totalLipides.toStringAsFixed(0)}g'),
+                  LegendItem(colors[2], '${context.l10n.nutritionDashboardPieMacrosLegendFat} : ${totalLipides.toStringAsFixed(0)}g'),
                 ],
               ),
             ]),
     );
   }
 
-  Widget _buildMicronutrimentsCamembert() {
+  Widget _buildMicronutrimentsCamembert(BuildContext context) {
     // Graphique camembert pour la répartition des micronutriments
     double totalFibres = 0, totalSucres = 0, totalSodium = 0, totalCholesterol = 0, totalEau = 0;
     for (final aliment in foods) {
@@ -213,10 +212,10 @@ class _NutritionContent extends StatelessWidget {
     final labels = ['Fibres', 'Sucres', 'Sodium', 'Cholestérol', 'Eau'];
     final colors = [Colors.brown, Colors.pink, Colors.blueGrey, Colors.deepPurple, Colors.cyan];
     return GraphCard(
-      title: 'Répartition micronutriments',
-      subtitle: 'Fibres / Sucres / Sodium / Cholestérol / Eau (% de la masse totale)',
+      title: context.l10n.nutritionDashboardPieMicrosTitle,
+      subtitle: context.l10n.nutritionDashboardPieMicrosSubtitle,
       child: foods.isEmpty || values.reduce((a, b) => a + b) == 0
-          ? const Center(child: Text('Aucune donnée'))
+          ? Center(child: Text(context.l10n.nutritionDashboardPieCategoryNoData))
           : Row(children: [
               Expanded(child: GenericPieChart(values: values, labels: labels, colors: colors)),
               const SizedBox(width: 12),
@@ -224,15 +223,15 @@ class _NutritionContent extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  LegendItem(colors[0], 'Fibres : ${totalFibres.toStringAsFixed(0)}'),
+                  LegendItem(colors[0], '${context.l10n.nutritionDashboardPieMicrosLegendFiber} : ${totalFibres.toStringAsFixed(0)}'),
                   const SizedBox(height: 6),
-                  LegendItem(colors[1], 'Sucres : ${totalSucres.toStringAsFixed(0)}'),
+                  LegendItem(colors[1], '${context.l10n.nutritionDashboardPieMicrosLegendSugars} : ${totalSucres.toStringAsFixed(0)}'),
                   const SizedBox(height: 6),
-                  LegendItem(colors[2], 'Sodium : ${totalSodium.toStringAsFixed(0)}'),
+                  LegendItem(colors[2], '${context.l10n.nutritionDashboardPieMicrosLegendSodium} : ${totalSodium.toStringAsFixed(0)}'),
                   const SizedBox(height: 6),
-                  LegendItem(colors[3], 'Cholestérol : ${totalCholesterol.toStringAsFixed(0)}'),
+                  LegendItem(colors[3], '${context.l10n.nutritionDashboardPieMicrosLegendCholesterol} : ${totalCholesterol.toStringAsFixed(0)}'),
                   const SizedBox(height: 6),
-                  LegendItem(colors[4], 'Eau : ${totalEau.toStringAsFixed(0)}'),
+                  LegendItem(colors[4], '${context.l10n.nutritionDashboardPieMicrosLegendWater} : ${totalEau.toStringAsFixed(0)}'),
                 ],
               ),
             ]),
