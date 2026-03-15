@@ -215,8 +215,9 @@ class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
     if (payload is List) return payload;
     if (payload is Map && payload['results'] is List) return payload['results'];
     if (payload is Map && payload['data'] is List) return payload['data'];
-    if (payload is Map && payload['data'] is Map && payload['data']['results'] is List)
+    if (payload is Map && payload['data'] is Map && payload['data']['results'] is List) {
       return payload['data']['results'];
+    }
     throw ServerErrorFailure(
       debugMessage: 'Unexpected foods payload format: ${payload.runtimeType}',
     );
