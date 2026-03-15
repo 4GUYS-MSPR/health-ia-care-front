@@ -1,0 +1,29 @@
+name: github_ci
+
+on:
+  push:
+
+jobs:
+  quality-and-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Code quality
+        run: |
+          dart format --set-exit-if-changed .
+          flutter analyze
+
+      - name: Run tests
+        run: flutter test --no-pub
