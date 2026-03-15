@@ -26,7 +26,8 @@ class NutritionDashboard extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           if (state is FoodsError) {
-            return Center(child: Text('Erreur : ${state.failure.debugMessage}'));
+            debugPrint('FoodsError in NutritionDashboard: ${state.failure.debugMessage ?? 'no debug message'}');
+            return Center(child: Text(context.l10n.foodsErrorLoading));
           }
           final foods = state is FoodsLoaded ? state.foods : <NutritionFood>[];
           return _NutritionContent(foods: foods);
