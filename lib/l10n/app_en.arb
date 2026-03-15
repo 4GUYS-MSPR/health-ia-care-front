@@ -109,6 +109,10 @@
     "@accountMenuLogoutLabel": {
         "description": "Label for the logout menu item"
     },
+    "navigationDestinationMembers": "Members",
+    "@navigationDestinationMembers": {
+        "description": "Navigation destination label for the members page"
+    },
     "navigationDestinationHome": "Home",
     "@navigationDestinationHome": {
         "description": "Navigation destination label for the home page"
@@ -475,5 +479,316 @@
     "foodTableViewTooltip": "View",
     "@foodTableViewTooltip": {
         "description": "Tooltip for viewing a food"
+    },
+    "membersPageTitle": "Members",
+    "@membersPageTitle": {
+        "description": "Title of the members page"
+    },
+    "membersEmptyState": "No members yet",
+    "@membersEmptyState": {
+        "description": "Message shown when there are no members"
+    },
+    "membersEmptyStateDescription": "Create your first member to get started",
+    "@membersEmptyStateDescription": {
+        "description": "Description shown when there are no members"
+    },
+    "membersRefreshButton": "Refresh",
+    "@membersRefreshButton": {
+        "description": "Tooltip for refresh button"
+    },
+    "membersAddButton": "Add Member",
+    "@membersAddButton": {
+        "description": "Label for add member button"
+    },
+    "membersErrorLoading": "Failed to load members",
+    "@membersErrorLoading": {
+        "description": "Error message when members fail to load"
+    },
+    "membersRetryButton": "Retry",
+    "@membersRetryButton": {
+        "description": "Label for retry button"
+    },
+
+    "memberCardAge": "Age",
+    "@memberCardAge": {
+        "description": "Age label in member card"
+    },
+    "memberCardHeight": "Height",
+    "@memberCardHeight": {
+        "description": "Height label in member card"
+    },
+    "memberCardWeight": "Weight",
+    "@memberCardWeight": {
+        "description": "Weight label in member card"
+    },
+    "memberCardBmi": "BMI",
+    "@memberCardBmi": {
+        "description": "BMI label in member card"
+    },
+    "memberCardFatPercentage": "Body Fat",
+    "@memberCardFatPercentage": {
+        "description": "Fat percentage label in member card"
+    },
+    "memberCardWorkoutFrequency": "Workouts/Week",
+    "@memberCardWorkoutFrequency": {
+        "description": "Workout frequency label in member card"
+    },
+    "memberCardLevel": "Level",
+    "@memberCardLevel": {
+        "description": "Level label in member card"
+    },
+    "memberCardGender": "Gender",
+    "@memberCardGender": {
+        "description": "Gender label in member card"
+    },
+    "memberCardSubscription": "Subscription",
+    "@memberCardSubscription": {
+        "description": "Subscription label in member card"
+    },
+    "memberCardObjectives": "Objectives",
+    "@memberCardObjectives": {
+        "description": "Objectives label in member card"
+    },
+    "memberCardNotSpecified": "Not specified",
+    "@memberCardNotSpecified": {
+        "description": "Text shown when a value is not specified"
+    },
+
+    "memberGenderMale": "Male",
+    "@memberGenderMale": {
+        "description": "Male gender label"
+    },
+    "memberGenderFemale": "Female",
+    "@memberGenderFemale": {
+        "description": "Female gender label"
+    },
+    "memberGenderUnknown": "Not specified",
+    "@memberGenderUnknown": {
+        "description": "Unknown gender label"
+    },
+
+    "memberLevelBeginner": "Beginner",
+    "@memberLevelBeginner": {
+        "description": "Beginner level label"
+    },
+    "memberLevelIntermediate": "Intermediate",
+    "@memberLevelIntermediate": {
+        "description": "Intermediate level label"
+    },
+    "memberLevelExpert": "Expert",
+    "@memberLevelExpert": {
+        "description": "Expert level label"
+    },
+
+    "memberSubscriptionFree": "Free",
+    "@memberSubscriptionFree": {
+        "description": "Free subscription label"
+    },
+    "memberSubscriptionPremium": "Premium",
+    "@memberSubscriptionPremium": {
+        "description": "Premium subscription label"
+    },
+    "memberSubscriptionPremiumPlus": "Premium+",
+    "@memberSubscriptionPremiumPlus": {
+        "description": "Premium Plus subscription label"
+    },
+
+    "memberFormCreateTitle": "Create Member",
+    "@memberFormCreateTitle": {
+        "description": "Title for create member dialog"
+    },
+    "memberFormEditTitle": "Edit Member",
+    "@memberFormEditTitle": {
+        "description": "Title for edit member dialog"
+    },
+    "memberFormAgeLabel": "Age",
+    "@memberFormAgeLabel": {
+        "description": "Age field label"
+    },
+    "memberFormHeightLabel": "Height (cm)",
+    "@memberFormHeightLabel": {
+        "description": "Height field label"
+    },
+    "memberFormWeightLabel": "Weight (kg)",
+    "@memberFormWeightLabel": {
+        "description": "Weight field label"
+    },
+    "memberFormBmiLabel": "BMI",
+    "@memberFormBmiLabel": {
+        "description": "BMI field label"
+    },
+    "memberFormFatPercentageLabel": "Body Fat (%)",
+    "@memberFormFatPercentageLabel": {
+        "description": "Fat percentage field label"
+    },
+    "memberFormWorkoutFrequencyLabel": "Workouts per week",
+    "@memberFormWorkoutFrequencyLabel": {
+        "description": "Workout frequency field label"
+    },
+    "memberFormObjectivesLabel": "Objectives",
+    "@memberFormObjectivesLabel": {
+        "description": "Objectives field label"
+    },
+    "memberFormGenderLabel": "Gender",
+    "@memberFormGenderLabel": {
+        "description": "Gender field label"
+    },
+    "memberFormLevelLabel": "Level",
+    "@memberFormLevelLabel": {
+        "description": "Level field label"
+    },
+    "memberFormSubscriptionLabel": "Subscription",
+    "@memberFormSubscriptionLabel": {
+        "description": "Subscription field label"
+    },
+    "memberFormCancelButton": "Cancel",
+    "@memberFormCancelButton": {
+        "description": "Cancel button label"
+    },
+    "memberFormSaveButton": "Save",
+    "@memberFormSaveButton": {
+        "description": "Save button label"
+    },
+    "memberFormCreateButton": "Create",
+    "@memberFormCreateButton": {
+        "description": "Create button label"
+    },
+    "memberFormHeightError": "Height must be greater than 0",
+    "@memberFormHeightError": {
+        "description": "Validation error for height"
+    },
+    "memberFormWeightError": "Weight must be greater than 0",
+    "@memberFormWeightError": {
+        "description": "Validation error for weight"
+    },
+
+    "memberDeleteDialogTitle": "Delete Member",
+    "@memberDeleteDialogTitle": {
+        "description": "Title for delete member dialog"
+    },
+    "memberDeleteDialogContent": "Are you sure you want to delete this member? This action cannot be undone.",
+    "@memberDeleteDialogContent": {
+        "description": "Confirmation message for delete member dialog"
+    },
+    "memberDeleteDialogCancelButton": "Cancel",
+    "@memberDeleteDialogCancelButton": {
+        "description": "Cancel button label"
+    },
+    "memberDeleteDialogConfirmButton": "Delete",
+    "@memberDeleteDialogConfirmButton": {
+        "description": "Delete button label"
+    },
+
+    "memberSuccessCreated": "Member created successfully",
+    "@memberSuccessCreated": {
+        "description": "Success message when member is created"
+    },
+    "memberSuccessUpdated": "Member updated successfully",
+    "@memberSuccessUpdated": {
+        "description": "Success message when member is updated"
+    },
+    "memberSuccessDeleted": "Member deleted successfully",
+    "@memberSuccessDeleted": {
+        "description": "Success message when member is deleted"
+    },
+
+    "memberTableColumnId": "ID",
+    "@memberTableColumnId": {
+        "description": "ID column header in members table"
+    },
+    "memberTableColumnAge": "Age",
+    "@memberTableColumnAge": {
+        "description": "Age column header in members table"
+    },
+    "memberTableColumnGender": "Gender",
+    "@memberTableColumnGender": {
+        "description": "Gender column header in members table"
+    },
+    "memberTableColumnLevel": "Level",
+    "@memberTableColumnLevel": {
+        "description": "Level column header in members table"
+    },
+    "memberTableColumnSubscription": "Subscription",
+    "@memberTableColumnSubscription": {
+        "description": "Subscription column header in members table"
+    },
+    "memberTableColumnBmi": "BMI",
+    "@memberTableColumnBmi": {
+        "description": "BMI column header in members table"
+    },
+    "memberTableColumnWorkout": "Workout",
+    "@memberTableColumnWorkout": {
+        "description": "Workout column header in members table"
+    },
+    "memberTableColumnActions": "Actions",
+    "@memberTableColumnActions": {
+        "description": "Actions column header in members table"
+    },
+    "memberTableViewTooltip": "View details",
+    "@memberTableViewTooltip": {
+        "description": "Tooltip for view member button"
+    },
+
+    "memberDetailsProfile": "Profile",
+    "@memberDetailsProfile": {
+        "description": "Profile section title in member details"
+    },
+    "memberDetailsMetrics": "Health Metrics",
+    "@memberDetailsMetrics": {
+        "description": "Metrics section title in member details"
+    },
+    "memberDetailsMetadata": "Information",
+    "@memberDetailsMetadata": {
+        "description": "Metadata section title in member details"
+    },
+    "memberDetailsCreatedAt": "Created",
+    "@memberDetailsCreatedAt": {
+        "description": "Created at label in member details"
+    },
+    "memberDetailsClientId": "Client ID",
+    "@memberDetailsClientId": {
+        "description": "Client ID label in member details"
+    },
+    "memberDetailsNoObjectives": "No objectives defined",
+    "@memberDetailsNoObjectives": {
+        "description": "Message shown when member has no objectives"
+    },
+
+    "memberStatsTitle": "Statistics",
+    "@memberStatsTitle": {
+        "description": "Title for member statistics card"
+    },
+    "memberStatsTotal": "Total Members",
+    "@memberStatsTotal": {
+        "description": "Total members stat label"
+    },
+    "memberStatsGenderDistribution": "Gender Distribution",
+    "@memberStatsGenderDistribution": {
+        "description": "Gender distribution label"
+    },
+    "memberStatsLevelDistribution": "Level Distribution",
+    "@memberStatsLevelDistribution": {
+        "description": "Level distribution label"
+    },
+    "memberStatsSubscriptionDistribution": "Subscription Distribution",
+    "@memberStatsSubscriptionDistribution": {
+        "description": "Subscription distribution label"
+    },
+    "memberStatsAvgBmi": "Avg. BMI",
+    "@memberStatsAvgBmi": {
+        "description": "Average BMI stat label"
+    },
+    "memberStatsAvgWorkout": "Avg. Workouts",
+    "@memberStatsAvgWorkout": {
+        "description": "Average workouts stat label"
+    },
+    "memberStatsPremium": "Premium",
+    "@memberStatsPremium": {
+        "description": "Premium members stat label"
+    },
+
+    "memberFormObjectivesHint": "Add an objective...",
+    "@memberFormObjectivesHint": {
+        "description": "Hint text for objectives field"
     }
 }
