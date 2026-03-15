@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import '../../data/datasources/nutrition_remote_data_source.dart';
@@ -185,7 +184,7 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
                       builder: (context, snapshot) {
                         final options = snapshot.data ?? [];
                         return DropdownButtonFormField<String>(
-                          value: _selectedCategory,
+                          initialValue: _selectedCategory,
                           decoration: InputDecoration(labelText: l10n.foodFormCategoryLabel, border: OutlineInputBorder()),
                           items: options.map((value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
                           onChanged: (value) => setState(() => _selectedCategory = value),
@@ -200,7 +199,7 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
                       builder: (context, snapshot) {
                         final options = snapshot.data ?? [];
                         return DropdownButtonFormField<String>(
-                          value: _selectedMealType,
+                          initialValue: _selectedMealType,
                           decoration: InputDecoration(labelText: l10n.foodFormMealTypeLabel, border: OutlineInputBorder()),
                           items: options.map((value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
                           onChanged: (value) => setState(() => _selectedMealType = value),

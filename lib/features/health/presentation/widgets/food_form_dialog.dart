@@ -468,7 +468,7 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
         final currentValue = options.contains(_selectedCategory) ? _selectedCategory : null;
         // On affiche le menu déroulant
         return DropdownButtonFormField<String>(
-          value: currentValue,
+          initialValue: currentValue,
           decoration: const InputDecoration(
             labelText: 'Category',
             border: OutlineInputBorder(),
@@ -491,7 +491,7 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
         final options = asyncData.data ?? <String>[];
         final currentValue = options.contains(_selectedMealType) ? _selectedMealType : null;
         return DropdownButtonFormField<String>(
-          value: currentValue,
+          initialValue: currentValue,
           decoration: const InputDecoration(
             labelText: 'Meal Type',
             border: OutlineInputBorder(),

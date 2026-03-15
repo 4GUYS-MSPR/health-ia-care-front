@@ -148,7 +148,7 @@ class _NutritionContent extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          CircleAvatar(backgroundColor: couleur.withOpacity(0.15), child: Icon(icone, color: couleur)),
+          CircleAvatar(backgroundColor: couleur.withValues(alpha: 0.15), child: Icon(icone, color: couleur)),
           const SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
