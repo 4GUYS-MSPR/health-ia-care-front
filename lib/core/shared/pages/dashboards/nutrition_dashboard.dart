@@ -87,20 +87,59 @@ class _NutritionContent extends StatelessWidget {
   );
 
 
-  Widget _buildKpiCards(BuildContext context) => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Expanded(child: _kpiCard(Icons.restaurant_menu,       context.l10n.nutritionDashboardKpiTotalFoods,  '${foods.length}', Colors.blue)),
-      const SizedBox(width: 32),
-      Expanded(child: _kpiCard(Icons.local_fire_department, context.l10n.nutritionDashboardKpiAvgCalories,   '${average(foods, (food) => food.calories.toDouble()).toStringAsFixed(0)} kcal', Colors.orange)),
-      const SizedBox(width: 32),
-      Expanded(child: _kpiCard(Icons.egg_outlined,          context.l10n.nutritionDashboardKpiAvgProtein,  '${average(foods, (food) => food.protein).toStringAsFixed(1)}g', Colors.red)),
-      const SizedBox(width: 32),
-      Expanded(child: _kpiCard(Icons.grain,                 context.l10n.nutritionDashboardKpiAvgCarbs,   '${average(foods, (food) => food.carbohydrates).toStringAsFixed(1)}g', Colors.amber)),
-      const SizedBox(width: 32),
-      Expanded(child: _kpiCard(Icons.opacity_outlined,      context.l10n.nutritionDashboardKpiAvgFat,    '${average(foods, (food) => food.fat).toStringAsFixed(1)}g', Colors.indigo)),
-    ],
-  );
+  Widget _buildKpiCards(BuildContext context) {
+    final kpiCards = [
+      _kpiCard(Icons.restaurant_menu, context.l10n.nutritionDashboardKpiTotalFoods, '${foods.length}', Colors.blue),
+      _kpiCard(
+        Icons.local_fire_department,
+        context.l10n.nutritionDashboardKpiAvgCalories,
+        '${average(foods, (food) => food.calories.toDouble()).toStringAsFixed(0)} kcal',
+        Colors.orange,
+      ),
+      _kpiCard(
+        Icons.egg_outlined,
+        context.l10n.nutritionDashboardKpiAvgProtein,
+        '${average(foods, (food) => food.protein).toStringAsFixed(1)}g',
+        Colors.red,
+      ),
+      _kpiCard(
+        Icons.grain,
+        context.l10n.nutritionDashboardKpiAvgCarbs,
+        '${average(foods, (food) => food.carbohydrates).toStringAsFixed(1)}g',
+        Colors.amber,
+      ),
+      _kpiCard(
+        Icons.opacity_outlined,
+        context.l10n.nutritionDashboardKpiAvgFat,
+        '${average(foods, (food) => food.fat).toStringAsFixed(1)}g',
+        Colors.indigo,
+      ),
+    ];
+
+    return LayoutBuilder(
+      builder: (layoutContext, constraints) {
+        const spacing = 16.0;
+        final crossAxisCount = constraints.maxWidth >= 1400
+            ? 5
+            : constraints.maxWidth >= 1000
+                ? 3
+                : constraints.maxWidth >= 600
+                    ? 2
+                    : 1;
+        final cardWidth =
+            (constraints.maxWidth - (crossAxisCount - 1) * spacing) /
+                crossAxisCount;
+
+        return Wrap(
+          spacing: spacing,
+          runSpacing: spacing,
+          children: [
+            for (final card in kpiCards) SizedBox(width: cardWidth, child: card),
+          ],
+        );
+      },
+    );
+  }
 
   Widget _kpiCard(IconData icone, String label, String valeur, Color couleur) => Card(
     // Carte KPI : affiche une icône, un label et une valeur
