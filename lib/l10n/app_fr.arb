@@ -37,6 +37,8 @@
   "errorAppTitle": "Erreur de démarrage",
   "errorAppViewDetails": "Voir les détails",
   "navigationDestinationNutrition": "Nutrition",
+  "navigationDestinationMembers": "Membres",
+  "navigationDestinationExercises": "Exercices",
   "foodCardCalories": "Calories",
   "foodCardProtein": "Protéine",
   "foodCardCarbs": "Glucides",
