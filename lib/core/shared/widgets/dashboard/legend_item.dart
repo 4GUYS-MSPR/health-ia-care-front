@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Widget réutilisable pour afficher une légende colorée.
 class LegendItem extends StatelessWidget {
   final Color color;
   final String text;

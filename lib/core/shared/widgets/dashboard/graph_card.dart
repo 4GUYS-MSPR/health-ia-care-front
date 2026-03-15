@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Widget réutilisable pour afficher une carte graphique avec un titre, un sous-titre et un enfant.
 class GraphCard extends StatelessWidget {
   final String title;
   final String? subtitle;

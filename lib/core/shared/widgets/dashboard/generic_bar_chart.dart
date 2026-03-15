@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-/// Widget réutilisable pour afficher un bar chart groupé.
 class GenericBarChart extends StatelessWidget {
   final List<String> labels;
   final List<double> values;
@@ -11,9 +10,9 @@ class GenericBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final valeurMax = values.isEmpty ? 10.0 : values.reduce((a, b) => a > b ? a : b);
+    final maxValue = values.isEmpty ? 10.0 : values.reduce((a, b) => a > b ? a : b);
     return BarChart(BarChartData(
-      maxY: valeurMax * 1.3,
+      maxY: maxValue * 1.3,
       gridData: const FlGridData(show: true),
       borderData: FlBorderData(show: false),
       titlesData: FlTitlesData(
@@ -22,10 +21,10 @@ class GenericBarChart extends StatelessWidget {
         leftTitles: AxisTitles(sideTitles: SideTitles(
           showTitles: true,
           reservedSize: 28,
-          getTitlesWidget: (valeur, _) => Text(valeur.toInt().toString(), style: const TextStyle(fontSize: 11)),
+          getTitlesWidget: (value, _) => Text(value.toInt().toString(), style: const TextStyle(fontSize: 11)),
         )),
-        bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (valeur, _) {
-          final index = valeur.toInt();
+        bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, getTitlesWidget: (value, _) {
+          final index = value.toInt();
           return index < labels.length
               ? Text(labels[index], style: const TextStyle(fontSize: 11))
               : const SizedBox.shrink();

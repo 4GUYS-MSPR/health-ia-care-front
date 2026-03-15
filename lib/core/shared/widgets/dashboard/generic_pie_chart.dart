@@ -1,7 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-
-/// Widget réutilisable pour afficher un camembert (pie chart).
 class GenericPieChart extends StatelessWidget {
   final List<double> values;
   final List<String> labels;
