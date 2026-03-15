@@ -3,6 +3,7 @@ import 'dart:convert';
 import '../../domain/entities/gender.dart';
 import '../../domain/entities/level.dart';
 import '../../domain/entities/member.dart';
+import '../../domain/entities/objective.dart';
 import '../../domain/entities/subscription.dart';
 import 'objective_model.dart';
 
@@ -63,8 +64,46 @@ class MemberModel extends Member {
     };
   }
 
+  /// Converts [objectives] to a list of integer IDs for API requests.
+  /// Objectives whose description is a numeric string are sent as their integer
+  /// value; text-only descriptions are sent as-is and the API will handle them.
+  static List<dynamic> objectivesToApi(List<Objective> objectives) {
+    return objectives.map((o) {
+      final id = int.tryParse(o.description);
+      return id ?? o.description;
+    }).toList();
+  }
+
   /// Deserializes a `Map` from the API into a [MemberModel].
   factory MemberModel.fromMap(Map<String, dynamic> map) {
+    int? parseInt(dynamic value) {
+      if (value == null) return null;
+      if (value is int) return value;
+      if (value is num) return value.toInt();
+      if (value is String) return int.tryParse(value);
+      if (value is Map) {
+        return parseInt(value['id'] ?? value['value'] ?? value['pk']);
+      }
+      return null;
+    }
+
+    double parseDouble(dynamic value) {
+      if (value is num) return value.toDouble();
+      if (value is String) return double.tryParse(value) ?? 0;
+      if (value is Map) {
+        return parseDouble(value['value']);
+      }
+      return 0;
+    }
+
+    DateTime? parseDateTime(dynamic value) {
+      if (value is String) return DateTime.tryParse(value);
+      if (value is Map) {
+        return parseDateTime(value['value'] ?? value['date'] ?? value['created_at']);
+      }
+      return null;
+    }
+
     Gender parseGender(int? genderInt) {
       return switch (genderInt) {
         0 => .male,
@@ -73,21 +112,41 @@ class MemberModel extends Member {
       };
     }
 
+    int parseEnumIndex(dynamic value) {
+      return parseInt(value) ?? 0;
+    }
+
     return MemberModel(
-      id: map['id'] as int,
-      age: map['age'] as int?,
-      bmi: map['bmi'] as double,
-      fatPercentage: map['fat_percentage'] as double,
-      height: map['height'] as double,
-      weight: map['weight'] as double,
-      workoutFrequency: map['workout_frequency'] as int,
-      createdAt: map['create_at'] != null ? DateTime.tryParse(map['create_at'] as String) : null,
-      clientId: map['client'] as int?,
-      gender: parseGender(map['gender'] as int),
-      level: Level.values[map['level'] as int? ?? 0],
-      subscription: Subscription.values[map['subscription'] as int? ?? 0],
+      id: parseInt(map['id']) ?? 0,
+      age: parseInt(map['age']),
+      bmi: parseDouble(map['bmi']),
+      fatPercentage: parseDouble(map['fat_percentage']),
+      height: parseDouble(map['height']),
+      weight: parseDouble(map['weight']),
+      workoutFrequency: parseInt(map['workout_frequency']) ?? 0,
+      createdAt: parseDateTime(map['create_at']),
+      clientId: parseInt(map['client']),
+      gender: parseGender(parseInt(map['gender'])),
+      level: Level.values[parseEnumIndex(map['level']).clamp(0, Level.values.length - 1)],
+      subscription: Subscription.values[
+        parseEnumIndex(map['subscription']).clamp(0, Subscription.values.length - 1)
+      ],
       objectives: (map['objectives'] as List<dynamic>? ?? [])
-          .map((objective) => ObjectiveModel.fromMap(objective as Map<String, dynamic>))
+          .map((objective) {
+            if (objective is int) {
+              return ObjectiveModel(
+                description: objective.toString(),
+                createdAt: DateTime.fromMillisecondsSinceEpoch(0),
+              );
+            }
+            if (objective is Map) {
+              return ObjectiveModel.fromMap(Map<String, dynamic>.from(objective));
+            }
+            return ObjectiveModel(
+              description: objective.toString(),
+              createdAt: DateTime.fromMillisecondsSinceEpoch(0),
+            );
+          })
           .toList(),
     );
   }

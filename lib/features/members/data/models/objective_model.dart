@@ -16,9 +16,23 @@ class ObjectiveModel extends Objective {
   }
 
   factory ObjectiveModel.fromMap(Map<String, dynamic> map) {
+    String parseDescription(Map<String, dynamic> value) {
+      final raw = value['description'] ?? value['name'] ?? value['label'] ?? value['id'];
+      if (raw == null) return '';
+      return raw.toString();
+    }
+
+    DateTime parseCreatedAt(Map<String, dynamic> value) {
+      final raw = value['created_at'] ?? value['create_at'] ?? value['createdAt'];
+      if (raw is String) {
+        return DateTime.tryParse(raw) ?? DateTime.fromMillisecondsSinceEpoch(0);
+      }
+      return DateTime.fromMillisecondsSinceEpoch(0);
+    }
+
     return ObjectiveModel(
-      description: map['description'] as String,
-      createdAt: DateTime.parse(map['created_at'] as String),
+      description: parseDescription(map),
+      createdAt: parseCreatedAt(map),
     );
   }
 

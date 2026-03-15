@@ -8,7 +8,6 @@ import '../../domain/entities/objective.dart';
 import '../../domain/entities/subscription.dart';
 import '../../domain/errors/members_failures.dart';
 import '../models/member_model.dart';
-import '../models/objective_model.dart';
 
 /// Remote datasource for members API operations.
 abstract interface class MembersRemoteDatasources {
@@ -52,7 +51,15 @@ abstract interface class MembersRemoteDatasources {
 }
 
 class MembersRemoteDatasourcesImpl with LoggerMixin implements MembersRemoteDatasources {
-  static const _membersEndpoint = '/api/members/';
+  String get _membersEndpoint {
+    final basePath = Uri.tryParse(membersClient.options.baseUrl)?.path ?? '';
+    final hasApiInBasePath = basePath
+        .split('/')
+        .where((segment) => segment.isNotEmpty)
+        .contains('api');
+
+    return hasApiInBasePath ? '/member/' : '/api/member/';
+  }
 
   final Dio membersClient;
 
@@ -93,7 +100,7 @@ class MembersRemoteDatasourcesImpl with LoggerMixin implements MembersRemoteData
 
       if (age != null) data['age'] = age;
       if (objectives.isNotEmpty) {
-        data['objectives'] = objectives.map((o) => ObjectiveModel.fromEntity(o).toMap()).toList();
+        data['objectives'] = MemberModel.objectivesToApi(objectives);
       }
 
       final res = await membersClient.post(
@@ -147,10 +154,19 @@ class MembersRemoteDatasourcesImpl with LoggerMixin implements MembersRemoteData
 
     try {
       final res = await membersClient.get(_membersEndpoint);
-      final data = res.data as List<dynamic>;
+      final payload = res.data;
+
+      final data = switch (payload) {
+        List<dynamic> list => list,
+        Map<String, dynamic> map => (map['results'] as List<dynamic>? ?? const <dynamic>[]),
+        _ => const <dynamic>[],
+      };
 
       logger.fine('Retrieved ${data.length} members');
-      return data.map((item) => MemberModel.fromMap(item)).toList();
+      return data
+          .whereType<Map>()
+          .map((item) => MemberModel.fromMap(Map<String, dynamic>.from(item)))
+          .toList();
     } on DioException catch (e, st) {
       logger.severe('Failed to fetch members', e, st);
       throw ServerErrorFailure(
@@ -211,7 +227,7 @@ class MembersRemoteDatasourcesImpl with LoggerMixin implements MembersRemoteData
       if (weight != null) data['weight'] = weight;
       if (workoutFrequency != null) data['workout_frequency'] = workoutFrequency;
       if (objectives != null) {
-        data['objectives'] = objectives.map((o) => ObjectiveModel.fromEntity(o).toMap()).toList();
+        data['objectives'] = MemberModel.objectivesToApi(objectives);
       }
       if (gender != null) data['gender'] = gender.index;
       if (level != null) data['level'] = level.index;
