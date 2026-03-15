@@ -92,13 +92,13 @@ class _NutritionContent extends StatelessWidget {
     children: [
       Expanded(child: _kpiCard(Icons.restaurant_menu,       context.l10n.nutritionDashboardKpiTotalFoods,  '${foods.length}', Colors.blue)),
       const SizedBox(width: 32),
-      Expanded(child: _kpiCard(Icons.local_fire_department, context.l10n.nutritionDashboardKpiAvgCalories,   '${moyenne(foods, (aliment) => aliment.calories.toDouble()).toStringAsFixed(0)} kcal', Colors.orange)),
+      Expanded(child: _kpiCard(Icons.local_fire_department, context.l10n.nutritionDashboardKpiAvgCalories,   '${average(foods, (food) => food.calories.toDouble()).toStringAsFixed(0)} kcal', Colors.orange)),
       const SizedBox(width: 32),
-      Expanded(child: _kpiCard(Icons.egg_outlined,          context.l10n.nutritionDashboardKpiAvgProtein,  '${moyenne(foods, (aliment) => aliment.protein).toStringAsFixed(1)}g', Colors.red)),
+      Expanded(child: _kpiCard(Icons.egg_outlined,          context.l10n.nutritionDashboardKpiAvgProtein,  '${average(foods, (food) => food.protein).toStringAsFixed(1)}g', Colors.red)),
       const SizedBox(width: 32),
-      Expanded(child: _kpiCard(Icons.grain,                 context.l10n.nutritionDashboardKpiAvgCarbs,   '${moyenne(foods, (aliment) => aliment.carbohydrates).toStringAsFixed(1)}g', Colors.amber)),
+      Expanded(child: _kpiCard(Icons.grain,                 context.l10n.nutritionDashboardKpiAvgCarbs,   '${average(foods, (food) => food.carbohydrates).toStringAsFixed(1)}g', Colors.amber)),
       const SizedBox(width: 32),
-      Expanded(child: _kpiCard(Icons.opacity_outlined,      context.l10n.nutritionDashboardKpiAvgFat,    '${moyenne(foods, (aliment) => aliment.fat).toStringAsFixed(1)}g', Colors.indigo)),
+      Expanded(child: _kpiCard(Icons.opacity_outlined,      context.l10n.nutritionDashboardKpiAvgFat,    '${average(foods, (food) => food.fat).toStringAsFixed(1)}g', Colors.indigo)),
     ],
   );
 
@@ -126,7 +126,7 @@ class _NutritionContent extends StatelessWidget {
 
   Widget _buildCategoriesCamembert(BuildContext context) {
     // Graphique camembert par catégorie d'aliments
-    final parCategorie = compterParGroupe(foods, (aliment) => aliment.category).entries.toList();
+    final parCategorie = countByGroup(foods, (food) => food.category).entries.toList();
     final values = parCategorie.map((e) => e.value.toDouble()).toList();
     final labels = parCategorie.map((e) => e.key).toList();
     return GraphCard(
@@ -153,7 +153,7 @@ class _NutritionContent extends StatelessWidget {
 
   Widget _buildTypeRepasBarres(BuildContext context) {
     // Graphique barres par type de repas
-    final parTypeRepas = compterParGroupe(foods, (aliment) => aliment.mealType).entries.toList()
+    final parTypeRepas = countByGroup(foods, (food) => food.mealType).entries.toList()
       ..sort((a, b) => a.key.compareTo(b.key));
     final values = parTypeRepas.map((e) => e.value.toDouble()).toList();
     final labels = parTypeRepas.map((e) => e.key).toList();

@@ -1,19 +1,18 @@
-// Fonctions utilitaires pour calculs nutritionnels
 import '../../../../features/health/domain/entities/nutrition_food.dart';
 
-// Calcule la moyenne d'une propriété nutritionnelle sur tous les aliments
-double moyenne(List<NutritionFood> foods, double Function(NutritionFood aliment) propriete) {
+// Computes the average of a nutritional property across all foods.
+double average(List<NutritionFood> foods, double Function(NutritionFood food) property) {
   if (foods.isEmpty) return 0;
-  return foods.fold(0.0, (somme, aliment) => somme + propriete(aliment)) / foods.length;
+  return foods.fold(0.0, (sum, food) => sum + property(food)) / foods.length;
 }
 
-// Regroupe les aliments par une clé (catégorie ou type de repas)
-Map<String, int> compterParGroupe(List<NutritionFood> foods, String Function(NutritionFood aliment) extraireGroupe) {
-  final comptage = <String, int>{};
-  for (final aliment in foods) {
-    final nomGroupe = extraireGroupe(aliment);
-    if (nomGroupe.isEmpty) continue;
-    comptage[nomGroupe] = (comptage[nomGroupe] ?? 0) + 1;
+// Groups foods by a key (category or meal type) and counts them.
+Map<String, int> countByGroup(List<NutritionFood> foods, String Function(NutritionFood food) extractGroup) {
+  final counts = <String, int>{};
+  for (final food in foods) {
+    final groupName = extractGroup(food);
+    if (groupName.isEmpty) continue;
+    counts[groupName] = (counts[groupName] ?? 0) + 1;
   }
-  return comptage;
+  return counts;
 }
