@@ -1,10 +1,10 @@
 ﻿import 'package:flutter/material.dart';
-import 'package:health_ia_care_app/core/shared/pages/dashboards/exercises_dashboard.dart';
 import '../../extensions/l10n_extension.dart';
 
 import 'dashboards/home_dashboard.dart';
 import 'dashboards/nutrition_dashboard.dart';
 import 'dashboards/members_dashboard.dart';
+import 'dashboards/exercises_dashboard.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
             HomeDashboard(),     
             NutritionDashboard(), 
             MembersDashboard(),   
-            ExercicesDashboard(),   
+            ExercisesDashboard(),  
           ],
         ),
       ),

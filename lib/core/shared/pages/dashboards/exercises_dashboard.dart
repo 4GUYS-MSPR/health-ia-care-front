@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ExercicesDashboard extends StatelessWidget {
-  const ExercicesDashboard({super.key});
+class ExercisesDashboard extends StatelessWidget {
+  const ExercisesDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
