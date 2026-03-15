@@ -54,9 +54,7 @@ class LogFormatter {
 
     // Logger name and level
     final bracketColor = useColor ? AnsiColors.regularWhite : '';
-    final loggerNameColor = useColor
-        ? AnsiColors.backgroundHightIntensityBlack
-        : '';
+    final loggerNameColor = useColor ? AnsiColors.backgroundHightIntensityBlack : '';
 
     buffer.write(bracketColor);
     buffer.write('[');

@@ -119,10 +119,12 @@ class FoodsBloc extends Bloc<FoodsEvent, FoodsState> with LoggerMixin {
         final updatedFoods = [...currentFoods, food];
         emit(FoodCreated(food: food, allFoods: updatedFoods));
         // Reload page to get updated pagination
-        add(GetFoodsPageRequested(
-          offset: _currentPagination?.offset ?? 0,
-          limit: _currentPagination?.limit ?? _defaultPageSize,
-        ));
+        add(
+          GetFoodsPageRequested(
+            offset: _currentPagination?.offset ?? 0,
+            limit: _currentPagination?.limit ?? _defaultPageSize,
+          ),
+        );
       },
     );
   }
@@ -163,10 +165,12 @@ class FoodsBloc extends Bloc<FoodsEvent, FoodsState> with LoggerMixin {
         final updatedFoods = currentFoods.map((f) => f.id == food.id ? food : f).toList();
         emit(FoodUpdated(food: food, allFoods: updatedFoods));
         // Reload page to get updated pagination
-        add(GetFoodsPageRequested(
-          offset: _currentPagination?.offset ?? 0,
-          limit: _currentPagination?.limit ?? _defaultPageSize,
-        ));
+        add(
+          GetFoodsPageRequested(
+            offset: _currentPagination?.offset ?? 0,
+            limit: _currentPagination?.limit ?? _defaultPageSize,
+          ),
+        );
       },
     );
   }
@@ -198,10 +202,12 @@ class FoodsBloc extends Bloc<FoodsEvent, FoodsState> with LoggerMixin {
           ),
         );
         // Reload page to get updated pagination
-        add(GetFoodsPageRequested(
-          offset: _currentPagination?.offset ?? 0,
-          limit: _currentPagination?.limit ?? _defaultPageSize,
-        ));
+        add(
+          GetFoodsPageRequested(
+            offset: _currentPagination?.offset ?? 0,
+            limit: _currentPagination?.limit ?? _defaultPageSize,
+          ),
+        );
       },
     );
   }

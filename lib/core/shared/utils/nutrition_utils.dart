@@ -7,7 +7,10 @@ double average(List<NutritionFood> foods, double Function(NutritionFood food) pr
 }
 
 // Groups foods by a key (category or meal type) and counts them.
-Map<String, int> countByGroup(List<NutritionFood> foods, String Function(NutritionFood food) extractGroup) {
+Map<String, int> countByGroup(
+  List<NutritionFood> foods,
+  String Function(NutritionFood food) extractGroup,
+) {
   final counts = <String, int>{};
   for (final food in foods) {
     final groupName = extractGroup(food);

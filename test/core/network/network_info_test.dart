@@ -4,8 +4,7 @@ import 'package:mocktail/mocktail.dart';
 
 import 'package:health_ia_care_app/core/network/network_info.dart';
 
-class MockInternetConnectionChecker extends Mock
-    implements InternetConnectionChecker {}
+class MockInternetConnectionChecker extends Mock implements InternetConnectionChecker {}
 
 void main() {
   late NetworkInfoImpl networkInfo;

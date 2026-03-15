@@ -473,7 +473,9 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
             labelText: 'Category',
             border: OutlineInputBorder(),
           ),
-          items: options.map((value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
+          items: options
+              .map((value) => DropdownMenuItem<String>(value: value, child: Text(value)))
+              .toList(),
           onChanged: asyncData.connectionState == ConnectionState.done
               ? (value) => setState(() => _selectedCategory = value)
               : null,
@@ -496,7 +498,9 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
             labelText: 'Meal Type',
             border: OutlineInputBorder(),
           ),
-          items: options.map((value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
+          items: options
+              .map((value) => DropdownMenuItem<String>(value: value, child: Text(value)))
+              .toList(),
           onChanged: asyncData.connectionState == ConnectionState.done
               ? (value) => setState(() => _selectedMealType = value)
               : null,

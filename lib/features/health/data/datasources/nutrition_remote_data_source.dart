@@ -24,9 +24,13 @@ abstract class NutritionRemoteDataSource {
   });
   Future<void> deleteFood(int id);
   Future<List<NutritionFoodModel>> getFoods();
-  Future<(List<NutritionFoodModel>, PaginationInfo)> getFoodsPage({required int offset, required int limit});
+  Future<(List<NutritionFoodModel>, PaginationInfo)> getFoodsPage({
+    required int offset,
+    required int limit,
+  });
   Future<NutritionFoodModel> getFood(int id);
-  Future<NutritionFoodModel> updateFood(int id, {
+  Future<NutritionFoodModel> updateFood(
+    int id, {
     String? label,
     int? calories,
     double? protein,
@@ -112,12 +116,22 @@ class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
   }
 
   @override
-  Future<(List<NutritionFoodModel>, PaginationInfo)> getFoodsPage({required int offset, required int limit}) async {
+  Future<(List<NutritionFoodModel>, PaginationInfo)> getFoodsPage({
+    required int offset,
+    required int limit,
+  }) async {
     try {
-      final res = await client.get(_foodsEndpoint, queryParameters: {'offset': offset, 'limit': limit});
+      final res = await client.get(
+        _foodsEndpoint,
+        queryParameters: {'offset': offset, 'limit': limit},
+      );
       final data = _extractResults(res.data);
       final foods = data.map((item) => NutritionFoodModel.fromJson(item)).toList();
-      final pagination = PaginationInfo.fromResponse(res.data is Map<String, dynamic> ? res.data : {'results': data}, offset, limit);
+      final pagination = PaginationInfo.fromResponse(
+        res.data is Map<String, dynamic> ? res.data : {'results': data},
+        offset,
+        limit,
+      );
       return (foods, pagination);
     } on DioException catch (e) {
       throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
@@ -133,9 +147,10 @@ class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
       throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
   }
-  
+
   @override
-  Future<NutritionFoodModel> updateFood(int id, {
+  Future<NutritionFoodModel> updateFood(
+    int id, {
     String? label,
     int? calories,
     double? protein,
@@ -190,14 +205,20 @@ class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
     final res = await client.get('$_enumEndpoint$model/');
     final results = (res.data as Map<String, dynamic>)['results'] as List<dynamic>?;
     if (results == null) throw ServerErrorFailure(debugMessage: 'Invalid enum payload for $model');
-    return [for (final item in results) if (item is Map<String, dynamic> && item['value'] != null) item['value'].toString().trim()];
+    return [
+      for (final item in results)
+        if (item is Map<String, dynamic> && item['value'] != null) item['value'].toString().trim(),
+    ];
   }
 
   List<dynamic> _extractResults(dynamic payload) {
     if (payload is List) return payload;
     if (payload is Map && payload['results'] is List) return payload['results'];
     if (payload is Map && payload['data'] is List) return payload['data'];
-    if (payload is Map && payload['data'] is Map && payload['data']['results'] is List) return payload['data']['results'];
-    throw ServerErrorFailure(debugMessage: 'Unexpected foods payload format: ${payload.runtimeType}');
+    if (payload is Map && payload['data'] is Map && payload['data']['results'] is List)
+      return payload['data']['results'];
+    throw ServerErrorFailure(
+      debugMessage: 'Unexpected foods payload format: ${payload.runtimeType}',
+    );
   }
 }

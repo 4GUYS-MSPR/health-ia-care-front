@@ -19,17 +19,20 @@ class PaginationInfo {
   });
 
   // Constructeur pour l'état initial
-  factory PaginationInfo.initial(int limit) => PaginationInfo(count: 0, nextUrl: null, previousUrl: null, offset: 0, limit: limit);
+  factory PaginationInfo.initial(int limit) =>
+      PaginationInfo(count: 0, nextUrl: null, previousUrl: null, offset: 0, limit: limit);
 
   // Création depuis une réponse JSON
-  factory PaginationInfo.fromResponse(Map<String, dynamic> json, int offset, int limit) => PaginationInfo(
-    count: json['count'] as int? ?? 0,
-    nextUrl: json['next'] as String?,
-    previousUrl: json['previous'] as String?,
-    offset: offset,
-    limit: limit,
-  );
+  factory PaginationInfo.fromResponse(Map<String, dynamic> json, int offset, int limit) =>
+      PaginationInfo(
+        count: json['count'] as int? ?? 0,
+        nextUrl: json['next'] as String?,
+        previousUrl: json['previous'] as String?,
+        offset: offset,
+        limit: limit,
+      );
 
   @override
-  String toString() => 'PaginationInfo(page: $currentPage/$totalPages, offset: $offset, limit: $limit, count: $count)';
+  String toString() =>
+      'PaginationInfo(page: $currentPage/$totalPages, offset: $offset, limit: $limit, count: $count)';
 }

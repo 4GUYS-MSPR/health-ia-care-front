@@ -14,8 +14,7 @@ class ThemeCubit extends HydratedCubit<ThemeMode> with LoggerMixin {
 
   /// Get the actual system [Brightness].
   Brightness get systemBrightness {
-    final platformBrightness =
-        SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    final platformBrightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
     return platformBrightness;
   }
 

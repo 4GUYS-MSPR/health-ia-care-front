@@ -22,7 +22,6 @@ class GetAllFoodsUsecase with LoggerMixin implements Usecase<List<NutritionFood>
   }
 }
 
-
 class NoParams {
   const NoParams();
 }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -26,7 +25,9 @@ class NutritionDashboard extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           if (state is FoodsError) {
-            debugPrint('FoodsError in NutritionDashboard: ${state.failure.debugMessage ?? 'no debug message'}');
+            debugPrint(
+              'FoodsError in NutritionDashboard: ${state.failure.debugMessage ?? 'no debug message'}',
+            );
             return Center(child: Text(context.l10n.foodsErrorLoading));
           }
           final foods = state is FoodsLoaded ? state.foods : <NutritionFood>[];
@@ -37,7 +38,6 @@ class NutritionDashboard extends StatelessWidget {
   }
 }
 
-
 class _NutritionContent extends StatelessWidget {
   const _NutritionContent({required this.foods});
 
@@ -45,11 +45,14 @@ class _NutritionContent extends StatelessWidget {
 
   // Couleurs utilisées pour les graphiques (catégories, types de repas, etc.)
   static const _couleurs = [
-    Colors.orange, Colors.green, Colors.red,
-    Colors.blue, Colors.brown, Colors.purple, Colors.teal,
+    Colors.orange,
+    Colors.green,
+    Colors.red,
+    Colors.blue,
+    Colors.brown,
+    Colors.purple,
+    Colors.teal,
   ];
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,19 +63,33 @@ class _NutritionContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Titre principal
-          Text(context.l10n.nutritionDashboardTitle, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+          Text(
+            context.l10n.nutritionDashboardTitle,
+            style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 4),
           // Affiche le nombre d'aliments chargés
-          Text('${foods.length} ${context.l10n.nutritionDashboardFoodsLoaded}', style: const TextStyle(color: Colors.grey)),
+          Text(
+            '${foods.length} ${context.l10n.nutritionDashboardFoodsLoaded}',
+            style: const TextStyle(color: Colors.grey),
+          ),
           const SizedBox(height: 24),
           // Affiche les indicateurs clés (KPI)
           _buildKpiCards(context),
           const SizedBox(height: 32),
           // Affiche les graphiques de catégories et types de repas
-          _buildResponsiveRow(context, _buildCategoriesCamembert(context), _buildTypeRepasBarres(context)),
+          _buildResponsiveRow(
+            context,
+            _buildCategoriesCamembert(context),
+            _buildTypeRepasBarres(context),
+          ),
           const SizedBox(height: 16),
           // Affiche les graphiques de macronutriments et micronutriments
-          _buildResponsiveRow(context, _buildMacronutrimentsCamembert(context), _buildMicronutrimentsCamembert(context)),
+          _buildResponsiveRow(
+            context,
+            _buildMacronutrimentsCamembert(context),
+            _buildMicronutrimentsCamembert(context),
+          ),
         ],
       ),
     );
@@ -80,16 +97,25 @@ class _NutritionContent extends StatelessWidget {
 
   Widget _buildResponsiveRow(BuildContext context, Widget gauche, Widget droite) => LayoutBuilder(
     builder: (layoutContext, contraintes) => contraintes.maxWidth > 700
-        ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Expanded(child: gauche), const SizedBox(width: 16), Expanded(child: droite),
-          ])
+        ? Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: gauche),
+              const SizedBox(width: 16),
+              Expanded(child: droite),
+            ],
+          )
         : Column(children: [gauche, const SizedBox(height: 16), droite]),
   );
 
-
   Widget _buildKpiCards(BuildContext context) {
     final kpiCards = [
-      _kpiCard(Icons.restaurant_menu, context.l10n.nutritionDashboardKpiTotalFoods, '${foods.length}', Colors.blue),
+      _kpiCard(
+        Icons.restaurant_menu,
+        context.l10n.nutritionDashboardKpiTotalFoods,
+        '${foods.length}',
+        Colors.blue,
+      ),
       _kpiCard(
         Icons.local_fire_department,
         context.l10n.nutritionDashboardKpiAvgCalories,
@@ -122,13 +148,11 @@ class _NutritionContent extends StatelessWidget {
         final crossAxisCount = constraints.maxWidth >= 1400
             ? 5
             : constraints.maxWidth >= 1000
-                ? 3
-                : constraints.maxWidth >= 600
-                    ? 2
-                    : 1;
-        final cardWidth =
-            (constraints.maxWidth - (crossAxisCount - 1) * spacing) /
-                crossAxisCount;
+            ? 3
+            : constraints.maxWidth >= 600
+            ? 2
+            : 1;
+        final cardWidth = (constraints.maxWidth - (crossAxisCount - 1) * spacing) / crossAxisCount;
 
         return Wrap(
           spacing: spacing,
@@ -148,7 +172,10 @@ class _NutritionContent extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          CircleAvatar(backgroundColor: couleur.withValues(alpha: 0.15), child: Icon(icone, color: couleur)),
+          CircleAvatar(
+            backgroundColor: couleur.withValues(alpha: 0.15),
+            child: Icon(icone, color: couleur),
+          ),
           const SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,7 +189,6 @@ class _NutritionContent extends StatelessWidget {
     ),
   );
 
-
   Widget _buildCategoriesCamembert(BuildContext context) {
     // Graphique camembert par catégorie d'aliments
     final parCategorie = countByGroup(foods, (food) => food.category).entries.toList();
@@ -172,21 +198,25 @@ class _NutritionContent extends StatelessWidget {
       title: context.l10n.nutritionDashboardPieCategoryTitle,
       child: foods.isEmpty
           ? Center(child: Text(context.l10n.nutritionDashboardPieCategoryNoData))
-          : Row(children: [
-              Expanded(child: GenericPieChart(values: values, labels: labels, colors: _couleurs)),
-              const SizedBox(width: 12),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  for (int index = 0; index < labels.length; index++)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 3),
-                      child: LegendItem(_couleurs[index % _couleurs.length], labels[index]),
-                    ),
-                ],
-              ),
-            ]),
+          : Row(
+              children: [
+                Expanded(
+                  child: GenericPieChart(values: values, labels: labels, colors: _couleurs),
+                ),
+                const SizedBox(width: 12),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (int index = 0; index < labels.length; index++)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 3),
+                        child: LegendItem(_couleurs[index % _couleurs.length], labels[index]),
+                      ),
+                  ],
+                ),
+              ],
+            ),
     );
   }
 
@@ -209,8 +239,8 @@ class _NutritionContent extends StatelessWidget {
     double totalProteines = 0, totalGlucides = 0, totalLipides = 0;
     for (final aliment in foods) {
       totalProteines += aliment.protein;
-      totalGlucides  += aliment.carbohydrates;
-      totalLipides   += aliment.fat;
+      totalGlucides += aliment.carbohydrates;
+      totalLipides += aliment.fat;
     }
     final values = [totalProteines, totalGlucides, totalLipides];
     final labels = ['Protéines', 'Glucides', 'Lipides'];
@@ -220,21 +250,34 @@ class _NutritionContent extends StatelessWidget {
       subtitle: context.l10n.nutritionDashboardPieMacrosSubtitle,
       child: foods.isEmpty
           ? Center(child: Text(context.l10n.nutritionDashboardPieCategoryNoData))
-          : Row(children: [
-              Expanded(child: GenericPieChart(values: values, labels: labels, colors: colors)),
-              const SizedBox(width: 12),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  LegendItem(colors[0], '${context.l10n.nutritionDashboardPieMacrosLegendProtein} : ${totalProteines.toStringAsFixed(0)}g'),
-                  const SizedBox(height: 6),
-                  LegendItem(colors[1], '${context.l10n.nutritionDashboardPieMacrosLegendCarbs} : ${totalGlucides.toStringAsFixed(0)}g'),
-                  const SizedBox(height: 6),
-                  LegendItem(colors[2], '${context.l10n.nutritionDashboardPieMacrosLegendFat} : ${totalLipides.toStringAsFixed(0)}g'),
-                ],
-              ),
-            ]),
+          : Row(
+              children: [
+                Expanded(
+                  child: GenericPieChart(values: values, labels: labels, colors: colors),
+                ),
+                const SizedBox(width: 12),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LegendItem(
+                      colors[0],
+                      '${context.l10n.nutritionDashboardPieMacrosLegendProtein} : ${totalProteines.toStringAsFixed(0)}g',
+                    ),
+                    const SizedBox(height: 6),
+                    LegendItem(
+                      colors[1],
+                      '${context.l10n.nutritionDashboardPieMacrosLegendCarbs} : ${totalGlucides.toStringAsFixed(0)}g',
+                    ),
+                    const SizedBox(height: 6),
+                    LegendItem(
+                      colors[2],
+                      '${context.l10n.nutritionDashboardPieMacrosLegendFat} : ${totalLipides.toStringAsFixed(0)}g',
+                    ),
+                  ],
+                ),
+              ],
+            ),
     );
   }
 
@@ -242,11 +285,11 @@ class _NutritionContent extends StatelessWidget {
     // Graphique camembert pour la répartition des micronutriments
     double totalFibres = 0, totalSucres = 0, totalSodium = 0, totalCholesterol = 0, totalEau = 0;
     for (final aliment in foods) {
-      totalFibres     += aliment.fiber;
-      totalSucres     += aliment.sugars;
-      totalSodium     += aliment.sodium.toDouble();
-      totalCholesterol+= aliment.cholesterol.toDouble();
-      totalEau        += aliment.waterIntake.toDouble();
+      totalFibres += aliment.fiber;
+      totalSucres += aliment.sugars;
+      totalSodium += aliment.sodium.toDouble();
+      totalCholesterol += aliment.cholesterol.toDouble();
+      totalEau += aliment.waterIntake.toDouble();
     }
     final values = [totalFibres, totalSucres, totalSodium, totalCholesterol, totalEau];
     final labels = ['Fibres', 'Sucres', 'Sodium', 'Cholestérol', 'Eau'];
@@ -256,25 +299,44 @@ class _NutritionContent extends StatelessWidget {
       subtitle: context.l10n.nutritionDashboardPieMicrosSubtitle,
       child: foods.isEmpty || values.reduce((a, b) => a + b) == 0
           ? Center(child: Text(context.l10n.nutritionDashboardPieCategoryNoData))
-          : Row(children: [
-              Expanded(child: GenericPieChart(values: values, labels: labels, colors: colors)),
-              const SizedBox(width: 12),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  LegendItem(colors[0], '${context.l10n.nutritionDashboardPieMicrosLegendFiber} : ${totalFibres.toStringAsFixed(0)}'),
-                  const SizedBox(height: 6),
-                  LegendItem(colors[1], '${context.l10n.nutritionDashboardPieMicrosLegendSugars} : ${totalSucres.toStringAsFixed(0)}'),
-                  const SizedBox(height: 6),
-                  LegendItem(colors[2], '${context.l10n.nutritionDashboardPieMicrosLegendSodium} : ${totalSodium.toStringAsFixed(0)}'),
-                  const SizedBox(height: 6),
-                  LegendItem(colors[3], '${context.l10n.nutritionDashboardPieMicrosLegendCholesterol} : ${totalCholesterol.toStringAsFixed(0)}'),
-                  const SizedBox(height: 6),
-                  LegendItem(colors[4], '${context.l10n.nutritionDashboardPieMicrosLegendWater} : ${totalEau.toStringAsFixed(0)}'),
-                ],
-              ),
-            ]),
+          : Row(
+              children: [
+                Expanded(
+                  child: GenericPieChart(values: values, labels: labels, colors: colors),
+                ),
+                const SizedBox(width: 12),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LegendItem(
+                      colors[0],
+                      '${context.l10n.nutritionDashboardPieMicrosLegendFiber} : ${totalFibres.toStringAsFixed(0)}',
+                    ),
+                    const SizedBox(height: 6),
+                    LegendItem(
+                      colors[1],
+                      '${context.l10n.nutritionDashboardPieMicrosLegendSugars} : ${totalSucres.toStringAsFixed(0)}',
+                    ),
+                    const SizedBox(height: 6),
+                    LegendItem(
+                      colors[2],
+                      '${context.l10n.nutritionDashboardPieMicrosLegendSodium} : ${totalSodium.toStringAsFixed(0)}',
+                    ),
+                    const SizedBox(height: 6),
+                    LegendItem(
+                      colors[3],
+                      '${context.l10n.nutritionDashboardPieMicrosLegendCholesterol} : ${totalCholesterol.toStringAsFixed(0)}',
+                    ),
+                    const SizedBox(height: 6),
+                    LegendItem(
+                      colors[4],
+                      '${context.l10n.nutritionDashboardPieMicrosLegendWater} : ${totalEau.toStringAsFixed(0)}',
+                    ),
+                  ],
+                ),
+              ],
+            ),
     );
   }
 }

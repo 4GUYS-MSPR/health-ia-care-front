@@ -94,7 +94,10 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
               children: [
                 Icon(Icons.restaurant_menu_outlined, color: Colors.blue),
                 const SizedBox(width: 12),
-                Text(l10n.foodFormCreateTitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                Text(
+                  l10n.foodFormCreateTitle,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
                 const Spacer(),
                 IconButton(icon: const Icon(Icons.close), onPressed: widget.onCancel),
               ],
@@ -111,71 +114,111 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
                   children: [
                     TextFormField(
                       controller: _labelController,
-                      decoration: InputDecoration(labelText: l10n.foodFormLabelLabel, border: OutlineInputBorder()),
-                      validator: (value) => value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
+                      decoration: InputDecoration(
+                        labelText: l10n.foodFormLabelLabel,
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) =>
+                          value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _caloriesController,
-                      decoration: InputDecoration(labelText: l10n.foodFormCaloriesLabel, border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                        labelText: l10n.foodFormCaloriesLabel,
+                        border: OutlineInputBorder(),
+                      ),
                       keyboardType: TextInputType.number,
-                      validator: (value) => value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
+                      validator: (value) =>
+                          value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _proteinController,
-                      decoration: InputDecoration(labelText: l10n.foodFormProteinLabel, border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                        labelText: l10n.foodFormProteinLabel,
+                        border: OutlineInputBorder(),
+                      ),
                       keyboardType: TextInputType.number,
-                        validator: (value) => value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
+                      validator: (value) =>
+                          value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _carbohydratesController,
-                      decoration: InputDecoration(labelText: l10n.foodFormCarbsLabel, border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                        labelText: l10n.foodFormCarbsLabel,
+                        border: OutlineInputBorder(),
+                      ),
                       keyboardType: TextInputType.number,
-                        validator: (value) => value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
+                      validator: (value) =>
+                          value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _fatController,
-                      decoration: InputDecoration(labelText: l10n.foodFormFatLabel, border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                        labelText: l10n.foodFormFatLabel,
+                        border: OutlineInputBorder(),
+                      ),
                       keyboardType: TextInputType.number,
-                        validator: (value) => value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
+                      validator: (value) =>
+                          value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _fiberController,
-                      decoration: InputDecoration(labelText: l10n.foodFormFiberLabel, border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                        labelText: l10n.foodFormFiberLabel,
+                        border: OutlineInputBorder(),
+                      ),
                       keyboardType: TextInputType.number,
-                        validator: (value) => value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
+                      validator: (value) =>
+                          value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _sugarsController,
-                      decoration: InputDecoration(labelText: l10n.foodFormSugarsLabel, border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                        labelText: l10n.foodFormSugarsLabel,
+                        border: OutlineInputBorder(),
+                      ),
                       keyboardType: TextInputType.number,
-                        validator: (value) => value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
+                      validator: (value) =>
+                          value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _sodiumController,
-                      decoration: InputDecoration(labelText: l10n.foodFormSodiumLabel, border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                        labelText: l10n.foodFormSodiumLabel,
+                        border: OutlineInputBorder(),
+                      ),
                       keyboardType: TextInputType.number,
-                        validator: (value) => value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
+                      validator: (value) =>
+                          value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _cholesterolController,
-                      decoration: InputDecoration(labelText: l10n.foodFormCholesterolLabel, border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                        labelText: l10n.foodFormCholesterolLabel,
+                        border: OutlineInputBorder(),
+                      ),
                       keyboardType: TextInputType.number,
-                        validator: (value) => value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
+                      validator: (value) =>
+                          value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _waterIntakeController,
-                      decoration: InputDecoration(labelText: l10n.foodFormWaterIntakeLabel, border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                        labelText: l10n.foodFormWaterIntakeLabel,
+                        border: OutlineInputBorder(),
+                      ),
                       keyboardType: TextInputType.number,
-                        validator: (value) => value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
+                      validator: (value) =>
+                          value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
                     ),
                     const SizedBox(height: 24),
                     // Dropdown pour la catégorie
@@ -185,10 +228,20 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
                         final options = snapshot.data ?? [];
                         return DropdownButtonFormField<String>(
                           initialValue: _selectedCategory,
-                          decoration: InputDecoration(labelText: l10n.foodFormCategoryLabel, border: OutlineInputBorder()),
-                          items: options.map((value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
+                          decoration: InputDecoration(
+                            labelText: l10n.foodFormCategoryLabel,
+                            border: OutlineInputBorder(),
+                          ),
+                          items: options
+                              .map(
+                                (value) =>
+                                    DropdownMenuItem<String>(value: value, child: Text(value)),
+                              )
+                              .toList(),
                           onChanged: (value) => setState(() => _selectedCategory = value),
-                          validator: (value) => value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
+                          validator: (value) => value == null || value.isEmpty
+                              ? l10n.foodFieldValidationRequired
+                              : null,
                         );
                       },
                     ),
@@ -200,10 +253,20 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
                         final options = snapshot.data ?? [];
                         return DropdownButtonFormField<String>(
                           initialValue: _selectedMealType,
-                          decoration: InputDecoration(labelText: l10n.foodFormMealTypeLabel, border: OutlineInputBorder()),
-                          items: options.map((value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
+                          decoration: InputDecoration(
+                            labelText: l10n.foodFormMealTypeLabel,
+                            border: OutlineInputBorder(),
+                          ),
+                          items: options
+                              .map(
+                                (value) =>
+                                    DropdownMenuItem<String>(value: value, child: Text(value)),
+                              )
+                              .toList(),
                           onChanged: (value) => setState(() => _selectedMealType = value),
-                            validator: (value) => value == null || value.isEmpty ? l10n.foodFieldValidationRequired : null,
+                          validator: (value) => value == null || value.isEmpty
+                              ? l10n.foodFieldValidationRequired
+                              : null,
                         );
                       },
                     ),
@@ -217,9 +280,20 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                Expanded(child: OutlinedButton(onPressed: widget.onCancel, child: Text(l10n.foodFormCancelButton))),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: widget.onCancel,
+                    child: Text(l10n.foodFormCancelButton),
+                  ),
+                ),
                 const SizedBox(width: 12),
-                Expanded(child: ElevatedButton.icon(onPressed: _onSave, icon: const Icon(Icons.save_outlined), label: Text(l10n.foodFormCreateButton))),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _onSave,
+                    icon: const Icon(Icons.save_outlined),
+                    label: Text(l10n.foodFormCreateButton),
+                  ),
+                ),
               ],
             ),
           ),

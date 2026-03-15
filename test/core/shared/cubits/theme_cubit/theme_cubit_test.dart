@@ -66,8 +66,7 @@ void main() {
       () {
         // arrange
         final binding = TestWidgetsFlutterBinding.ensureInitialized();
-        binding.platformDispatcher.platformBrightnessTestValue =
-            Brightness.light;
+        binding.platformDispatcher.platformBrightnessTestValue = Brightness.light;
 
         // act
         final Brightness brightness = themeCubit.systemBrightness;
@@ -82,8 +81,7 @@ void main() {
       () {
         // arrange
         final binding = TestWidgetsFlutterBinding.ensureInitialized();
-        binding.platformDispatcher.platformBrightnessTestValue =
-            Brightness.dark;
+        binding.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
 
         // act
         final Brightness brightness = themeCubit.systemBrightness;
@@ -101,8 +99,7 @@ void main() {
         () {
           // arrange
           final binding = TestWidgetsFlutterBinding.ensureInitialized();
-          binding.platformDispatcher.platformBrightnessTestValue =
-              Brightness.light;
+          binding.platformDispatcher.platformBrightnessTestValue = Brightness.light;
 
           themeCubit.emit(ThemeMode.system);
 
@@ -119,8 +116,7 @@ void main() {
         () {
           // arrange
           final binding = TestWidgetsFlutterBinding.ensureInitialized();
-          binding.platformDispatcher.platformBrightnessTestValue =
-              Brightness.light;
+          binding.platformDispatcher.platformBrightnessTestValue = Brightness.light;
 
           themeCubit.emit(ThemeMode.dark);
 
@@ -137,8 +133,7 @@ void main() {
         () {
           // arrange
           final binding = TestWidgetsFlutterBinding.ensureInitialized();
-          binding.platformDispatcher.platformBrightnessTestValue =
-              Brightness.light;
+          binding.platformDispatcher.platformBrightnessTestValue = Brightness.light;
 
           themeCubit.emit(ThemeMode.light);
 
@@ -157,8 +152,7 @@ void main() {
         () {
           // arrange
           final binding = TestWidgetsFlutterBinding.ensureInitialized();
-          binding.platformDispatcher.platformBrightnessTestValue =
-              Brightness.dark;
+          binding.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
 
           themeCubit.emit(ThemeMode.system);
 
@@ -175,8 +169,7 @@ void main() {
         () {
           // arrange
           final binding = TestWidgetsFlutterBinding.ensureInitialized();
-          binding.platformDispatcher.platformBrightnessTestValue =
-              Brightness.dark;
+          binding.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
 
           themeCubit.emit(ThemeMode.light);
 
@@ -193,8 +186,7 @@ void main() {
         () {
           // arrange
           final binding = TestWidgetsFlutterBinding.ensureInitialized();
-          binding.platformDispatcher.platformBrightnessTestValue =
-              Brightness.dark;
+          binding.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
 
           themeCubit.emit(ThemeMode.dark);
 
@@ -259,8 +251,7 @@ void main() {
         () {
           // arrange
           final binding = TestWidgetsFlutterBinding.ensureInitialized();
-          binding.platformDispatcher.platformBrightnessTestValue =
-              Brightness.light;
+          binding.platformDispatcher.platformBrightnessTestValue = Brightness.light;
           themeCubit.emit(ThemeMode.system);
 
           // act
@@ -278,8 +269,7 @@ void main() {
         () {
           // arrange
           final binding = TestWidgetsFlutterBinding.ensureInitialized();
-          binding.platformDispatcher.platformBrightnessTestValue =
-              Brightness.dark;
+          binding.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
           themeCubit.emit(ThemeMode.system);
 
           // act

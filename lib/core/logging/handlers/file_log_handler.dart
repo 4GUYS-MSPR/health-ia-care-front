@@ -56,8 +56,7 @@ class FileLogHandler implements LogHandler {
 
     try {
       final directory = await getApplicationCacheDirectory();
-      final filePath =
-          '${directory.path}${Platform.pathSeparator}$_relativePath';
+      final filePath = '${directory.path}${Platform.pathSeparator}$_relativePath';
 
       _currentFile = File(filePath);
 

@@ -1,11 +1,17 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+
 class GenericPieChart extends StatelessWidget {
   final List<double> values;
   final List<String> labels;
   final List<Color> colors;
 
-  const GenericPieChart({required this.values, required this.labels, required this.colors, super.key});
+  const GenericPieChart({
+    required this.values,
+    required this.labels,
+    required this.colors,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +23,11 @@ class GenericPieChart extends StatelessWidget {
           title: total == 0 ? '0%' : '${(values[i] / total * 100).toStringAsFixed(0)}%',
           color: colors[i % colors.length],
           radius: 60,
-          titleStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white),
+          titleStyle: const TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
     ];
     return PieChart(PieChartData(sections: sections, centerSpaceRadius: 36, sectionsSpace: 2));

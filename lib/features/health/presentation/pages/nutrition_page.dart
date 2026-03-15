@@ -53,7 +53,7 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
         final pagination = _getPaginationFromState(state);
         final isLoading = _isLoadingState(state);
         final sortedFoods = _sortFoods(foods);
-    
+
         return ResponsiveLayoutBuilder(
           compact: FoodsCompactLayout(
             foods: sortedFoods,

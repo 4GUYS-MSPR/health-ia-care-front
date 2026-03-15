@@ -158,14 +158,14 @@ class FoodsDataTable extends StatelessWidget {
     final color = category.toLowerCase().contains('fruit')
         ? Colors.orange
         : category.toLowerCase().contains('vegetable') || category.toLowerCase().contains('veggie')
-            ? Colors.green
-            : category.toLowerCase().contains('protein') || category.toLowerCase().contains('meat')
-                ? Colors.red
-                : category.toLowerCase().contains('dairy')
-                    ? Colors.blue
-                    : category.toLowerCase().contains('grain') || category.toLowerCase().contains('cereal')
-                        ? Colors.brown
-                        : Colors.grey;
+        ? Colors.green
+        : category.toLowerCase().contains('protein') || category.toLowerCase().contains('meat')
+        ? Colors.red
+        : category.toLowerCase().contains('dairy')
+        ? Colors.blue
+        : category.toLowerCase().contains('grain') || category.toLowerCase().contains('cereal')
+        ? Colors.brown
+        : Colors.grey;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),

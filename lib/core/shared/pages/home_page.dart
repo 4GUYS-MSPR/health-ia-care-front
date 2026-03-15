@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import '../../extensions/l10n_extension.dart';
 
 import 'dashboards/home_dashboard.dart';
@@ -18,20 +18,26 @@ class HomePage extends StatelessWidget {
           title: Text(context.l10n.appTitle),
           bottom: TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.home),            text: context.l10n.navigationDestinationHome),
-              Tab(icon: Icon(Icons.restaurant_menu), text: context.l10n.navigationDestinationNutrition),
-              Tab(icon: Icon(Icons.people),          text: context.l10n.navigationDestinationMembers),
-              Tab(icon: Icon(Icons.fitness_center),  text: context.l10n.navigationDestinationExercises),
+              Tab(icon: Icon(Icons.home), text: context.l10n.navigationDestinationHome),
+              Tab(
+                icon: Icon(Icons.restaurant_menu),
+                text: context.l10n.navigationDestinationNutrition,
+              ),
+              Tab(icon: Icon(Icons.people), text: context.l10n.navigationDestinationMembers),
+              Tab(
+                icon: Icon(Icons.fitness_center),
+                text: context.l10n.navigationDestinationExercises,
+              ),
             ],
           ),
         ),
-        
+
         body: const TabBarView(
           children: [
-            HomeDashboard(),     
-            NutritionDashboard(), 
-            MembersDashboard(),   
-            ExercisesDashboard(),  
+            HomeDashboard(),
+            NutritionDashboard(),
+            MembersDashboard(),
+            ExercisesDashboard(),
           ],
         ),
       ),
