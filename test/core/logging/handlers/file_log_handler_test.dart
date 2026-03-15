@@ -90,4 +90,3 @@ void main() {
     // integration_test/ folder since path_provider needs platform channels.
   });
 }
-

@@ -9,7 +9,9 @@ import '../errors/nutrition_failure.dart';
 import '../repositories/nutrition_repository.dart';
 
 /// Handles creation of a new food with validation.
-class CreateFoodUsecase with LoggerMixin implements Usecase<NutritionFood, CreateFoodUsecaseParams> {
+class CreateFoodUsecase
+    with LoggerMixin
+    implements Usecase<NutritionFood, CreateFoodUsecaseParams> {
   final NutritionRepository repository;
 
   CreateFoodUsecase({required this.repository});

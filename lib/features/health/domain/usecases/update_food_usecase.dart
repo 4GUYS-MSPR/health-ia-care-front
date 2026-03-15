@@ -9,7 +9,9 @@ import '../errors/nutrition_failure.dart';
 import '../repositories/nutrition_repository.dart';
 
 /// Updates an existing food with validation.
-class UpdateFoodUsecase with LoggerMixin implements Usecase<NutritionFood, UpdateFoodUsecaseParams> {
+class UpdateFoodUsecase
+    with LoggerMixin
+    implements Usecase<NutritionFood, UpdateFoodUsecaseParams> {
   final NutritionRepository repository;
 
   UpdateFoodUsecase({required this.repository});

@@ -84,12 +84,9 @@ class _ErrorPage extends StatelessWidget {
                   label: Text(context.l10n.errorAppViewDetails),
                   style: ButtonStyle(
                     overlayColor: WidgetStateProperty.fromMap({
-                      WidgetState.pressed: context.colorScheme.onSurface
-                          .withAlpha(25),
-                      WidgetState.hovered: context.colorScheme.onSurface
-                          .withAlpha(20),
-                      WidgetState.focused: context.colorScheme.onSurface
-                          .withAlpha(25),
+                      WidgetState.pressed: context.colorScheme.onSurface.withAlpha(25),
+                      WidgetState.hovered: context.colorScheme.onSurface.withAlpha(20),
+                      WidgetState.focused: context.colorScheme.onSurface.withAlpha(25),
                     }),
                     foregroundColor: WidgetStatePropertyAll(
                       context.colorScheme.error,

@@ -246,5 +246,4 @@ class FoodDetailsPanel extends StatelessWidget {
       ),
     );
   }
-
 }

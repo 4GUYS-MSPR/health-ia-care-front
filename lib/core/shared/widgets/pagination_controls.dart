@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../models/pagination_info.dart';
 
-
 class PaginationControls extends StatelessWidget {
   const PaginationControls({
     super.key,

@@ -468,12 +468,14 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
         final currentValue = options.contains(_selectedCategory) ? _selectedCategory : null;
         // On affiche le menu déroulant
         return DropdownButtonFormField<String>(
-          value: currentValue,
+          initialValue: currentValue,
           decoration: const InputDecoration(
             labelText: 'Category',
             border: OutlineInputBorder(),
           ),
-          items: options.map((value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
+          items: options
+              .map((value) => DropdownMenuItem<String>(value: value, child: Text(value)))
+              .toList(),
           onChanged: asyncData.connectionState == ConnectionState.done
               ? (value) => setState(() => _selectedCategory = value)
               : null,
@@ -491,12 +493,14 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
         final options = asyncData.data ?? <String>[];
         final currentValue = options.contains(_selectedMealType) ? _selectedMealType : null;
         return DropdownButtonFormField<String>(
-          value: currentValue,
+          initialValue: currentValue,
           decoration: const InputDecoration(
             labelText: 'Meal Type',
             border: OutlineInputBorder(),
           ),
-          items: options.map((value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
+          items: options
+              .map((value) => DropdownMenuItem<String>(value: value, child: Text(value)))
+              .toList(),
           onChanged: asyncData.connectionState == ConnectionState.done
               ? (value) => setState(() => _selectedMealType = value)
               : null,

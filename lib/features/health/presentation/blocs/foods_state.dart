@@ -32,7 +32,6 @@ final class FoodsLoaded extends FoodsState {
   List<Object?> get props => [foods, pagination];
 }
 
-
 /// Error state with failure information.
 final class FoodsError extends FoodsState {
   final Failure failure;

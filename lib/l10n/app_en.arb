@@ -118,6 +118,94 @@
         "description": "Button text to close the error details dialog"
     },
     "errorAppCloseTooltip": "Close",
+    "nutritionDashboardTitle": "Nutrition",
+    "@nutritionDashboardTitle": {
+        "description": "Title for the nutrition dashboard page"
+    },
+    "nutritionDashboardFoodsLoaded": "foods loaded",
+    "@nutritionDashboardFoodsLoaded": {
+        "description": "Shows the number of foods loaded in the dashboard"
+    },
+    "nutritionDashboardKpiTotalFoods": "Total foods",
+    "@nutritionDashboardKpiTotalFoods": {
+        "description": "KPI label for total foods"
+    },
+    "nutritionDashboardKpiAvgCalories": "Avg. Calories",
+    "@nutritionDashboardKpiAvgCalories": {
+        "description": "KPI label for average calories"
+    },
+    "nutritionDashboardKpiAvgProtein": "Avg. Protein",
+    "@nutritionDashboardKpiAvgProtein": {
+        "description": "KPI label for average protein"
+    },
+    "nutritionDashboardKpiAvgCarbs": "Avg. Carbs",
+    "@nutritionDashboardKpiAvgCarbs": {
+        "description": "KPI label for average carbohydrates"
+    },
+    "nutritionDashboardKpiAvgFat": "Avg. Fat",
+    "@nutritionDashboardKpiAvgFat": {
+        "description": "KPI label for average fat"
+    },
+    "nutritionDashboardPieCategoryTitle": "By category",
+    "@nutritionDashboardPieCategoryTitle": {
+        "description": "Pie chart title for food categories"
+    },
+    "nutritionDashboardPieCategoryNoData": "No data",
+    "@nutritionDashboardPieCategoryNoData": {
+        "description": "Message shown when no data is available for the chart"
+    },
+    "nutritionDashboardPieMealTypeTitle": "By meal type",
+    "@nutritionDashboardPieMealTypeTitle": {
+        "description": "Pie chart title for meal types"
+    },
+    "nutritionDashboardPieMacrosTitle": "Macronutrient distribution",
+    "@nutritionDashboardPieMacrosTitle": {
+        "description": "Pie chart title for macronutrients"
+    },
+    "nutritionDashboardPieMacrosSubtitle": "Protein / Carbs / Fat (% of total mass)",
+    "@nutritionDashboardPieMacrosSubtitle": {
+        "description": "Subtitle for macronutrient pie chart"
+    },
+    "nutritionDashboardPieMacrosLegendProtein": "Protein",
+    "@nutritionDashboardPieMacrosLegendProtein": {
+        "description": "Legend label for protein in macronutrient chart"
+    },
+    "nutritionDashboardPieMacrosLegendCarbs": "Carbs",
+    "@nutritionDashboardPieMacrosLegendCarbs": {
+        "description": "Legend label for carbs in macronutrient chart"
+    },
+    "nutritionDashboardPieMacrosLegendFat": "Fat",
+    "@nutritionDashboardPieMacrosLegendFat": {
+        "description": "Legend label for fat in macronutrient chart"
+    },
+    "nutritionDashboardPieMicrosTitle": "Micronutrient distribution",
+    "@nutritionDashboardPieMicrosTitle": {
+        "description": "Pie chart title for micronutrients"
+    },
+    "nutritionDashboardPieMicrosSubtitle": "Fiber / Sugars / Sodium / Cholesterol / Water (% of total mass)",
+    "@nutritionDashboardPieMicrosSubtitle": {
+        "description": "Subtitle for micronutrient pie chart"
+    },
+    "nutritionDashboardPieMicrosLegendFiber": "Fiber",
+    "@nutritionDashboardPieMicrosLegendFiber": {
+        "description": "Legend label for fiber in micronutrient chart"
+    },
+    "nutritionDashboardPieMicrosLegendSugars": "Sugars",
+    "@nutritionDashboardPieMicrosLegendSugars": {
+        "description": "Legend label for sugars in micronutrient chart"
+    },
+    "nutritionDashboardPieMicrosLegendSodium": "Sodium",
+    "@nutritionDashboardPieMicrosLegendSodium": {
+        "description": "Legend label for sodium in micronutrient chart"
+    },
+    "nutritionDashboardPieMicrosLegendCholesterol": "Cholesterol",
+    "@nutritionDashboardPieMicrosLegendCholesterol": {
+        "description": "Legend label for cholesterol in micronutrient chart"
+    },
+    "nutritionDashboardPieMicrosLegendWater": "Water",
+    "@nutritionDashboardPieMicrosLegendWater": {
+        "description": "Legend label for water in micronutrient chart"
+    },
     "@errorAppCloseTooltip": {
         "description": "Tooltip for the close button"
     },
@@ -148,6 +236,14 @@
     "navigationDestinationNutrition": "Nutrition",
     "@navigationDestinationNutrition": {
         "description": "Navigation destination label for the nutrition page"
+    },
+    "navigationDestinationMembers": "Members",
+    "@navigationDestinationMembers": {
+        "description": "Navigation destination label for the members page"
+    },
+    "navigationDestinationExercises": "Exercises",
+    "@navigationDestinationExercises": {
+        "description": "Navigation destination label for the exercises page"
     },
 
     "foodCardCalories": "Calories",

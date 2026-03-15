@@ -228,12 +228,12 @@ class _CategoryChip extends StatelessWidget {
     final color = category.toLowerCase().contains('fruit')
         ? Colors.orange
         : category.toLowerCase().contains('vegetable') || category.toLowerCase().contains('veggie')
-            ? Colors.green
-            : category.toLowerCase().contains('protein') || category.toLowerCase().contains('meat')
-                ? Colors.red
-                : category.toLowerCase().contains('dairy')
-                    ? Colors.blue
-                    : Colors.grey;
+        ? Colors.green
+        : category.toLowerCase().contains('protein') || category.toLowerCase().contains('meat')
+        ? Colors.red
+        : category.toLowerCase().contains('dairy')
+        ? Colors.blue
+        : Colors.grey;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),

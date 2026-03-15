@@ -113,7 +113,7 @@ class AuthLocalDatasourceImpl with LoggerMixin implements AuthLocalDatasource {
   @override
   Future<String?> getLastAccessToken() async {
     logger.finest('getLastAccessToken called');
-    
+
     logger.fine('Retrieving last access token from secure storage');
     try {
       final token = await secureStorage.read(key: _cachedAccessToken);
@@ -133,7 +133,7 @@ class AuthLocalDatasourceImpl with LoggerMixin implements AuthLocalDatasource {
   @override
   Future<String?> getLastRefreshToken() async {
     logger.finest('getLastRefreshToken called');
-    
+
     logger.fine('Retrieving last refresh token from secure storage');
     try {
       final token = await secureStorage.read(key: _cachedRefreshToken);
