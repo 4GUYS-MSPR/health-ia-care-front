@@ -44,61 +44,59 @@ class _MembersPageContentState extends State<_MembersPageContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: BlocConsumer<MembersBloc, MembersState>(
-          listener: _handleStateChanges,
-          builder: (context, state) {
-            final members = _getMembersFromState(state);
-            final isLoading = _isLoadingState(state);
-            final sortedMembers = _sortMembers(members);
-
-            return ResponsiveLayoutBuilder(
-              compact: MembersCompactLayout(
-                members: sortedMembers,
-                isLoading: isLoading,
-                sortColumnIndex: _sortColumnIndex,
-                sortAscending: _sortAscending,
-                onSort: _onSort,
-                onMemberSelected: _onMemberSelected,
-                onMemberEdit: _showEditDialog,
-                onMemberDelete: _showDeleteDialog,
-                onAddMember: _showCreateDialog,
-                onRefresh: _onRefresh,
-              ),
-              medium: MembersMediumLayout(
-                members: sortedMembers,
-                isLoading: isLoading,
-                sortColumnIndex: _sortColumnIndex,
-                sortAscending: _sortAscending,
-                onSort: _onSort,
-                onMemberSelected: _onMemberSelected,
-                onMemberEdit: _showEditDialog,
-                onMemberDelete: _showDeleteDialog,
-                onAddMember: _showCreateDialog,
-                onRefresh: _onRefresh,
-              ),
-              large: MembersLargeLayout(
-                members: sortedMembers,
-                selectedMember: _selectedMember,
-                isLoading: isLoading,
-                sortColumnIndex: _sortColumnIndex,
-                sortAscending: _sortAscending,
-                showCreateForm: _showCreateForm,
-                onSort: _onSort,
-                onMemberSelected: _onMemberSelected,
-                onMemberEdit: _showEditDialog,
-                onMemberDelete: _showDeleteDialog,
-                onAddMember: _showCreateDialog,
-                onRefresh: _onRefresh,
-                onCloseDetails: _onCloseDetails,
-                onToggleCreateForm: _onToggleCreateForm,
-                onMemberCreated: _onMemberCreated,
-              ),
-            );
-          },
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: BlocConsumer<MembersBloc, MembersState>(
+        listener: _handleStateChanges,
+        builder: (context, state) {
+          final members = _getMembersFromState(state);
+          final isLoading = _isLoadingState(state);
+          final sortedMembers = _sortMembers(members);
+    
+          return ResponsiveLayoutBuilder(
+            compact: MembersCompactLayout(
+              members: sortedMembers,
+              isLoading: isLoading,
+              sortColumnIndex: _sortColumnIndex,
+              sortAscending: _sortAscending,
+              onSort: _onSort,
+              onMemberSelected: _onMemberSelected,
+              onMemberEdit: _showEditDialog,
+              onMemberDelete: _showDeleteDialog,
+              onAddMember: _showCreateDialog,
+              onRefresh: _onRefresh,
+            ),
+            medium: MembersMediumLayout(
+              members: sortedMembers,
+              isLoading: isLoading,
+              sortColumnIndex: _sortColumnIndex,
+              sortAscending: _sortAscending,
+              onSort: _onSort,
+              onMemberSelected: _onMemberSelected,
+              onMemberEdit: _showEditDialog,
+              onMemberDelete: _showDeleteDialog,
+              onAddMember: _showCreateDialog,
+              onRefresh: _onRefresh,
+            ),
+            large: MembersLargeLayout(
+              members: sortedMembers,
+              selectedMember: _selectedMember,
+              isLoading: isLoading,
+              sortColumnIndex: _sortColumnIndex,
+              sortAscending: _sortAscending,
+              showCreateForm: _showCreateForm,
+              onSort: _onSort,
+              onMemberSelected: _onMemberSelected,
+              onMemberEdit: _showEditDialog,
+              onMemberDelete: _showDeleteDialog,
+              onAddMember: _showCreateDialog,
+              onRefresh: _onRefresh,
+              onCloseDetails: _onCloseDetails,
+              onToggleCreateForm: _onToggleCreateForm,
+              onMemberCreated: _onMemberCreated,
+            ),
+          );
+        },
       ),
     );
   }
