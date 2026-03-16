@@ -37,17 +37,22 @@ class MembersDataTable extends StatelessWidget {
     final l10n = context.l10n;
 
     return SingleChildScrollView(
-      child: SizedBox(
-        width: double.infinity,
-        child: DataTable(
-          sortColumnIndex: sortColumnIndex,
-          sortAscending: sortAscending,
-          showCheckboxColumn: false,
-          headingRowColor: WidgetStatePropertyAll(
-            context.colorScheme.surfaceContainerHighest.withAlpha(128),
+      scrollDirection: Axis.horizontal,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minWidth: MediaQuery.sizeOf(context).width),
+        child: SingleChildScrollView(
+          child: DataTable(
+            sortColumnIndex: sortColumnIndex,
+            sortAscending: sortAscending,
+            showCheckboxColumn: false,
+            horizontalMargin: compact ? 8 : 12,
+            columnSpacing: compact ? 10 : 14,
+            headingRowColor: WidgetStatePropertyAll(
+              context.colorScheme.surfaceContainerHighest.withAlpha(128),
+            ),
+            columns: _buildColumns(context, l10n),
+            rows: _buildRows(context, l10n),
           ),
-          columns: _buildColumns(context, l10n),
-          rows: _buildRows(context, l10n),
         ),
       ),
     );
@@ -161,11 +166,16 @@ class MembersDataTable extends StatelessWidget {
     };
 
     return Row(
-      mainAxisSize: MainAxisSize.min,
       children: [
         Icon(icon, size: 16, color: context.colorScheme.onSurfaceVariant),
         const SizedBox(width: 4),
-        Text(label),
+        Flexible(
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
       ],
     );
   }
@@ -190,6 +200,8 @@ class MembersDataTable extends StatelessWidget {
           color: color.shade700,
           fontWeight: FontWeight.w600,
         ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
@@ -218,6 +230,8 @@ class MembersDataTable extends StatelessWidget {
           color: color.shade700,
           fontWeight: FontWeight.w600,
         ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
