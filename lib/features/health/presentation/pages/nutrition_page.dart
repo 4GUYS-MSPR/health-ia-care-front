@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../../core/extensions/l10n_extension.dart';
 import '../../../../core/extensions/theme_extension.dart';
 import '../../../../core/shared/layouts/responsive_layout_builder.dart';
 import '../../../../core/shared/models/pagination_info.dart';
+import '../../domain/entities/enum_item.dart';
 import '../../domain/entities/nutrition_food.dart';
 import '../blocs/foods_bloc.dart';
 import '../layouts/foods_compact_layout.dart';
@@ -13,22 +13,36 @@ import '../layouts/foods_large_layout.dart';
 import '../layouts/foods_medium_layout.dart';
 import '../widgets/food_delete_dialog.dart';
 import '../widgets/food_form_dialog.dart';
+import '../widgets/health_error_banner.dart';
 
 /// Page displaying all foods with CRUD functionality.
 class NutritionPage extends StatelessWidget {
-  const NutritionPage({super.key});
+  const NutritionPage({
+    super.key,
+    required this.createBloc,
+    required this.loadEnumByCandidates,
+  });
+
+  final FoodsBloc Function() createBloc;
+  final Future<List<EnumItem>> Function(List<String> candidates) loadEnumByCandidates;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GetIt.I<FoodsBloc>()..add(const LoadFoodsRequested()),
-      child: const _NutritionPageContent(),
+      create: (context) => createBloc()..add(const LoadFoodsRequested()),
+      child: _NutritionPageContent(
+        loadEnumByCandidates: loadEnumByCandidates,
+      ),
     );
   }
 }
 
 class _NutritionPageContent extends StatefulWidget {
-  const _NutritionPageContent();
+  const _NutritionPageContent({
+    required this.loadEnumByCandidates,
+  });
+
+  final Future<List<EnumItem>> Function(List<String> candidates) loadEnumByCandidates;
 
   @override
   State<_NutritionPageContent> createState() => _NutritionPageContentState();
@@ -49,62 +63,79 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
     return BlocConsumer<FoodsBloc, FoodsState>(
       listener: _handleStateChanges,
       builder: (context, state) {
+        final l10n = context.l10n;
         final foods = _getFoodsFromState(state);
         final pagination = _getPaginationFromState(state);
         final isLoading = _isLoadingState(state);
         final sortedFoods = _sortFoods(foods);
+        final errorMessage = switch (state) {
+          FoodsError(:final failure) => failure.debugMessage ?? l10n.foodsErrorLoading,
+          _ => null,
+        };
 
-        return ResponsiveLayoutBuilder(
-          compact: FoodsCompactLayout(
-            foods: sortedFoods,
-            pagination: pagination,
-            isLoading: isLoading,
-            sortColumnIndex: _sortColumnIndex,
-            sortAscending: _sortAscending,
-            onSort: _onSort,
-            onFoodSelected: _onFoodSelected,
-            onFoodEdit: _showEditDialog,
-            onFoodDelete: _showDeleteDialog,
-            onAddFood: _showCreateDialog,
-            onRefresh: _onRefresh,
-            onNextPage: _onNextPage,
-            onPreviousPage: _onPreviousPage,
-          ),
-          medium: FoodsMediumLayout(
-            foods: sortedFoods,
-            pagination: pagination,
-            isLoading: isLoading,
-            sortColumnIndex: _sortColumnIndex,
-            sortAscending: _sortAscending,
-            onSort: _onSort,
-            onFoodSelected: _onFoodSelected,
-            onFoodEdit: _showEditDialog,
-            onFoodDelete: _showDeleteDialog,
-            onAddFood: _showCreateDialog,
-            onRefresh: _onRefresh,
-            onNextPage: _onNextPage,
-            onPreviousPage: _onPreviousPage,
-          ),
-          large: FoodsLargeLayout(
-            foods: sortedFoods,
-            pagination: pagination,
-            selectedFood: _selectedFood,
-            isLoading: isLoading,
-            sortColumnIndex: _sortColumnIndex,
-            sortAscending: _sortAscending,
-            showCreateForm: _showCreateForm,
-            onSort: _onSort,
-            onFoodSelected: _onFoodSelected,
-            onFoodEdit: _showEditDialog,
-            onFoodDelete: _showDeleteDialog,
-            onAddFood: _showCreateDialog,
-            onRefresh: _onRefresh,
-            onCloseDetails: _onCloseDetails,
-            onToggleCreateForm: _onToggleCreateForm,
-            onFoodCreated: _onFoodCreated,
-            onNextPage: _onNextPage,
-            onPreviousPage: _onPreviousPage,
-          ),
+        return Column(
+          children: [
+            if (errorMessage != null)
+              HealthErrorBanner(
+                message: errorMessage,
+                onRetry: _onRefresh,
+              ),
+            Expanded(
+              child: ResponsiveLayoutBuilder(
+                compact: FoodsCompactLayout(
+                  foods: sortedFoods,
+                  pagination: pagination,
+                  isLoading: isLoading,
+                  sortColumnIndex: _sortColumnIndex,
+                  sortAscending: _sortAscending,
+                  onSort: _onSort,
+                  onFoodSelected: _onFoodSelected,
+                  onFoodEdit: _showEditDialog,
+                  onFoodDelete: _showDeleteDialog,
+                  onAddFood: _showCreateDialog,
+                  onRefresh: _onRefresh,
+                  onNextPage: _onNextPage,
+                  onPreviousPage: _onPreviousPage,
+                ),
+                medium: FoodsMediumLayout(
+                  foods: sortedFoods,
+                  pagination: pagination,
+                  isLoading: isLoading,
+                  sortColumnIndex: _sortColumnIndex,
+                  sortAscending: _sortAscending,
+                  onSort: _onSort,
+                  onFoodSelected: _onFoodSelected,
+                  onFoodEdit: _showEditDialog,
+                  onFoodDelete: _showDeleteDialog,
+                  onAddFood: _showCreateDialog,
+                  onRefresh: _onRefresh,
+                  onNextPage: _onNextPage,
+                  onPreviousPage: _onPreviousPage,
+                ),
+                large: FoodsLargeLayout(
+                  foods: sortedFoods,
+                  pagination: pagination,
+                  selectedFood: _selectedFood,
+                  isLoading: isLoading,
+                  sortColumnIndex: _sortColumnIndex,
+                  sortAscending: _sortAscending,
+                  showCreateForm: _showCreateForm,
+                  onSort: _onSort,
+                  onFoodSelected: _onFoodSelected,
+                  onFoodEdit: _showEditDialog,
+                  onFoodDelete: _showDeleteDialog,
+                  onAddFood: _showCreateDialog,
+                  onRefresh: _onRefresh,
+                  onCloseDetails: _onCloseDetails,
+                  onToggleCreateForm: _onToggleCreateForm,
+                  onFoodCreated: _onFoodCreated,
+                  loadEnumByCandidates: widget.loadEnumByCandidates,
+                  onNextPage: _onNextPage,
+                  onPreviousPage: _onPreviousPage,
+                ),
+              ),
+            ),
+          ],
         );
       },
     );
@@ -262,7 +293,10 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
   }
 
   Future<void> _showCreateDialog() async {
-    final data = await FoodFormDialog.show(context);
+    final data = await FoodFormDialog.show(
+      context,
+      loadEnumByCandidates: widget.loadEnumByCandidates,
+    );
     if (data != null && mounted) {
       context.read<FoodsBloc>().add(
         CreateFoodRequested(
@@ -276,15 +310,19 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
           sodium: data.sodium,
           cholesterol: data.cholesterol,
           waterIntake: data.waterIntake,
-          category: data.category,
-          mealType: data.mealType,
+          categoryId: data.categoryId,
+          mealTypeId: data.mealTypeId,
         ),
       );
     }
   }
 
   Future<void> _showEditDialog(NutritionFood food) async {
-    final data = await FoodFormDialog.show(context, food: food);
+    final data = await FoodFormDialog.show(
+      context,
+      food: food,
+      loadEnumByCandidates: widget.loadEnumByCandidates,
+    );
     if (data != null && mounted) {
       context.read<FoodsBloc>().add(
         UpdateFoodRequested(
@@ -299,8 +337,8 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
           sodium: data.sodium,
           cholesterol: data.cholesterol,
           waterIntake: data.waterIntake,
-          category: data.category,
-          mealType: data.mealType,
+          categoryId: data.categoryId,
+          mealTypeId: data.mealTypeId,
         ),
       );
     }

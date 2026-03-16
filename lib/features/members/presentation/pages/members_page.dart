@@ -1,33 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../../core/extensions/l10n_extension.dart';
 import '../../../../core/extensions/theme_extension.dart';
 import '../../../../core/shared/layouts/responsive_layout_builder.dart';
+import '../../data/models/enum_item_model.dart';
 import '../../domain/entities/member.dart';
+import '../../domain/entities/objective.dart';
 import '../bloc/members_bloc.dart';
 import '../layouts/members_compact_layout.dart';
 import '../layouts/members_large_layout.dart';
 import '../layouts/members_medium_layout.dart';
 import '../widgets/member_delete_dialog.dart';
+import '../widgets/member_error_banner.dart';
 import '../widgets/member_form_dialog.dart';
 
 /// Page displaying all members with CRUD functionality.
 class MembersPage extends StatelessWidget {
-  const MembersPage({super.key});
+  const MembersPage({
+    super.key,
+    required this.createBloc,
+    required this.loadObjectiveOptions,
+    required this.loadGenderOptions,
+    required this.loadLevelOptions,
+    required this.loadSubscriptionOptions,
+  });
+
+  final MembersBloc Function() createBloc;
+  final Future<List<Objective>> Function() loadObjectiveOptions;
+  final Future<List<EnumItemModel>> Function() loadGenderOptions;
+  final Future<List<EnumItemModel>> Function() loadLevelOptions;
+  final Future<List<EnumItemModel>> Function() loadSubscriptionOptions;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GetIt.I<MembersBloc>()..add(const LoadMembersRequested()),
-      child: const _MembersPageContent(),
+      create: (context) => createBloc()..add(const LoadMembersRequested()),
+      child: _MembersPageContent(
+        loadObjectiveOptions: loadObjectiveOptions,
+        loadGenderOptions: loadGenderOptions,
+        loadLevelOptions: loadLevelOptions,
+        loadSubscriptionOptions: loadSubscriptionOptions,
+      ),
     );
   }
 }
 
 class _MembersPageContent extends StatefulWidget {
-  const _MembersPageContent();
+  const _MembersPageContent({
+    required this.loadObjectiveOptions,
+    required this.loadGenderOptions,
+    required this.loadLevelOptions,
+    required this.loadSubscriptionOptions,
+  });
+
+  final Future<List<Objective>> Function() loadObjectiveOptions;
+  final Future<List<EnumItemModel>> Function() loadGenderOptions;
+  final Future<List<EnumItemModel>> Function() loadLevelOptions;
+  final Future<List<EnumItemModel>> Function() loadSubscriptionOptions;
 
   @override
   State<_MembersPageContent> createState() => _MembersPageContentState();
@@ -41,63 +71,93 @@ class _MembersPageContentState extends State<_MembersPageContent> {
   // Selection state
   Member? _selectedMember;
   bool _showCreateForm = false;
+  late final Future<List<Objective>> _objectiveOptionsFuture;
+  late final Future<List<EnumItemModel>> _genderOptionsFuture;
+  late final Future<List<EnumItemModel>> _levelOptionsFuture;
+  late final Future<List<EnumItemModel>> _subscriptionOptionsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _objectiveOptionsFuture = widget.loadObjectiveOptions();
+    _genderOptionsFuture = widget.loadGenderOptions();
+    _levelOptionsFuture = widget.loadLevelOptions();
+    _subscriptionOptionsFuture = widget.loadSubscriptionOptions();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: BlocConsumer<MembersBloc, MembersState>(
-        listener: _handleStateChanges,
-        builder: (context, state) {
-          final members = _getMembersFromState(state);
-          final isLoading = _isLoadingState(state);
-          final sortedMembers = _sortMembers(members);
-    
-          return ResponsiveLayoutBuilder(
-            compact: MembersCompactLayout(
-              members: sortedMembers,
-              isLoading: isLoading,
-              sortColumnIndex: _sortColumnIndex,
-              sortAscending: _sortAscending,
-              onSort: _onSort,
-              onMemberSelected: _onMemberSelected,
-              onMemberEdit: _showEditDialog,
-              onMemberDelete: _showDeleteDialog,
-              onAddMember: _showCreateDialog,
-              onRefresh: _onRefresh,
+    return BlocConsumer<MembersBloc, MembersState>(
+      listener: _handleStateChanges,
+      builder: (context, state) {
+        final l10n = context.l10n;
+        final members = _getMembersFromState(state);
+        final isLoading = _isLoadingState(state);
+        final sortedMembers = _sortMembers(members);
+        final errorMessage = switch (state) {
+          MembersError(:final failure) => failure.debugMessage ?? l10n.membersErrorLoading,
+          _ => null,
+        };
+
+        return Column(
+          children: [
+            if (errorMessage != null)
+              MemberErrorBanner(
+                message: errorMessage,
+                onRetry: _onRefresh,
+              ),
+            Expanded(
+              child: ResponsiveLayoutBuilder(
+                compact: MembersCompactLayout(
+                  members: sortedMembers,
+                  isLoading: isLoading,
+                  sortColumnIndex: _sortColumnIndex,
+                  sortAscending: _sortAscending,
+                  onSort: _onSort,
+                  onMemberSelected: _onMemberSelected,
+                  onMemberEdit: _showEditDialog,
+                  onMemberDelete: _showDeleteDialog,
+                  onAddMember: _showCreateDialog,
+                  onRefresh: _onRefresh,
+                ),
+                medium: MembersMediumLayout(
+                  members: sortedMembers,
+                  isLoading: isLoading,
+                  sortColumnIndex: _sortColumnIndex,
+                  sortAscending: _sortAscending,
+                  onSort: _onSort,
+                  onMemberSelected: _onMemberSelected,
+                  onMemberEdit: _showEditDialog,
+                  onMemberDelete: _showDeleteDialog,
+                  onAddMember: _showCreateDialog,
+                  onRefresh: _onRefresh,
+                ),
+                large: MembersLargeLayout(
+                  members: sortedMembers,
+                  selectedMember: _selectedMember,
+                  isLoading: isLoading,
+                  sortColumnIndex: _sortColumnIndex,
+                  sortAscending: _sortAscending,
+                  showCreateForm: _showCreateForm,
+                  objectiveOptionsFuture: _objectiveOptionsFuture,
+                  genderOptionsFuture: _genderOptionsFuture,
+                  levelOptionsFuture: _levelOptionsFuture,
+                  subscriptionOptionsFuture: _subscriptionOptionsFuture,
+                  onSort: _onSort,
+                  onMemberSelected: _onMemberSelected,
+                  onMemberEdit: _showEditDialog,
+                  onMemberDelete: _showDeleteDialog,
+                  onAddMember: _showCreateDialog,
+                  onRefresh: _onRefresh,
+                  onCloseDetails: _onCloseDetails,
+                  onToggleCreateForm: _onToggleCreateForm,
+                  onMemberCreated: _onMemberCreated,
+                ),
+              ),
             ),
-            medium: MembersMediumLayout(
-              members: sortedMembers,
-              isLoading: isLoading,
-              sortColumnIndex: _sortColumnIndex,
-              sortAscending: _sortAscending,
-              onSort: _onSort,
-              onMemberSelected: _onMemberSelected,
-              onMemberEdit: _showEditDialog,
-              onMemberDelete: _showDeleteDialog,
-              onAddMember: _showCreateDialog,
-              onRefresh: _onRefresh,
-            ),
-            large: MembersLargeLayout(
-              members: sortedMembers,
-              selectedMember: _selectedMember,
-              isLoading: isLoading,
-              sortColumnIndex: _sortColumnIndex,
-              sortAscending: _sortAscending,
-              showCreateForm: _showCreateForm,
-              onSort: _onSort,
-              onMemberSelected: _onMemberSelected,
-              onMemberEdit: _showEditDialog,
-              onMemberDelete: _showDeleteDialog,
-              onAddMember: _showCreateDialog,
-              onRefresh: _onRefresh,
-              onCloseDetails: _onCloseDetails,
-              onToggleCreateForm: _onToggleCreateForm,
-              onMemberCreated: _onMemberCreated,
-            ),
-          );
-        },
-      ),
+          ],
+        );
+      },
     );
   }
 
@@ -246,7 +306,13 @@ class _MembersPageContentState extends State<_MembersPageContent> {
   }
 
   Future<void> _showCreateDialog() async {
-    final data = await MemberFormDialog.show(context);
+    final data = await MemberFormDialog.show(
+      context,
+      objectiveOptionsFuture: _objectiveOptionsFuture,
+      genderOptionsFuture: _genderOptionsFuture,
+      levelOptionsFuture: _levelOptionsFuture,
+      subscriptionOptionsFuture: _subscriptionOptionsFuture,
+    );
     if (data != null && mounted) {
       context.read<MembersBloc>().add(
         CreateMemberRequested(
@@ -257,16 +323,23 @@ class _MembersPageContentState extends State<_MembersPageContent> {
           weight: data.weight,
           workoutFrequency: data.workoutFrequency,
           objectives: data.objectives,
-          gender: data.gender,
-          level: data.level,
-          subscription: data.subscription,
+          genderId: data.genderId,
+          levelId: data.levelId,
+          subscriptionId: data.subscriptionId,
         ),
       );
     }
   }
 
   Future<void> _showEditDialog(Member member) async {
-    final data = await MemberFormDialog.show(context, member: member);
+    final data = await MemberFormDialog.show(
+      context,
+      member: member,
+      objectiveOptionsFuture: _objectiveOptionsFuture,
+      genderOptionsFuture: _genderOptionsFuture,
+      levelOptionsFuture: _levelOptionsFuture,
+      subscriptionOptionsFuture: _subscriptionOptionsFuture,
+    );
     if (data != null && mounted) {
       context.read<MembersBloc>().add(
         UpdateMemberRequested(
@@ -278,9 +351,9 @@ class _MembersPageContentState extends State<_MembersPageContent> {
           weight: data.weight,
           workoutFrequency: data.workoutFrequency,
           objectives: data.objectives,
-          gender: data.gender,
-          level: data.level,
-          subscription: data.subscription,
+          genderId: data.genderId,
+          levelId: data.levelId,
+          subscriptionId: data.subscriptionId,
         ),
       );
     }

@@ -4,10 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/extensions/l10n_extension.dart';
 import '../../../../core/extensions/theme_extension.dart';
-import '../../domain/entities/gender.dart';
-import '../../domain/entities/level.dart';
+import '../../data/models/enum_item_model.dart';
 import '../../domain/entities/objective.dart';
-import '../../domain/entities/subscription.dart';
 import '../bloc/members_bloc.dart';
 
 /// A panel widget for creating a new member inline (for large layouts).
@@ -16,10 +14,18 @@ class MemberFormPanel extends StatefulWidget {
     super.key,
     required this.onCancel,
     required this.onSaved,
+    required this.objectiveOptionsFuture,
+    required this.genderOptionsFuture,
+    required this.levelOptionsFuture,
+    required this.subscriptionOptionsFuture,
   });
 
   final VoidCallback onCancel;
   final VoidCallback onSaved;
+  final Future<List<Objective>> objectiveOptionsFuture;
+  final Future<List<EnumItemModel>> genderOptionsFuture;
+  final Future<List<EnumItemModel>> levelOptionsFuture;
+  final Future<List<EnumItemModel>> subscriptionOptionsFuture;
 
   @override
   State<MemberFormPanel> createState() => _MemberFormPanelState();
@@ -34,12 +40,15 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
   late final TextEditingController _bmiController;
   late final TextEditingController _fatPercentageController;
   late final TextEditingController _workoutFrequencyController;
-  late final TextEditingController _newObjectiveController;
+  late final Future<List<Objective>> _objectiveOptionsFuture;
+  late final Future<List<EnumItemModel>> _genderOptionsFuture;
+  late final Future<List<EnumItemModel>> _levelOptionsFuture;
+  late final Future<List<EnumItemModel>> _subscriptionOptionsFuture;
 
-  Gender _gender = Gender.unknow;
-  Level _level = Level.beginner;
-  Subscription _subscription = Subscription.free;
-  List<Objective> _objectives = [];
+  int? _genderId;
+  int? _levelId;
+  int? _subscriptionId;
+  final List<Objective> _objectives = [];
 
   @override
   void initState() {
@@ -50,7 +59,10 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
     _bmiController = TextEditingController();
     _fatPercentageController = TextEditingController();
     _workoutFrequencyController = TextEditingController(text: '0');
-    _newObjectiveController = TextEditingController();
+    _objectiveOptionsFuture = widget.objectiveOptionsFuture;
+    _genderOptionsFuture = widget.genderOptionsFuture;
+    _levelOptionsFuture = widget.levelOptionsFuture;
+    _subscriptionOptionsFuture = widget.subscriptionOptionsFuture;
   }
 
   @override
@@ -61,7 +73,6 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
     _bmiController.dispose();
     _fatPercentageController.dispose();
     _workoutFrequencyController.dispose();
-    _newObjectiveController.dispose();
     super.dispose();
   }
 
@@ -73,18 +84,6 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
       final heightInMeters = height / 100;
       final bmi = weight / (heightInMeters * heightInMeters);
       _bmiController.text = bmi.toStringAsFixed(1);
-    }
-  }
-
-  void _addObjective() {
-    final text = _newObjectiveController.text.trim();
-    if (text.isNotEmpty) {
-      setState(() {
-        _objectives.add(
-          Objective(description: text, createdAt: DateTime.now()),
-        );
-        _newObjectiveController.clear();
-      });
     }
   }
 
@@ -105,9 +104,9 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
           weight: double.parse(_weightController.text),
           workoutFrequency: int.parse(_workoutFrequencyController.text),
           objectives: _objectives,
-          gender: _gender,
-          level: _level,
-          subscription: _subscription,
+          genderId: _genderId,
+          levelId: _levelId,
+          subscriptionId: _subscriptionId,
         ),
       );
       widget.onSaved();
@@ -203,28 +202,21 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: DropdownButtonFormField<Gender>(
-                value: _gender,
-                decoration: InputDecoration(
-                  labelText: l10n.memberFormGenderLabel,
-                  border: const OutlineInputBorder(),
-                ),
-                items: [
-                  DropdownMenuItem(
-                    value: Gender.male,
-                    child: Text(l10n.memberGenderMale),
-                  ),
-                  DropdownMenuItem(
-                    value: Gender.female,
-                    child: Text(l10n.memberGenderFemale),
-                  ),
-                  DropdownMenuItem(
-                    value: Gender.unknow,
-                    child: Text(l10n.memberGenderUnknown),
-                  ),
-                ],
-                onChanged: (value) {
-                  if (value != null) setState(() => _gender = value);
+              child: FutureBuilder<List<EnumItemModel>>(
+                future: _genderOptionsFuture,
+                builder: (context, snapshot) {
+                  final options = snapshot.data ?? const [];
+                  return DropdownButtonFormField<int>(
+                    initialValue: _genderId,
+                    decoration: InputDecoration(
+                      labelText: l10n.memberFormGenderLabel,
+                      border: const OutlineInputBorder(),
+                    ),
+                    items: options
+                        .map((e) => DropdownMenuItem(value: e.id, child: Text(e.value)))
+                        .toList(),
+                    onChanged: (value) => setState(() => _genderId = value),
+                  );
                 },
               ),
             ),
@@ -234,55 +226,41 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
         Row(
           children: [
             Expanded(
-              child: DropdownButtonFormField<Level>(
-                value: _level,
-                decoration: InputDecoration(
-                  labelText: l10n.memberFormLevelLabel,
-                  border: const OutlineInputBorder(),
-                ),
-                items: [
-                  DropdownMenuItem(
-                    value: Level.beginner,
-                    child: Text(l10n.memberLevelBeginner),
-                  ),
-                  DropdownMenuItem(
-                    value: Level.intermediate,
-                    child: Text(l10n.memberLevelIntermediate),
-                  ),
-                  DropdownMenuItem(
-                    value: Level.expert,
-                    child: Text(l10n.memberLevelExpert),
-                  ),
-                ],
-                onChanged: (value) {
-                  if (value != null) setState(() => _level = value);
+              child: FutureBuilder<List<EnumItemModel>>(
+                future: _levelOptionsFuture,
+                builder: (context, snapshot) {
+                  final options = snapshot.data ?? const [];
+                  return DropdownButtonFormField<int>(
+                    initialValue: _levelId,
+                    decoration: InputDecoration(
+                      labelText: l10n.memberFormLevelLabel,
+                      border: const OutlineInputBorder(),
+                    ),
+                    items: options
+                        .map((e) => DropdownMenuItem(value: e.id, child: Text(e.value)))
+                        .toList(),
+                    onChanged: (value) => setState(() => _levelId = value),
+                  );
                 },
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: DropdownButtonFormField<Subscription>(
-                value: _subscription,
-                decoration: InputDecoration(
-                  labelText: l10n.memberFormSubscriptionLabel,
-                  border: const OutlineInputBorder(),
-                ),
-                items: [
-                  DropdownMenuItem(
-                    value: Subscription.free,
-                    child: Text(l10n.memberSubscriptionFree),
-                  ),
-                  DropdownMenuItem(
-                    value: Subscription.premium,
-                    child: Text(l10n.memberSubscriptionPremium),
-                  ),
-                  DropdownMenuItem(
-                    value: Subscription.premiumPlus,
-                    child: Text(l10n.memberSubscriptionPremiumPlus),
-                  ),
-                ],
-                onChanged: (value) {
-                  if (value != null) setState(() => _subscription = value);
+              child: FutureBuilder<List<EnumItemModel>>(
+                future: _subscriptionOptionsFuture,
+                builder: (context, snapshot) {
+                  final options = snapshot.data ?? const [];
+                  return DropdownButtonFormField<int>(
+                    initialValue: _subscriptionId,
+                    decoration: InputDecoration(
+                      labelText: l10n.memberFormSubscriptionLabel,
+                      border: const OutlineInputBorder(),
+                    ),
+                    items: options
+                        .map((e) => DropdownMenuItem(value: e.id, child: Text(e.value)))
+                        .toList(),
+                    onChanged: (value) => setState(() => _subscriptionId = value),
+                  );
                 },
               ),
             ),
@@ -425,25 +403,38 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
           ),
         ),
         const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: _newObjectiveController,
-                decoration: InputDecoration(
-                  labelText: l10n.memberFormObjectivesLabel,
-                  border: const OutlineInputBorder(),
-                  hintText: l10n.memberFormObjectivesHint,
-                ),
-                onSubmitted: (_) => _addObjective(),
-              ),
-            ),
-            const SizedBox(width: 8),
-            IconButton.filled(
-              onPressed: _addObjective,
-              icon: const Icon(Icons.add),
-            ),
-          ],
+        FutureBuilder<List<Objective>>(
+          future: _objectiveOptionsFuture,
+          builder: (context, snapshot) {
+            final options = snapshot.data ?? const <Objective>[];
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: LinearProgressIndicator(),
+              );
+            }
+
+            return Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: options.map((option) {
+                final selected = _objectives.any((o) => o.id == option.id);
+                return FilterChip(
+                  selected: selected,
+                  label: Text(option.description),
+                  onSelected: (value) {
+                    setState(() {
+                      if (value) {
+                        _objectives.add(option);
+                      } else {
+                        _objectives.removeWhere((o) => o.id == option.id);
+                      }
+                    });
+                  },
+                );
+              }).toList(),
+            );
+          },
         ),
         if (_objectives.isNotEmpty) ...[
           const SizedBox(height: 12),

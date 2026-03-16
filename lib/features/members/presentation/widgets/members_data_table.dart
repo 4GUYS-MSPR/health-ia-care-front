@@ -45,8 +45,10 @@ class MembersDataTable extends StatelessWidget {
             sortColumnIndex: sortColumnIndex,
             sortAscending: sortAscending,
             showCheckboxColumn: false,
-            horizontalMargin: compact ? 8 : 12,
-            columnSpacing: compact ? 10 : 14,
+            horizontalMargin: compact ? 12 : 16,
+            columnSpacing: compact ? 20 : 28,
+            dataRowMinHeight: compact ? 44 : 52,
+            dataRowMaxHeight: compact ? 56 : 64,
             headingRowColor: WidgetStatePropertyAll(
               context.colorScheme.surfaceContainerHighest.withAlpha(128),
             ),

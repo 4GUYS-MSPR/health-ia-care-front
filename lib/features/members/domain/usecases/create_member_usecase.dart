@@ -57,7 +57,9 @@ class CreateMemberUsecase with LoggerMixin implements Usecase<Member, CreateMemb
     }
 
     logger.fine('Validation passed, delegating to repository');
-    return repository.createMember(
+    
+    final newMember = Member(
+      id: 0, // Assigned by backend
       age: params.age,
       bmi: params.bmi,
       fatPercentage: params.fatPercentage,
@@ -65,10 +67,16 @@ class CreateMemberUsecase with LoggerMixin implements Usecase<Member, CreateMemb
       weight: params.weight,
       workoutFrequency: params.workoutFrequency,
       objectives: params.objectives,
-      gender: params.gender,
-      level: params.level,
-      subscription: params.subscription,
+      gender: Gender.unknow,
+      level: Level.beginner,
+      subscription: Subscription.free,
+      genderId: params.genderId,
+      levelId: params.levelId,
+      subscriptionId: params.subscriptionId,
     );
+    
+    return repository.createMember(newMember);
+
   }
 }
 
@@ -81,9 +89,9 @@ class CreateMemberUsecaseParams extends Equatable {
   final double weight;
   final int workoutFrequency;
   final List<Objective> objectives;
-  final Gender gender;
-  final Level level;
-  final Subscription subscription;
+  final int? genderId;
+  final int? levelId;
+  final int? subscriptionId;
 
   const CreateMemberUsecaseParams({
     this.age,
@@ -93,9 +101,9 @@ class CreateMemberUsecaseParams extends Equatable {
     required this.weight,
     required this.workoutFrequency,
     this.objectives = const [],
-    this.gender = Gender.unknow,
-    required this.level,
-    this.subscription = Subscription.free,
+    this.genderId,
+    this.levelId,
+    this.subscriptionId,
   });
 
   @override
@@ -107,8 +115,8 @@ class CreateMemberUsecaseParams extends Equatable {
     weight,
     workoutFrequency,
     objectives,
-    gender,
-    level,
-    subscription,
+    genderId,
+    levelId,
+    subscriptionId,
   ];
 }

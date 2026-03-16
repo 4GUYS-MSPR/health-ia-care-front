@@ -2,12 +2,13 @@ import 'package:dio/dio.dart';
 
 import '../../../../core/errors/server_failures.dart';
 import '../../../../core/shared/models/pagination_info.dart';
+import '../models/enum_item_model.dart';
 import '../models/nutrition_food_model.dart';
 
 /// Remote datasource for nutrition foods API operations.
 abstract class NutritionRemoteDataSource {
-  Future<List<String>> getFoodCategories();
-  Future<List<String>> getMealTypes();
+  Future<List<EnumItemModel>> getFoodCategories();
+  Future<List<EnumItemModel>> getMealTypes();
   Future<NutritionFoodModel> createFood({
     required String label,
     required int calories,
@@ -19,8 +20,8 @@ abstract class NutritionRemoteDataSource {
     required int sodium,
     required int cholesterol,
     required int waterIntake,
-    required String category,
-    required String mealType,
+    required int categoryId,
+    required int mealTypeId,
   });
   Future<void> deleteFood(int id);
   Future<List<NutritionFoodModel>> getFoods();
@@ -41,8 +42,8 @@ abstract class NutritionRemoteDataSource {
     int? sodium,
     int? cholesterol,
     int? waterIntake,
-    String? category,
-    String? mealType,
+    int? categoryId,
+    int? mealTypeId,
   });
 }
 
@@ -55,9 +56,9 @@ class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
   NutritionRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<List<String>> getFoodCategories() => _fetchEnumValues(_foodCategoryModel);
+  Future<List<EnumItemModel>> getFoodCategories() => _fetchEnumItems(_foodCategoryModel);
   @override
-  Future<List<String>> getMealTypes() => _fetchEnumValues(_mealTypeModel);
+  Future<List<EnumItemModel>> getMealTypes() => _fetchEnumItems(_mealTypeModel);
   @override
   Future<NutritionFoodModel> createFood({
     required String label,
@@ -70,8 +71,8 @@ class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
     required int sodium,
     required int cholesterol,
     required int waterIntake,
-    required String category,
-    required String mealType,
+    required int categoryId,
+    required int mealTypeId,
   }) async {
     final data = {
       'label': label,
@@ -84,12 +85,17 @@ class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
       'sodium': sodium,
       'cholesterol': cholesterol,
       'water_intake': waterIntake,
-      'category': await _findEnumId(_foodCategoryModel, category),
-      'meal_type': await _findEnumId(_mealTypeModel, mealType),
+      'category': categoryId,
+      'meal_type': mealTypeId,
     };
     try {
+      final labelsByModel = await _getFoodLabelsByEnumId();
       final res = await client.post(_foodsEndpoint, data: data);
-      return NutritionFoodModel.fromJson(res.data as Map<String, dynamic>);
+      return NutritionFoodModel.fromJson(
+        res.data as Map<String, dynamic>,
+        categoryLabelsById: labelsByModel.categoryLabelsById,
+        mealTypeLabelsById: labelsByModel.mealTypeLabelsById,
+      );
     } on DioException catch (e) {
       throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
@@ -107,9 +113,18 @@ class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
   @override
   Future<List<NutritionFoodModel>> getFoods() async {
     try {
+      final labelsByModel = await _getFoodLabelsByEnumId();
       final res = await client.get(_foodsEndpoint);
       final data = _extractResults(res.data);
-      return data.map((item) => NutritionFoodModel.fromJson(item)).toList();
+      return data
+          .map(
+            (item) => NutritionFoodModel.fromJson(
+              item,
+              categoryLabelsById: labelsByModel.categoryLabelsById,
+              mealTypeLabelsById: labelsByModel.mealTypeLabelsById,
+            ),
+          )
+          .toList();
     } on DioException catch (e) {
       throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
@@ -121,12 +136,21 @@ class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
     required int limit,
   }) async {
     try {
+      final labelsByModel = await _getFoodLabelsByEnumId();
       final res = await client.get(
         _foodsEndpoint,
         queryParameters: {'offset': offset, 'limit': limit},
       );
       final data = _extractResults(res.data);
-      final foods = data.map((item) => NutritionFoodModel.fromJson(item)).toList();
+      final foods = data
+          .map(
+            (item) => NutritionFoodModel.fromJson(
+              item,
+              categoryLabelsById: labelsByModel.categoryLabelsById,
+              mealTypeLabelsById: labelsByModel.mealTypeLabelsById,
+            ),
+          )
+          .toList();
       final pagination = PaginationInfo.fromResponse(
         res.data is Map<String, dynamic> ? res.data : {'results': data},
         offset,
@@ -141,8 +165,13 @@ class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
   @override
   Future<NutritionFoodModel> getFood(int id) async {
     try {
+      final labelsByModel = await _getFoodLabelsByEnumId();
       final res = await client.get('$_foodsEndpoint$id/');
-      return NutritionFoodModel.fromJson(res.data as Map<String, dynamic>);
+      return NutritionFoodModel.fromJson(
+        res.data as Map<String, dynamic>,
+        categoryLabelsById: labelsByModel.categoryLabelsById,
+        mealTypeLabelsById: labelsByModel.mealTypeLabelsById,
+      );
     } on DioException catch (e) {
       throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
@@ -161,8 +190,8 @@ class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
     int? sodium,
     int? cholesterol,
     int? waterIntake,
-    String? category,
-    String? mealType,
+    int? categoryId,
+    int? mealTypeId,
   }) async {
     final data = <String, dynamic>{};
     if (label != null) data['label'] = label;
@@ -175,40 +204,45 @@ class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
     if (sodium != null) data['sodium'] = sodium;
     if (cholesterol != null) data['cholesterol'] = cholesterol;
     if (waterIntake != null) data['water_intake'] = waterIntake;
-    if (category != null) data['category'] = await _findEnumId(_foodCategoryModel, category);
-    if (mealType != null) data['meal_type'] = await _findEnumId(_mealTypeModel, mealType);
+    if (categoryId != null) data['category'] = categoryId;
+    if (mealTypeId != null) data['meal_type'] = mealTypeId;
     try {
+      final labelsByModel = await _getFoodLabelsByEnumId();
       final res = await client.patch('$_foodsEndpoint$id/', data: data);
-      return NutritionFoodModel.fromJson(res.data as Map<String, dynamic>);
+      return NutritionFoodModel.fromJson(
+        res.data as Map<String, dynamic>,
+        categoryLabelsById: labelsByModel.categoryLabelsById,
+        mealTypeLabelsById: labelsByModel.mealTypeLabelsById,
+      );
     } on DioException catch (e) {
       throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
   }
 
-  // Helpers privés ultra-courts
-  Future<int> _findEnumId(String model, String value) async {
-    final parsedId = int.tryParse(value.trim());
-    if (parsedId != null) return parsedId;
+  Future<List<EnumItemModel>> _fetchEnumItems(String model) async {
     final res = await client.get('$_enumEndpoint$model/');
-    final results = (res.data as Map<String, dynamic>)['results'] as List<dynamic>?;
-    if (results == null) throw ServerErrorFailure(debugMessage: 'Invalid enum payload for $model');
-    for (final item in results) {
-      if (item is Map<String, dynamic>) {
-        final itemValue = (item['value'] as String?)?.trim().toLowerCase();
-        if (itemValue == value.trim().toLowerCase()) return item['id'] as int;
-      }
-    }
-    throw ServerErrorFailure(debugMessage: 'Unknown value $value for $model');
+    final payload = res.data;
+    final List<dynamic> results = payload is Map<String, dynamic>
+        ? ((payload['results'] as List<dynamic>?) ?? const <dynamic>[])
+        : (payload as List<dynamic>? ?? const <dynamic>[]);
+    return results
+        .whereType<Map<String, dynamic>>()
+        .map(EnumItemModel.fromJson)
+        .toList();
   }
 
-  Future<List<String>> _fetchEnumValues(String model) async {
-    final res = await client.get('$_enumEndpoint$model/');
-    final results = (res.data as Map<String, dynamic>)['results'] as List<dynamic>?;
-    if (results == null) throw ServerErrorFailure(debugMessage: 'Invalid enum payload for $model');
-    return [
-      for (final item in results)
-        if (item is Map<String, dynamic> && item['value'] != null) item['value'].toString().trim(),
-    ];
+  Future<_FoodEnumLabels> _getFoodLabelsByEnumId() async {
+    final categories = await _fetchEnumItems(_foodCategoryModel);
+    final mealTypes = await _fetchEnumItems(_mealTypeModel);
+
+    return _FoodEnumLabels(
+      categoryLabelsById: {
+        for (final item in categories) item.id: item.value,
+      },
+      mealTypeLabelsById: {
+        for (final item in mealTypes) item.id: item.value,
+      },
+    );
   }
 
   List<dynamic> _extractResults(dynamic payload) {
@@ -222,4 +256,14 @@ class NutritionRemoteDataSourceImpl implements NutritionRemoteDataSource {
       debugMessage: 'Unexpected foods payload format: ${payload.runtimeType}',
     );
   }
+}
+
+class _FoodEnumLabels {
+  final Map<int, String> categoryLabelsById;
+  final Map<int, String> mealTypeLabelsById;
+
+  const _FoodEnumLabels({
+    required this.categoryLabelsById,
+    required this.mealTypeLabelsById,
+  });
 }

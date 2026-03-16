@@ -8,6 +8,7 @@ import '../../domain/entities/nutrition_food.dart';
 import '../../domain/errors/nutrition_failure.dart';
 import '../../domain/repositories/nutrition_repository.dart';
 import '../datasources/nutrition_remote_data_source.dart';
+import '../models/nutrition_food_model.dart';
 
 /// Repository implementation for nutrition food operations.
 ///
@@ -43,41 +44,29 @@ class NutritionRepositoryImpl with LoggerMixin implements NutritionRepository {
   }
 
   @override
-  TaskEither<Failure, NutritionFood> createFood({
-    required String label,
-    required int calories,
-    required double protein,
-    required double carbohydrates,
-    required double fat,
-    required double fiber,
-    required double sugars,
-    required int sodium,
-    required int cholesterol,
-    required int waterIntake,
-    required String category,
-    required String mealType,
-  }) {
+  TaskEither<Failure, NutritionFood> createFood(NutritionFood food) {
     logger.finest('createFood called');
 
     return _checkInternetConnection().flatMap(
       (_) => TaskEither.tryCatch(
         () async {
-          final food = await remoteDatasources.createFood(
-            label: label,
-            calories: calories,
-            protein: protein,
-            carbohydrates: carbohydrates,
-            fat: fat,
-            fiber: fiber,
-            sugars: sugars,
-            sodium: sodium,
-            cholesterol: cholesterol,
-            waterIntake: waterIntake,
-            category: category,
-            mealType: mealType,
+          final data = NutritionFoodModel.fromEntity(food).toMap();
+          final createdFood = await remoteDatasources.createFood(
+            label: data['label'],
+            calories: data['calories'],
+            protein: data['protein'],
+            carbohydrates: data['carbohydrates'],
+            fat: data['fat'],
+            fiber: data['fiber'],
+            sugars: data['sugars'],
+            sodium: data['sodium'],
+            cholesterol: data['cholesterol'],
+            waterIntake: data['water_intake'],
+            categoryId: data['category'],
+            mealTypeId: data['meal_type'],
           );
-          logger.fine('Food created with id=${food.id}');
-          return food;
+          logger.fine('Food created with id=${createdFood.id}');
+          return createdFood;
         },
         (error, stackTrace) {
           logger.severe('Failed to create food', error, stackTrace);
@@ -155,43 +144,30 @@ class NutritionRepositoryImpl with LoggerMixin implements NutritionRepository {
   }
 
   @override
-  TaskEither<Failure, NutritionFood> updateFood(
-    int id, {
-    String? label,
-    int? calories,
-    double? protein,
-    double? carbohydrates,
-    double? fat,
-    double? fiber,
-    double? sugars,
-    int? sodium,
-    int? cholesterol,
-    int? waterIntake,
-    String? category,
-    String? mealType,
-  }) {
+  TaskEither<Failure, NutritionFood> updateFood(int id, NutritionFood food) {
     logger.finest('updateFood called for id=$id');
 
     return _checkInternetConnection().flatMap(
       (_) => TaskEither.tryCatch(
         () async {
-          final food = await remoteDatasources.updateFood(
+          final data = NutritionFoodModel.fromEntity(food).toMap();
+          final updatedFood = await remoteDatasources.updateFood(
             id,
-            label: label,
-            calories: calories,
-            protein: protein,
-            carbohydrates: carbohydrates,
-            fat: fat,
-            fiber: fiber,
-            sugars: sugars,
-            sodium: sodium,
-            cholesterol: cholesterol,
-            waterIntake: waterIntake,
-            category: category,
-            mealType: mealType,
+            label: data['label'],
+            calories: data['calories'],
+            protein: data['protein'],
+            carbohydrates: data['carbohydrates'],
+            fat: data['fat'],
+            fiber: data['fiber'],
+            sugars: data['sugars'],
+            sodium: data['sodium'],
+            cholesterol: data['cholesterol'],
+            waterIntake: data['water_intake'],
+            categoryId: data['category'],
+            mealTypeId: data['meal_type'],
           );
           logger.fine('Food $id updated');
-          return food;
+          return updatedFood;
         },
         (error, stackTrace) {
           logger.severe('Failed to update food $id', error, stackTrace);

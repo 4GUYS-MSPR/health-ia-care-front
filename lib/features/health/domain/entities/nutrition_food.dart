@@ -12,6 +12,8 @@ class NutritionFood extends Equatable {
   final int sodium;
   final int cholesterol;
   final int waterIntake;
+  final int? categoryId;
+  final int? mealTypeId;
   final String category;
   final String mealType;
 
@@ -27,6 +29,8 @@ class NutritionFood extends Equatable {
     required this.sodium,
     required this.cholesterol,
     required this.waterIntake,
+    this.categoryId,
+    this.mealTypeId,
     required this.category,
     required this.mealType,
   });
@@ -44,6 +48,8 @@ class NutritionFood extends Equatable {
     sodium,
     cholesterol,
     waterIntake,
+    categoryId,
+    mealTypeId,
     category,
     mealType,
   ];

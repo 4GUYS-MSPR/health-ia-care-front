@@ -36,33 +36,36 @@ class MembersCompactLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Card(
-      margin: EdgeInsets.zero,
-      child: Column(
-        children: [
-          _buildHeader(context, l10n),
-          const Divider(height: 1),
-          Expanded(
-            child: Stack(
-              children: [
-                if (members.isEmpty)
-                  _buildEmptyState(context, l10n)
-                else
-                  MembersDataTable(
-                    members: members,
-                    sortColumnIndex: sortColumnIndex,
-                    sortAscending: sortAscending,
-                    onSort: onSort,
-                    onMemberTap: onMemberSelected,
-                    onMemberEdit: onMemberEdit,
-                    onMemberDelete: onMemberDelete,
-                    compact: true,
-                  ),
-                if (isLoading) _buildLoadingOverlay(context),
-              ],
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Card(
+        margin: EdgeInsets.zero,
+        child: Column(
+          children: [
+            _buildHeader(context, l10n),
+            const Divider(height: 1),
+            Expanded(
+              child: Stack(
+                children: [
+                  if (members.isEmpty)
+                    _buildEmptyState(context, l10n)
+                  else
+                    MembersDataTable(
+                      members: members,
+                      sortColumnIndex: sortColumnIndex,
+                      sortAscending: sortAscending,
+                      onSort: onSort,
+                      onMemberTap: onMemberSelected,
+                      onMemberEdit: onMemberEdit,
+                      onMemberDelete: onMemberDelete,
+                      compact: true,
+                    ),
+                  if (isLoading) _buildLoadingOverlay(context),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -74,10 +77,10 @@ class MembersCompactLayout extends StatelessWidget {
         children: [
           Text(
             l10n.membersPageTitle,
-            style: context.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: context.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
           ),
+          const SizedBox(width: 8),
+          if (members.isNotEmpty) Chip(label: Text('${members.length}'), visualDensity: VisualDensity.compact),
           const Spacer(),
           IconButton.outlined(
             onPressed: onRefresh,

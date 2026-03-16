@@ -1,6 +1,5 @@
 {
     "@@locale": "en",
-
     "appTitle": "Health IA Care",
     "@appTitle": {
         "description": "Application title"
@@ -249,7 +248,6 @@
     "@navigationDestinationExercises": {
         "description": "Navigation destination label for the exercises page"
     },
-
     "foodCardCalories": "Calories",
     "@foodCardCalories": {
         "description": "Food card calories label"
@@ -354,7 +352,6 @@
     "@foodFieldValidationRequired": {
         "description": "Validation message when a food form field is required"
     },
-
     "foodDeleteDialogTitle": "Delete Food",
     "@foodDeleteDialogTitle": {
         "description": "Title for the delete food confirmation dialog"
@@ -423,7 +420,6 @@
     "@foodsEmptyStateDescription": {
         "description": "Empty state description when there are no foods"
     },
-
     "foodStatsTitle": "Nutrition Stats",
     "@foodStatsTitle": {
         "description": "Title for the nutrition stats card"
@@ -508,7 +504,6 @@
     "@membersRetryButton": {
         "description": "Label for retry button"
     },
-
     "memberCardAge": "Age",
     "@memberCardAge": {
         "description": "Age label in member card"
@@ -553,7 +548,6 @@
     "@memberCardNotSpecified": {
         "description": "Text shown when a value is not specified"
     },
-
     "memberGenderMale": "Male",
     "@memberGenderMale": {
         "description": "Male gender label"
@@ -566,7 +560,6 @@
     "@memberGenderUnknown": {
         "description": "Unknown gender label"
     },
-
     "memberLevelBeginner": "Beginner",
     "@memberLevelBeginner": {
         "description": "Beginner level label"
@@ -579,7 +572,6 @@
     "@memberLevelExpert": {
         "description": "Expert level label"
     },
-
     "memberSubscriptionFree": "Free",
     "@memberSubscriptionFree": {
         "description": "Free subscription label"
@@ -592,7 +584,6 @@
     "@memberSubscriptionPremiumPlus": {
         "description": "Premium Plus subscription label"
     },
-
     "memberFormCreateTitle": "Create Member",
     "@memberFormCreateTitle": {
         "description": "Title for create member dialog"
@@ -661,7 +652,6 @@
     "@memberFormWeightError": {
         "description": "Validation error for weight"
     },
-
     "memberDeleteDialogTitle": "Delete Member",
     "@memberDeleteDialogTitle": {
         "description": "Title for delete member dialog"
@@ -678,7 +668,6 @@
     "@memberDeleteDialogConfirmButton": {
         "description": "Delete button label"
     },
-
     "memberSuccessCreated": "Member created successfully",
     "@memberSuccessCreated": {
         "description": "Success message when member is created"
@@ -691,7 +680,6 @@
     "@memberSuccessDeleted": {
         "description": "Success message when member is deleted"
     },
-
     "memberTableColumnId": "ID",
     "@memberTableColumnId": {
         "description": "ID column header in members table"
@@ -728,7 +716,6 @@
     "@memberTableViewTooltip": {
         "description": "Tooltip for view member button"
     },
-
     "memberDetailsProfile": "Profile",
     "@memberDetailsProfile": {
         "description": "Profile section title in member details"
@@ -753,7 +740,6 @@
     "@memberDetailsNoObjectives": {
         "description": "Message shown when member has no objectives"
     },
-
     "memberStatsTitle": "Statistics",
     "@memberStatsTitle": {
         "description": "Title for member statistics card"
@@ -786,9 +772,492 @@
     "@memberStatsPremium": {
         "description": "Premium members stat label"
     },
-
     "memberFormObjectivesHint": "Add an objective...",
     "@memberFormObjectivesHint": {
         "description": "Hint text for objectives field"
+    },
+    "navigationDestinationDiet": "Diet",
+    "@navigationDestinationDiet": {
+        "description": "Navigation destination label for the diet recommendations page"
+    },
+    "navigationDestinationSessions": "Sessions",
+    "@navigationDestinationSessions": {
+        "description": "Navigation destination label for the sessions page"
+    },
+    "dietRecommendationsPageTitle": "Diet Recommendations",
+    "@dietRecommendationsPageTitle": {
+        "description": "Title for diet recommendations page"
+    },
+    "dietRecommendationsRefreshButton": "Refresh",
+    "@dietRecommendationsRefreshButton": {
+        "description": "Tooltip for refreshing diet recommendations"
+    },
+    "dietRecommendationsErrorLoading": "Error while loading diet recommendations",
+    "@dietRecommendationsErrorLoading": {
+        "description": "Error shown when diet recommendations fail to load"
+    },
+    "dietRecommendationsEmptyState": "No diet recommendations yet",
+    "@dietRecommendationsEmptyState": {
+        "description": "Empty state title when there are no diet recommendations"
+    },
+    "dietRecommendationsEmptyStateDescription": "Diet recommendations will appear here once available.",
+    "@dietRecommendationsEmptyStateDescription": {
+        "description": "Empty state description when there are no diet recommendations"
+    },
+    "dietRecommendationLabel": "Recommendation",
+    "@dietRecommendationLabel": {
+        "description": "Label for diet recommendation name"
+    },
+    "dietBloodPressure": "Blood Pressure",
+    "@dietBloodPressure": {
+        "description": "Label for blood pressure metric"
+    },
+    "dietCholesterol": "Cholesterol",
+    "@dietCholesterol": {
+        "description": "Label for cholesterol metric"
+    },
+    "dietGlucose": "Glucose",
+    "@dietGlucose": {
+        "description": "Label for glucose metric"
+    },
+    "dietDailyCaloricIntake": "Daily Caloric Intake",
+    "@dietDailyCaloricIntake": {
+        "description": "Label for daily caloric intake metric"
+    },
+    "dietWeeklyExerciseHours": "Weekly Exercise Hours",
+    "@dietWeeklyExerciseHours": {
+        "description": "Label for weekly exercise hours metric"
+    },
+    "dietAdherence": "Adherence",
+    "@dietAdherence": {
+        "description": "Label for diet adherence metric"
+    },
+    "dietNutrientImbalance": "Nutrient Imbalance",
+    "@dietNutrientImbalance": {
+        "description": "Label for nutrient imbalance score"
+    },
+    "exercisesPageTitle": "Exercises",
+    "@exercisesPageTitle": {
+        "description": "Title for exercises page"
+    },
+    "exercisesRefreshButton": "Refresh",
+    "@exercisesRefreshButton": {
+        "description": "Tooltip for refreshing exercises"
+    },
+    "exercisesErrorLoading": "Error while loading exercises",
+    "@exercisesErrorLoading": {
+        "description": "Error shown when exercises fail to load"
+    },
+    "exercisesEmptyState": "No exercises yet",
+    "@exercisesEmptyState": {
+        "description": "Empty state title when there are no exercises"
+    },
+    "exercisesEmptyStateDescription": "Exercises will appear here once available.",
+    "@exercisesEmptyStateDescription": {
+        "description": "Empty state description when there are no exercises"
+    },
+    "exerciseLabel": "Exercise",
+    "@exerciseLabel": {
+        "description": "Label for exercise name"
+    },
+    "exerciseTargetMuscles": "Target Muscles",
+    "@exerciseTargetMuscles": {
+        "description": "Label for target muscles"
+    },
+    "exerciseBodyParts": "Body Parts",
+    "@exerciseBodyParts": {
+        "description": "Label for body parts"
+    },
+    "sessionsPageTitle": "Sessions",
+    "@sessionsPageTitle": {
+        "description": "Title for sessions page"
+    },
+    "sessionsRefreshButton": "Refresh",
+    "@sessionsRefreshButton": {
+        "description": "Tooltip for refreshing sessions"
+    },
+    "sessionsErrorLoading": "Error while loading sessions",
+    "@sessionsErrorLoading": {
+        "description": "Error shown when sessions fail to load"
+    },
+    "sessionsEmptyState": "No sessions yet",
+    "@sessionsEmptyState": {
+        "description": "Empty state title when there are no sessions"
+    },
+    "sessionsEmptyStateDescription": "Workout sessions will appear here once available.",
+    "@sessionsEmptyStateDescription": {
+        "description": "Empty state description when there are no sessions"
+    },
+    "sessionLabel": "Session",
+    "@sessionLabel": {
+        "description": "Label for session name"
+    },
+    "sessionDuration": "Duration",
+    "@sessionDuration": {
+        "description": "Label for session duration"
+    },
+    "sessionCaloriesBurned": "Calories Burned",
+    "@sessionCaloriesBurned": {
+        "description": "Label for calories burned"
+    },
+    "sessionAvgBpm": "Avg BPM",
+    "@sessionAvgBpm": {
+        "description": "Label for average beats per minute"
+    },
+    "sessionMaxBpm": "Max BPM",
+    "@sessionMaxBpm": {
+        "description": "Label for maximum beats per minute"
+    },
+    "sessionRestingBpm": "Resting BPM",
+    "@sessionRestingBpm": {
+        "description": "Label for resting beats per minute"
+    },
+    "sessionWaterIntake": "Water Intake",
+    "@sessionWaterIntake": {
+        "description": "Label for water intake during session"
+    },
+    "sessionExercisesCount": "Exercises",
+    "@sessionExercisesCount": {
+        "description": "Label for number of exercises in session"
+    },
+    "dietTableColumnId": "ID",
+    "@dietTableColumnId": {
+        "description": "Diet table column label for ID"
+    },
+    "dietTableColumnActions": "Actions",
+    "@dietTableColumnActions": {
+        "description": "Diet table column label for actions"
+    },
+    "dietTableViewTooltip": "View",
+    "@dietTableViewTooltip": {
+        "description": "Tooltip for viewing a diet recommendation"
+    },
+    "dietFormEditTitle": "Edit Recommendation",
+    "@dietFormEditTitle": {
+        "description": "Title for edit diet recommendation form"
+    },
+    "dietFormCreateTitle": "Add Recommendation",
+    "@dietFormCreateTitle": {
+        "description": "Title for create diet recommendation form"
+    },
+    "dietFormCreateButton": "Create",
+    "@dietFormCreateButton": {
+        "description": "Button label to create a diet recommendation"
+    },
+    "dietFormCancelButton": "Cancel",
+    "@dietFormCancelButton": {
+        "description": "Button label to cancel diet form"
+    },
+    "dietDeleteDialogTitle": "Delete Recommendation",
+    "@dietDeleteDialogTitle": {
+        "description": "Title for delete diet recommendation dialog"
+    },
+    "dietDeleteDialogContent": "Are you sure you want to delete this recommendation?",
+    "@dietDeleteDialogContent": {
+        "description": "Confirmation message for deleting a diet recommendation"
+    },
+    "dietDeleteDialogCancelButton": "Cancel",
+    "@dietDeleteDialogCancelButton": {
+        "description": "Cancel button in diet delete dialog"
+    },
+    "dietDeleteDialogConfirmButton": "Delete",
+    "@dietDeleteDialogConfirmButton": {
+        "description": "Confirm button to delete a diet recommendation"
+    },
+    "dietDetailsHealthMetrics": "Health Metrics",
+    "@dietDetailsHealthMetrics": {
+        "description": "Section title for health metrics in diet details"
+    },
+    "dietDetailsInfo": "Details",
+    "@dietDetailsInfo": {
+        "description": "Section title for diet recommendation details"
+    },
+    "dietDetailsEdit": "Edit",
+    "@dietDetailsEdit": {
+        "description": "Button label to edit diet details"
+    },
+    "dietDetailsDelete": "Delete",
+    "@dietDetailsDelete": {
+        "description": "Button label to delete a diet recommendation"
+    },
+    "dietActivity": "Activity",
+    "@dietActivity": {
+        "description": "Label for activity field"
+    },
+    "dietDiseaseType": "Disease Type",
+    "@dietDiseaseType": {
+        "description": "Label for disease type field"
+    },
+    "dietSeverity": "Severity",
+    "@dietSeverity": {
+        "description": "Label for severity field"
+    },
+    "dietMember": "Member",
+    "@dietMember": {
+        "description": "Label for member field"
+    },
+    "dietStatsTitle": "Diet Stats",
+    "@dietStatsTitle": {
+        "description": "Title for diet stats card"
+    },
+    "dietStatsTotal": "Total",
+    "@dietStatsTotal": {
+        "description": "Label for total diet recommendations"
+    },
+    "dietStatsAvgCalories": "Avg Calories",
+    "@dietStatsAvgCalories": {
+        "description": "Label for average daily caloric intake"
+    },
+    "dietStatsAvgBloodPressure": "Avg Blood Pressure",
+    "@dietStatsAvgBloodPressure": {
+        "description": "Label for average blood pressure"
+    },
+    "dietStatsAvgCholesterol": "Avg Cholesterol",
+    "@dietStatsAvgCholesterol": {
+        "description": "Label for average cholesterol"
+    },
+    "dietStatsAvgGlucose": "Avg Glucose",
+    "@dietStatsAvgGlucose": {
+        "description": "Label for average glucose"
+    },
+    "dietStatsAvgAdherence": "Avg Adherence",
+    "@dietStatsAvgAdherence": {
+        "description": "Label for average adherence"
+    },
+    "dietSuccessCreated": "Diet recommendation created successfully",
+    "@dietSuccessCreated": {
+        "description": "Snackbar message when a diet recommendation is created"
+    },
+    "dietSuccessUpdated": "Diet recommendation updated successfully",
+    "@dietSuccessUpdated": {
+        "description": "Snackbar message when a diet recommendation is updated"
+    },
+    "dietSuccessDeleted": "Diet recommendation deleted successfully",
+    "@dietSuccessDeleted": {
+        "description": "Snackbar message when a diet recommendation is deleted"
+    },
+    "dietAddButton": "Add",
+    "@dietAddButton": {
+        "description": "Button label to add a diet recommendation"
+    },
+    "exerciseTableColumnId": "ID",
+    "@exerciseTableColumnId": {
+        "description": "Exercise table column label for ID"
+    },
+    "exerciseTableColumnImage": "Image",
+    "@exerciseTableColumnImage": {
+        "description": "Exercise table column label for image"
+    },
+    "exerciseTableColumnCategory": "Category",
+    "@exerciseTableColumnCategory": {
+        "description": "Exercise table column label for category"
+    },
+    "exerciseTableColumnEquipments": "Equipments",
+    "@exerciseTableColumnEquipments": {
+        "description": "Exercise table column label for equipments"
+    },
+    "exerciseTableColumnSecondary": "Secondary Muscles",
+    "@exerciseTableColumnSecondary": {
+        "description": "Exercise table column label for secondary muscles"
+    },
+    "exerciseTableColumnActions": "Actions",
+    "@exerciseTableColumnActions": {
+        "description": "Exercise table column label for actions"
+    },
+    "exerciseTableViewTooltip": "View",
+    "@exerciseTableViewTooltip": {
+        "description": "Tooltip for viewing an exercise"
+    },
+    "exerciseFormEditTitle": "Edit Exercise",
+    "@exerciseFormEditTitle": {
+        "description": "Title for edit exercise form"
+    },
+    "exerciseFormCreateTitle": "Add Exercise",
+    "@exerciseFormCreateTitle": {
+        "description": "Title for create exercise form"
+    },
+    "exerciseFormCreateButton": "Create",
+    "@exerciseFormCreateButton": {
+        "description": "Button label to create an exercise"
+    },
+    "exerciseFormCancelButton": "Cancel",
+    "@exerciseFormCancelButton": {
+        "description": "Button label to cancel exercise form"
+    },
+    "exerciseFormImageUrl": "Image URL",
+    "@exerciseFormImageUrl": {
+        "description": "Label for image URL field"
+    },
+    "exerciseDeleteDialogTitle": "Delete Exercise",
+    "@exerciseDeleteDialogTitle": {
+        "description": "Title for delete exercise dialog"
+    },
+    "exerciseDeleteDialogContent": "Are you sure you want to delete this exercise?",
+    "@exerciseDeleteDialogContent": {
+        "description": "Confirmation message for deleting an exercise"
+    },
+    "exerciseDeleteDialogCancelButton": "Cancel",
+    "@exerciseDeleteDialogCancelButton": {
+        "description": "Cancel button in exercise delete dialog"
+    },
+    "exerciseDeleteDialogConfirmButton": "Delete",
+    "@exerciseDeleteDialogConfirmButton": {
+        "description": "Confirm button to delete an exercise"
+    },
+    "exerciseDetailsMuscles": "Muscles",
+    "@exerciseDetailsMuscles": {
+        "description": "Section title for muscles in exercise details"
+    },
+    "exerciseDetailsInfo": "Details",
+    "@exerciseDetailsInfo": {
+        "description": "Section title for exercise details"
+    },
+    "exerciseDetailsEdit": "Edit",
+    "@exerciseDetailsEdit": {
+        "description": "Button label to edit exercise details"
+    },
+    "exerciseDetailsDelete": "Delete",
+    "@exerciseDetailsDelete": {
+        "description": "Button label to delete an exercise"
+    },
+    "exerciseClient": "Client",
+    "@exerciseClient": {
+        "description": "Label for client field"
+    },
+    "exerciseStatsTitle": "Exercise Stats",
+    "@exerciseStatsTitle": {
+        "description": "Title for exercise stats card"
+    },
+    "exerciseStatsTotal": "Total",
+    "@exerciseStatsTotal": {
+        "description": "Label for total exercises"
+    },
+    "exerciseStatsAvgTargetMuscles": "Avg Target Muscles",
+    "@exerciseStatsAvgTargetMuscles": {
+        "description": "Label for average target muscles"
+    },
+    "exerciseStatsAvgBodyParts": "Avg Body Parts",
+    "@exerciseStatsAvgBodyParts": {
+        "description": "Label for average body parts"
+    },
+    "exerciseStatsAvgEquipments": "Avg Equipments",
+    "@exerciseStatsAvgEquipments": {
+        "description": "Label for average equipments"
+    },
+    "exerciseSuccessCreated": "Exercise created successfully",
+    "@exerciseSuccessCreated": {
+        "description": "Snackbar message when an exercise is created"
+    },
+    "exerciseSuccessUpdated": "Exercise updated successfully",
+    "@exerciseSuccessUpdated": {
+        "description": "Snackbar message when an exercise is updated"
+    },
+    "exerciseSuccessDeleted": "Exercise deleted successfully",
+    "@exerciseSuccessDeleted": {
+        "description": "Snackbar message when an exercise is deleted"
+    },
+    "exerciseAddButton": "Add",
+    "@exerciseAddButton": {
+        "description": "Button label to add an exercise"
+    },
+    "sessionTableColumnId": "ID",
+    "@sessionTableColumnId": {
+        "description": "Session table column label for ID"
+    },
+    "sessionTableColumnActions": "Actions",
+    "@sessionTableColumnActions": {
+        "description": "Session table column label for actions"
+    },
+    "sessionTableViewTooltip": "View",
+    "@sessionTableViewTooltip": {
+        "description": "Tooltip for viewing a session"
+    },
+    "sessionFormEditTitle": "Edit Session",
+    "@sessionFormEditTitle": {
+        "description": "Title for edit session form"
+    },
+    "sessionFormCreateTitle": "Add Session",
+    "@sessionFormCreateTitle": {
+        "description": "Title for create session form"
+    },
+    "sessionFormCreateButton": "Create",
+    "@sessionFormCreateButton": {
+        "description": "Button label to create a session"
+    },
+    "sessionFormCancelButton": "Cancel",
+    "@sessionFormCancelButton": {
+        "description": "Button label to cancel session form"
+    },
+    "sessionDeleteDialogTitle": "Delete Session",
+    "@sessionDeleteDialogTitle": {
+        "description": "Title for delete session dialog"
+    },
+    "sessionDeleteDialogContent": "Are you sure you want to delete this session?",
+    "@sessionDeleteDialogContent": {
+        "description": "Confirmation message for deleting a session"
+    },
+    "sessionDeleteDialogCancelButton": "Cancel",
+    "@sessionDeleteDialogCancelButton": {
+        "description": "Cancel button in session delete dialog"
+    },
+    "sessionDeleteDialogConfirmButton": "Delete",
+    "@sessionDeleteDialogConfirmButton": {
+        "description": "Confirm button to delete a session"
+    },
+    "sessionDetailsMetrics": "Session Metrics",
+    "@sessionDetailsMetrics": {
+        "description": "Section title for session metrics"
+    },
+    "sessionDetailsInfo": "Details",
+    "@sessionDetailsInfo": {
+        "description": "Section title for session details"
+    },
+    "sessionDetailsEdit": "Edit",
+    "@sessionDetailsEdit": {
+        "description": "Button label to edit session details"
+    },
+    "sessionDetailsDelete": "Delete",
+    "@sessionDetailsDelete": {
+        "description": "Button label to delete a session"
+    },
+    "sessionMember": "Member",
+    "@sessionMember": {
+        "description": "Label for member field"
+    },
+    "sessionStatsTitle": "Session Stats",
+    "@sessionStatsTitle": {
+        "description": "Title for session stats card"
+    },
+    "sessionStatsTotal": "Total",
+    "@sessionStatsTotal": {
+        "description": "Label for total sessions"
+    },
+    "sessionStatsAvgCalories": "Avg Calories",
+    "@sessionStatsAvgCalories": {
+        "description": "Label for average calories burned"
+    },
+    "sessionStatsAvgDuration": "Avg Water",
+    "@sessionStatsAvgDuration": {
+        "description": "Label for average water intake"
+    },
+    "sessionStatsAvgBpm": "Avg BPM",
+    "@sessionStatsAvgBpm": {
+        "description": "Label for average BPM"
+    },
+    "sessionSuccessCreated": "Session created successfully",
+    "@sessionSuccessCreated": {
+        "description": "Snackbar message when a session is created"
+    },
+    "sessionSuccessUpdated": "Session updated successfully",
+    "@sessionSuccessUpdated": {
+        "description": "Snackbar message when a session is updated"
+    },
+    "sessionSuccessDeleted": "Session deleted successfully",
+    "@sessionSuccessDeleted": {
+        "description": "Snackbar message when a session is deleted"
+    },
+    "sessionAddButton": "Add",
+    "@sessionAddButton": {
+        "description": "Button label to add a session"
     }
 }

@@ -2,28 +2,15 @@ import 'package:dio/dio.dart';
 
 import '../../../../core/errors/server_failures.dart';
 import '../../../../core/logging/logger_mixin.dart';
-import '../../domain/entities/gender.dart';
-import '../../domain/entities/level.dart';
-import '../../domain/entities/objective.dart';
-import '../../domain/entities/subscription.dart';
 import '../../domain/errors/members_failures.dart';
+import '../models/enum_item_model.dart';
 import '../models/member_model.dart';
+
 
 /// Remote datasource for members API operations.
 abstract interface class MembersRemoteDatasources {
   /// Creates a new member.
-  Future<MemberModel> createMember({
-    int? age,
-    required double bmi,
-    required double fatPercentage,
-    required double height,
-    required double weight,
-    required int workoutFrequency,
-    List<Objective> objectives = const [],
-    required Gender gender,
-    required Level level,
-    required Subscription subscription,
-  });
+  Future<MemberModel> createMember(MemberModel member);
 
   /// Deletes a member by [id].
   Future<void> deleteMember(int id);
@@ -35,99 +22,49 @@ abstract interface class MembersRemoteDatasources {
   Future<MemberModel> getMember(int id);
 
   /// Updates a member by [id] with partial data.
-  Future<MemberModel> updateMember(
-    int id, {
-    int? age,
-    double? bmi,
-    double? fatPercentage,
-    double? height,
-    double? weight,
-    int? workoutFrequency,
-    List<Objective>? objectives,
-    Gender? gender,
-    Level? level,
-    Subscription? subscription,
-  });
+  Future<MemberModel> updateMember(int id, MemberModel member);
+
+  /// Fetches gender options from the enum API.
+  Future<List<EnumItemModel>> getGenderOptions();
+
+  /// Fetches level options from the enum API.
+  Future<List<EnumItemModel>> getLevelOptions();
+
+  /// Fetches subscription options from the enum API.
+  Future<List<EnumItemModel>> getSubscriptionOptions();
 }
 
 class MembersRemoteDatasourcesImpl with LoggerMixin implements MembersRemoteDatasources {
-  String get _membersEndpoint {
-    final basePath = Uri.tryParse(membersClient.options.baseUrl)?.path ?? '';
-    final hasApiInBasePath = basePath
-        .split('/')
-        .where((segment) => segment.isNotEmpty)
-        .contains('api');
-
-    return hasApiInBasePath ? '/member/' : '/api/member/';
-  }
+  static const _membersEndpoint = '/api/member/';
+  static const _enumEndpoint = '/api/enum/';
 
   final Dio membersClient;
 
-  MembersRemoteDatasourcesImpl({
-    required this.membersClient,
-  });
+  MembersRemoteDatasourcesImpl({required this.membersClient});
 
   @override
   String get loggerName => 'Members.Data.MembersRemoteDatasources';
 
   @override
-  Future<MemberModel> createMember({
-    int? age,
-    required double bmi,
-    required double fatPercentage,
-    required double height,
-    required double weight,
-    required int workoutFrequency,
-    List<Objective> objectives = const [],
-    required Gender gender,
-    required Level level,
-    required Subscription subscription,
-  }) async {
+  Future<MemberModel> createMember(MemberModel member) async {
     logger.finest('createMember called');
-    logger.finer('Sending POST to $_membersEndpoint');
 
     try {
-      final data = <String, dynamic>{
-        'bmi': bmi,
-        'fat_percentage': fatPercentage,
-        'height': height,
-        'weight': weight,
-        'workout_frequency': workoutFrequency,
-        'gender': gender.index,
-        'level': level.index,
-        'subscription': subscription.index,
-      };
-
-      if (age != null) data['age'] = age;
-      if (objectives.isNotEmpty) {
-        data['objectives'] = MemberModel.objectivesToApi(objectives);
-      }
-
-      final res = await membersClient.post(
-        _membersEndpoint,
-        data: data,
-      );
-
+      final res = await membersClient.post(_membersEndpoint, data: member.toMap());
       logger.fine('Member created successfully');
       return MemberModel.fromMap(res.data as Map<String, dynamic>);
     } on DioException catch (e, st) {
       logger.severe('Failed to create member', e, st);
       if (e.response?.statusCode == 400) {
-        throw const MemberCreationFailure(
-          debugMessage: 'Invalid member data',
-        );
+        throw const MemberCreationFailure(debugMessage: 'Invalid member data');
       }
-      throw ServerErrorFailure(
-        statusCode: e.response?.statusCode,
-        debugMessage: e.message,
-      );
+      throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
   }
 
   @override
   Future<void> deleteMember(int id) async {
     logger.finest('deleteMember called for id=$id');
-    logger.finer('Sending DELETE to $_membersEndpoint$id/');
 
     try {
       await membersClient.delete('$_membersEndpoint$id/');
@@ -135,22 +72,15 @@ class MembersRemoteDatasourcesImpl with LoggerMixin implements MembersRemoteData
     } on DioException catch (e, st) {
       logger.severe('Failed to delete member $id', e, st);
       if (e.response?.statusCode == 404) {
-        throw MemberNotFoundFailure(
-          memberId: id,
-          debugMessage: 'Member not found',
-        );
+        throw MemberNotFoundFailure(memberId: id, debugMessage: 'Member not found');
       }
-      throw ServerErrorFailure(
-        statusCode: e.response?.statusCode,
-        debugMessage: e.message,
-      );
+      throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
   }
 
   @override
   Future<List<MemberModel>> getAllMembers() async {
     logger.finest('getAllMembers called');
-    logger.finer('Sending GET to $_membersEndpoint');
 
     try {
       final res = await membersClient.get(_membersEndpoint);
@@ -169,17 +99,13 @@ class MembersRemoteDatasourcesImpl with LoggerMixin implements MembersRemoteData
           .toList();
     } on DioException catch (e, st) {
       logger.severe('Failed to fetch members', e, st);
-      throw ServerErrorFailure(
-        statusCode: e.response?.statusCode,
-        debugMessage: e.message,
-      );
+      throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
   }
 
   @override
   Future<MemberModel> getMember(int id) async {
     logger.finest('getMember called for id=$id');
-    logger.finer('Sending GET to $_membersEndpoint$id/');
 
     try {
       final res = await membersClient.get('$_membersEndpoint$id/');
@@ -188,76 +114,71 @@ class MembersRemoteDatasourcesImpl with LoggerMixin implements MembersRemoteData
     } on DioException catch (e, st) {
       logger.severe('Failed to fetch member $id', e, st);
       if (e.response?.statusCode == 404) {
-        throw MemberNotFoundFailure(
-          memberId: id,
-          debugMessage: 'Member not found',
-        );
+        throw MemberNotFoundFailure(memberId: id, debugMessage: 'Member not found');
       }
-      throw ServerErrorFailure(
-        statusCode: e.response?.statusCode,
-        debugMessage: e.message,
-      );
+      throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
   }
 
   @override
-  Future<MemberModel> updateMember(
-    int id, {
-    int? age,
-    double? bmi,
-    double? fatPercentage,
-    double? height,
-    double? weight,
-    int? workoutFrequency,
-    List<Objective>? objectives,
-    Gender? gender,
-    Level? level,
-    Subscription? subscription,
-  }) async {
+  Future<MemberModel> updateMember(int id, MemberModel member) async {
     logger.finest('updateMember called for id=$id');
-    logger.finer('Sending PATCH to $_membersEndpoint$id/');
+    final payload = <String, dynamic>{
+      'age': member.age,
+      'bmi': member.bmi,
+      'fat_percentage': member.fatPercentage,
+      'height': member.height,
+      'weight': member.weight,
+      'workout_frequency': member.workoutFrequency,
+      'gender': member.genderId,
+      'level': member.levelId,
+      'subscription': member.subscriptionId,
+      'objectives': MemberModel.objectivesToApi(member.objectives),
+    }..removeWhere((_, value) => value == null);
 
     try {
-      final data = <String, dynamic>{};
-
-      if (age != null) data['age'] = age;
-      if (bmi != null) data['bmi'] = bmi;
-      if (fatPercentage != null) data['fat_percentage'] = fatPercentage;
-      if (height != null) data['height'] = height;
-      if (weight != null) data['weight'] = weight;
-      if (workoutFrequency != null) data['workout_frequency'] = workoutFrequency;
-      if (objectives != null) {
-        data['objectives'] = MemberModel.objectivesToApi(objectives);
-      }
-      if (gender != null) data['gender'] = gender.index;
-      if (level != null) data['level'] = level.index;
-      if (subscription != null) data['subscription'] = subscription.index;
-
-      final res = await membersClient.patch(
-        '$_membersEndpoint$id/',
-        data: data,
-      );
-
+      final res = await membersClient.patch('$_membersEndpoint$id/', data: payload);
       logger.fine('Member $id updated successfully');
       return MemberModel.fromMap(res.data as Map<String, dynamic>);
     } on DioException catch (e, st) {
       logger.severe('Failed to update member $id', e, st);
       if (e.response?.statusCode == 404) {
-        throw MemberNotFoundFailure(
-          memberId: id,
-          debugMessage: 'Member not found',
-        );
+        throw MemberNotFoundFailure(memberId: id, debugMessage: 'Member not found');
       }
       if (e.response?.statusCode == 400) {
+        final backendMessage = e.response?.data?.toString();
         throw MemberUpdateFailure(
           memberId: id,
-          debugMessage: 'Invalid update data',
+          debugMessage: backendMessage == null || backendMessage.isEmpty
+              ? 'Invalid update data'
+              : 'Invalid update data: $backendMessage',
         );
       }
-      throw ServerErrorFailure(
-        statusCode: e.response?.statusCode,
-        debugMessage: e.message,
-      );
+      throw ServerErrorFailure(statusCode: e.response?.statusCode, debugMessage: e.message);
     }
+  }
+
+  @override
+  Future<List<EnumItemModel>> getGenderOptions() =>
+      _fetchEnumItems('Gender');
+
+  @override
+  Future<List<EnumItemModel>> getLevelOptions() =>
+      _fetchEnumItems('Level');
+
+  @override
+  Future<List<EnumItemModel>> getSubscriptionOptions() =>
+      _fetchEnumItems('Subscription');
+
+  Future<List<EnumItemModel>> _fetchEnumItems(String model) async {
+    final res = await membersClient.get('$_enumEndpoint$model/');
+    final payload = res.data;
+    final List<dynamic> results = payload is Map<String, dynamic>
+        ? ((payload['results'] as List<dynamic>?) ?? const <dynamic>[])
+        : (payload as List<dynamic>? ?? const <dynamic>[]);
+    return results
+        .whereType<Map<String, dynamic>>()
+        .map(EnumItemModel.fromJson)
+        .toList();
   }
 }

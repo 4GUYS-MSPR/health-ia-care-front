@@ -23,9 +23,13 @@ class MemberModel extends Member {
     required super.level,
     required super.subscription,
     required super.objectives,
+    super.genderId,
+    super.levelId,
+    super.subscriptionId,
   });
 
   /// Serializes the model to a `Map` for API requests (excludes id).
+  /// Uses the raw API ids (real DB PKs) when available.
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'age': age,
@@ -34,12 +38,10 @@ class MemberModel extends Member {
       'height': height,
       'weight': weight,
       'workout_frequency': workoutFrequency,
-      'gender': gender.index,
-      'level': level.index,
-      'subscription': subscription.index,
-      'objectives': objectives
-          .map((objective) => ObjectiveModel.fromEntity(objective).toMap())
-          .toList(),
+      if (genderId != null) 'gender': genderId,
+      if (levelId != null) 'level': levelId,
+      if (subscriptionId != null) 'subscription': subscriptionId,
+      'objectives': objectivesToApi(objectives),
     };
   }
 
@@ -55,23 +57,19 @@ class MemberModel extends Member {
       'workout_frequency': workoutFrequency,
       'create_at': createdAt?.toIso8601String(),
       'client': clientId,
-      'gender': gender.index,
-      'level': level.index,
-      'subscription': subscription.index,
-      'objectives': objectives
-          .map((objective) => ObjectiveModel.fromEntity(objective).toMap())
-          .toList(),
+      if (genderId != null) 'gender': genderId,
+      if (levelId != null) 'level': levelId,
+      if (subscriptionId != null) 'subscription': subscriptionId,
+      'objectives': objectivesToApi(objectives),
     };
   }
 
   /// Converts [objectives] to a list of integer IDs for API requests.
-  /// Objectives whose description is a numeric string are sent as their integer
-  /// value; text-only descriptions are sent as-is and the API will handle them.
-  static List<dynamic> objectivesToApi(List<Objective> objectives) {
-    return objectives.map((o) {
-      final id = int.tryParse(o.description);
-      return id ?? o.description;
-    }).toList();
+  static List<int> objectivesToApi(List<Objective> objectives) {
+    return objectives
+        .map((o) => o.id ?? int.tryParse(o.description))
+        .whereType<int>()
+        .toList();
   }
 
   /// Deserializes a `Map` from the API into a [MemberModel].
@@ -106,8 +104,8 @@ class MemberModel extends Member {
 
     Gender parseGender(int? genderInt) {
       return switch (genderInt) {
-        0 => .male,
-        1 => .female,
+        1 => .male,
+        2 => .female,
         _ => .unknow,
       };
     }
@@ -115,6 +113,10 @@ class MemberModel extends Member {
     int parseEnumIndex(dynamic value) {
       return parseInt(value) ?? 0;
     }
+
+    final rawGenderId = parseInt(map['gender']);
+    final rawLevelId = parseInt(map['level']);
+    final rawSubscriptionId = parseInt(map['subscription']);
 
     return MemberModel(
       id: parseInt(map['id']) ?? 0,
@@ -126,15 +128,19 @@ class MemberModel extends Member {
       workoutFrequency: parseInt(map['workout_frequency']) ?? 0,
       createdAt: parseDateTime(map['create_at']),
       clientId: parseInt(map['client']),
-      gender: parseGender(parseInt(map['gender'])),
-      level: Level.values[parseEnumIndex(map['level']).clamp(0, Level.values.length - 1)],
+      genderId: rawGenderId,
+      levelId: rawLevelId,
+      subscriptionId: rawSubscriptionId,
+      gender: parseGender(rawGenderId),
+      level: Level.values[(parseEnumIndex(map['level']) - 1).clamp(0, Level.values.length - 1)],
       subscription: Subscription.values[
-        parseEnumIndex(map['subscription']).clamp(0, Subscription.values.length - 1)
+        (parseEnumIndex(map['subscription']) - 1).clamp(0, Subscription.values.length - 1)
       ],
       objectives: (map['objectives'] as List<dynamic>? ?? [])
           .map((objective) {
             if (objective is int) {
               return ObjectiveModel(
+                id: objective,
                 description: objective.toString(),
                 createdAt: DateTime.fromMillisecondsSinceEpoch(0),
               );
@@ -143,6 +149,7 @@ class MemberModel extends Member {
               return ObjectiveModel.fromMap(Map<String, dynamic>.from(objective));
             }
             return ObjectiveModel(
+              id: int.tryParse(objective.toString()),
               description: objective.toString(),
               createdAt: DateTime.fromMillisecondsSinceEpoch(0),
             );
@@ -175,6 +182,9 @@ class MemberModel extends Member {
       level: member.level,
       subscription: member.subscription,
       objectives: member.objectives,
+      genderId: member.genderId,
+      levelId: member.levelId,
+      subscriptionId: member.subscriptionId,
     );
   }
 }

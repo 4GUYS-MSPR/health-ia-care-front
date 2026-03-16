@@ -33,18 +33,25 @@ class FoodsDataTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return SingleChildScrollView(
-      child: SizedBox(
-        width: double.infinity,
-        child: DataTable(
-          sortColumnIndex: sortColumnIndex,
-          sortAscending: sortAscending,
-          showCheckboxColumn: false,
-          headingRowColor: WidgetStatePropertyAll(
-            context.colorScheme.surfaceContainerHighest.withAlpha(128),
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minWidth: constraints.maxWidth),
+          child: DataTable(
+            sortColumnIndex: sortColumnIndex,
+            sortAscending: sortAscending,
+            showCheckboxColumn: false,
+            headingRowColor: WidgetStatePropertyAll(
+              context.colorScheme.surfaceContainerHighest.withAlpha(128),
+            ),
+            horizontalMargin: compact ? 12 : 16,
+            columnSpacing: compact ? 20 : 28,
+            dataRowMinHeight: compact ? 44 : 52,
+            dataRowMaxHeight: compact ? 56 : 64,
+            columns: _buildColumns(context, l10n),
+            rows: _buildRows(context, l10n),
           ),
-          columns: _buildColumns(context, l10n),
-          rows: _buildRows(context, l10n),
         ),
       ),
     );

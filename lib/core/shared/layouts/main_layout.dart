@@ -6,11 +6,11 @@ import '../../../features/authentication/presentation/widgets/account_menu_butto
 import '../../extensions/l10n_extension.dart';
 import '../../extensions/theme_extension.dart';
 
-class NavigationDestination {
+class AppNavigationDestination {
   final String destination;
   final IconData icon;
 
-  NavigationDestination({
+  AppNavigationDestination({
     required this.destination,
     required this.icon,
   });
@@ -21,16 +21,86 @@ class MainLayout extends StatelessWidget {
 
   final StatefulNavigationShell navigationShell;
 
+  static const double _mobileNavigationBreakpoint = 900;
+
+  List<AppNavigationDestination> _buildDestinations(BuildContext context) {
+    return [
+      AppNavigationDestination(
+        destination: context.l10n.navigationDestinationHome,
+        icon: Symbols.home,
+      ),
+      AppNavigationDestination(
+        destination: context.l10n.navigationDestinationMembers,
+        icon: Symbols.group,
+      ),
+      AppNavigationDestination(
+        destination: context.l10n.navigationDestinationNutrition,
+        icon: Symbols.nutrition,
+      ),
+      AppNavigationDestination(
+        destination: context.l10n.navigationDestinationExercises,
+        icon: Symbols.fitness_center,
+      ),
+      AppNavigationDestination(
+        destination: context.l10n.navigationDestinationDiet,
+        icon: Symbols.restaurant,
+      ),
+      AppNavigationDestination(
+        destination: context.l10n.navigationDestinationSessions,
+        icon: Symbols.timer,
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        children: [
-          _MainLayoutNavigationRail(navigationShell: navigationShell),
-          VerticalDivider(width: 1),
-          Expanded(child: navigationShell),
-        ],
-      ),
+    final destinations = _buildDestinations(context);
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobileNavigation =
+            constraints.maxWidth < _mobileNavigationBreakpoint;
+
+        if (isMobileNavigation) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(destinations[navigationShell.currentIndex].destination),
+              actions: const [
+                Padding(
+                  padding: EdgeInsets.only(right: 8),
+                  child: AccountMenuButton(),
+                ),
+              ],
+            ),
+            body: navigationShell,
+            bottomNavigationBar: NavigationBar(
+              selectedIndex: navigationShell.currentIndex,
+              onDestinationSelected: (value) => navigationShell.goBranch(value),
+              destinations: destinations
+                  .map(
+                    (destination) => NavigationDestination(
+                      icon: Icon(destination.icon),
+                      label: destination.destination,
+                    ),
+                  )
+                  .toList(growable: false),
+            ),
+          );
+        }
+
+        return Scaffold(
+          body: Row(
+            children: [
+              _MainLayoutNavigationRail(
+                navigationShell: navigationShell,
+                destinations: destinations,
+              ),
+              const VerticalDivider(width: 1),
+              Expanded(child: navigationShell),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -38,43 +108,26 @@ class MainLayout extends StatelessWidget {
 class _MainLayoutNavigationRail extends StatelessWidget {
   const _MainLayoutNavigationRail({
     required this.navigationShell,
+    required this.destinations,
   });
 
   final StatefulNavigationShell navigationShell;
+  final List<AppNavigationDestination> destinations;
 
   @override
   Widget build(BuildContext context) {
-    final List<NavigationDestination> destinations = [
-      NavigationDestination(
-        destination: context.l10n.navigationDestinationHome,
-        icon: Symbols.home,
-      ),
-      NavigationDestination(
-        destination: context.l10n.navigationDestinationMembers,
-        icon: Symbols.group,
-      ),
-      NavigationDestination(
-        destination: context.l10n.navigationDestinationNutrition,
-        icon: Symbols.nutrition,
-      ), 
-    ];
-
-    List<NavigationRailDestination> getDestinations(List<NavigationDestination> destinations) {
-      return List.generate(
-        destinations.length,
-        (index) {
-          final destination = destinations[index];
-          return NavigationRailDestination(
+    final railDestinations = destinations
+        .map(
+          (destination) => NavigationRailDestination(
             icon: Icon(destination.icon),
             label: Text(destination.destination),
-          );
-        },
-      );
-    }
+          ),
+        )
+        .toList(growable: false);
 
     return NavigationRail(
       selectedIndex: navigationShell.currentIndex,
-      destinations: getDestinations(destinations),
+      destinations: railDestinations,
       onDestinationSelected: (value) => navigationShell.goBranch(value),
       labelType: .selected,
       backgroundColor: context.colorScheme.surfaceContainer,

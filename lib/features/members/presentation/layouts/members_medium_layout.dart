@@ -36,47 +36,50 @@ class MembersMediumLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Column(
-      children: [
-        // Stats summary row
-        if (members.isNotEmpty)
-          SizedBox(
-            height: 100,
-            child: _buildQuickStats(context, l10n),
-          ),
-        if (members.isNotEmpty) const SizedBox(height: 16),
-        // Main table
-        Expanded(
-          child: Card(
-            margin: EdgeInsets.zero,
-            child: Column(
-              children: [
-                _buildHeader(context, l10n),
-                const Divider(height: 1),
-                Expanded(
-                  child: Stack(
-                    children: [
-                      if (members.isEmpty)
-                        _buildEmptyState(context, l10n)
-                      else
-                        MembersDataTable(
-                          members: members,
-                          sortColumnIndex: sortColumnIndex,
-                          sortAscending: sortAscending,
-                          onSort: onSort,
-                          onMemberTap: onMemberSelected,
-                          onMemberEdit: onMemberEdit,
-                          onMemberDelete: onMemberDelete,
-                        ),
-                      if (isLoading) _buildLoadingOverlay(context),
-                    ],
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        children: [
+          // Stats summary row
+          if (members.isNotEmpty)
+            SizedBox(
+              height: 100,
+              child: _buildQuickStats(context, l10n),
+            ),
+          if (members.isNotEmpty) const SizedBox(height: 16),
+          // Main table
+          Expanded(
+            child: Card(
+              margin: EdgeInsets.zero,
+              child: Column(
+                children: [
+                  _buildHeader(context, l10n),
+                  const Divider(height: 1),
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        if (members.isEmpty)
+                          _buildEmptyState(context, l10n)
+                        else
+                          MembersDataTable(
+                            members: members,
+                            sortColumnIndex: sortColumnIndex,
+                            sortAscending: sortAscending,
+                            onSort: onSort,
+                            onMemberTap: onMemberSelected,
+                            onMemberEdit: onMemberEdit,
+                            onMemberDelete: onMemberDelete,
+                          ),
+                        if (isLoading) _buildLoadingOverlay(context),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
             ),
           ),
         ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -123,9 +126,7 @@ class MembersMediumLayout extends StatelessWidget {
         children: [
           Text(
             l10n.membersPageTitle,
-            style: context.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: context.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(width: 8),
           if (members.isNotEmpty)

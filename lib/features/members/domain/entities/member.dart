@@ -23,6 +23,15 @@ class Member extends Equatable {
   final int workoutFrequency;
   final List<Objective> objectives;
 
+  /// Real DB primary key for the gender FK, as returned by the API.
+  final int? genderId;
+
+  /// Real DB primary key for the level FK, as returned by the API.
+  final int? levelId;
+
+  /// Real DB primary key for the subscription FK, as returned by the API.
+  final int? subscriptionId;
+
   const Member({
     required this.id,
     this.clientId,
@@ -37,6 +46,9 @@ class Member extends Equatable {
     required this.weight,
     required this.workoutFrequency,
     required this.objectives,
+    this.genderId,
+    this.levelId,
+    this.subscriptionId,
   });
 
   @override
@@ -54,6 +66,9 @@ class Member extends Equatable {
     weight,
     workoutFrequency,
     objectives,
+    genderId,
+    levelId,
+    subscriptionId,
   ];
 
   /// Creates a copy of this member with the given fields replaced.
@@ -71,6 +86,9 @@ class Member extends Equatable {
     double? weight,
     int? workoutFrequency,
     List<Objective>? objectives,
+    int? genderId,
+    int? levelId,
+    int? subscriptionId,
   }) {
     return Member(
       id: id ?? this.id,
@@ -86,6 +104,9 @@ class Member extends Equatable {
       level: level ?? this.level,
       subscription: subscription ?? this.subscription,
       objectives: objectives ?? this.objectives,
+      genderId: genderId ?? this.genderId,
+      levelId: levelId ?? this.levelId,
+      subscriptionId: subscriptionId ?? this.subscriptionId,
     );
   }
 }

@@ -27,9 +27,12 @@ final class CreateMemberRequested extends MembersEvent {
   final double weight;
   final int workoutFrequency;
   final List<Objective> objectives;
-  final Gender gender;
-  final Level level;
-  final Subscription subscription;
+  /// Real DB primary key for the gender FK (from /api/enum/Gender/).
+  final int? genderId;
+  /// Real DB primary key for the level FK (from /api/enum/Level/).
+  final int? levelId;
+  /// Real DB primary key for the subscription FK (from /api/enum/Subscription/).
+  final int? subscriptionId;
 
   const CreateMemberRequested({
     this.age,
@@ -39,9 +42,9 @@ final class CreateMemberRequested extends MembersEvent {
     required this.weight,
     required this.workoutFrequency,
     this.objectives = const [],
-    required this.gender,
-    required this.level,
-    required this.subscription,
+    this.genderId,
+    this.levelId,
+    this.subscriptionId,
   });
 
   @override
@@ -53,9 +56,9 @@ final class CreateMemberRequested extends MembersEvent {
     weight,
     workoutFrequency,
     objectives,
-    gender,
-    level,
-    subscription,
+    genderId,
+    levelId,
+    subscriptionId,
   ];
 }
 
@@ -69,9 +72,12 @@ final class UpdateMemberRequested extends MembersEvent {
   final double? weight;
   final int? workoutFrequency;
   final List<Objective>? objectives;
-  final Gender? gender;
-  final Level? level;
-  final Subscription? subscription;
+  /// Real DB primary key for the gender FK (from /api/enum/Gender/).
+  final int? genderId;
+  /// Real DB primary key for the level FK (from /api/enum/Level/).
+  final int? levelId;
+  /// Real DB primary key for the subscription FK (from /api/enum/Subscription/).
+  final int? subscriptionId;
 
   const UpdateMemberRequested({
     required this.id,
@@ -82,9 +88,9 @@ final class UpdateMemberRequested extends MembersEvent {
     this.weight,
     this.workoutFrequency,
     this.objectives,
-    this.gender,
-    this.level,
-    this.subscription,
+    this.genderId,
+    this.levelId,
+    this.subscriptionId,
   });
 
   @override
@@ -97,9 +103,9 @@ final class UpdateMemberRequested extends MembersEvent {
     weight,
     workoutFrequency,
     objectives,
-    gender,
-    level,
-    subscription,
+    genderId,
+    levelId,
+    subscriptionId,
   ];
 }
 
@@ -112,3 +118,4 @@ final class DeleteMemberRequested extends MembersEvent {
   @override
   List<Object?> get props => [id];
 }
+

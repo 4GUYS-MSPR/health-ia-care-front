@@ -57,21 +57,24 @@ class UpdateFoodUsecase
     }
 
     logger.fine('Validation passed, delegating to repository');
-    return repository.updateFood(
-      params.id,
-      label: params.label,
-      calories: params.calories,
-      protein: params.protein,
-      carbohydrates: params.carbohydrates,
-      fat: params.fat,
-      fiber: params.fiber,
-      sugars: params.sugars,
-      sodium: params.sodium,
-      cholesterol: params.cholesterol,
-      waterIntake: params.waterIntake,
-      category: params.category,
-      mealType: params.mealType,
+    final updatedFood = NutritionFood(
+      id: params.id,
+      label: params.label ?? '',
+      calories: params.calories ?? 0,
+      protein: params.protein ?? 0.0,
+      carbohydrates: params.carbohydrates ?? 0.0,
+      fat: params.fat ?? 0.0,
+      fiber: params.fiber ?? 0.0,
+      sugars: params.sugars ?? 0.0,
+      sodium: params.sodium ?? 0,
+      cholesterol: params.cholesterol ?? 0,
+      waterIntake: params.waterIntake ?? 0,
+      categoryId: params.categoryId ?? 0,
+      mealTypeId: params.mealTypeId ?? 0,
+      category: 'Uncategorized', // Resolved by repository/backend
+      mealType: 'Unknown', // Resolved by repository/backend
     );
+    return repository.updateFood(params.id, updatedFood);
   }
 }
 
@@ -88,8 +91,8 @@ class UpdateFoodUsecaseParams extends Equatable {
   final int? sodium;
   final int? cholesterol;
   final int? waterIntake;
-  final String? category;
-  final String? mealType;
+  final int? categoryId;
+  final int? mealTypeId;
 
   const UpdateFoodUsecaseParams({
     required this.id,
@@ -103,8 +106,8 @@ class UpdateFoodUsecaseParams extends Equatable {
     this.sodium,
     this.cholesterol,
     this.waterIntake,
-    this.category,
-    this.mealType,
+    this.categoryId,
+    this.mealTypeId,
   });
 
   @override
@@ -120,7 +123,7 @@ class UpdateFoodUsecaseParams extends Equatable {
     sodium,
     cholesterol,
     waterIntake,
-    category,
-    mealType,
+    categoryId,
+    mealTypeId,
   ];
 }

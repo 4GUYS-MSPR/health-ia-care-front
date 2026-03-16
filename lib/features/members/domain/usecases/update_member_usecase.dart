@@ -57,19 +57,25 @@ class UpdateMemberUsecase with LoggerMixin implements Usecase<Member, UpdateMemb
     }
 
     logger.fine('Validation passed, delegating to repository');
-    return repository.updateMember(
-      params.id,
+    
+    final updatedMember = Member(
+      id: params.id,
       age: params.age,
-      bmi: params.bmi,
-      fatPercentage: params.fatPercentage,
-      height: params.height,
-      weight: params.weight,
-      workoutFrequency: params.workoutFrequency,
-      objectives: params.objectives,
-      gender: params.gender,
-      level: params.level,
-      subscription: params.subscription,
+      bmi: params.bmi ?? 0,
+      fatPercentage: params.fatPercentage ?? 0,
+      height: params.height ?? 0,
+      weight: params.weight ?? 0,
+      workoutFrequency: params.workoutFrequency ?? 0,
+      objectives: params.objectives ?? [],
+      gender: Gender.unknow,
+      level: Level.beginner,
+      subscription: Subscription.free,
+      genderId: params.genderId,
+      levelId: params.levelId,
+      subscriptionId: params.subscriptionId,
     );
+    
+    return repository.updateMember(params.id, updatedMember);
   }
 }
 
@@ -83,9 +89,9 @@ class UpdateMemberUsecaseParams extends Equatable {
   final double? weight;
   final int? workoutFrequency;
   final List<Objective>? objectives;
-  final Gender? gender;
-  final Level? level;
-  final Subscription? subscription;
+  final int? genderId;
+  final int? levelId;
+  final int? subscriptionId;
 
   const UpdateMemberUsecaseParams({
     required this.id,
@@ -96,9 +102,9 @@ class UpdateMemberUsecaseParams extends Equatable {
     this.weight,
     this.workoutFrequency,
     this.objectives,
-    this.gender,
-    this.level,
-    this.subscription,
+    this.genderId,
+    this.levelId,
+    this.subscriptionId,
   });
 
   @override
@@ -111,8 +117,8 @@ class UpdateMemberUsecaseParams extends Equatable {
     weight,
     workoutFrequency,
     objectives,
-    gender,
-    level,
-    subscription,
+    genderId,
+    levelId,
+    subscriptionId,
   ];
 }

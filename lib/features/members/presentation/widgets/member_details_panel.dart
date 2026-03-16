@@ -334,7 +334,7 @@ class MemberDetailsPanel extends StatelessWidget {
     };
   }
 
-  String _getGenderLabel(l10n) {
+  String _getGenderLabel(dynamic l10n) {
     return switch (member.gender) {
       Gender.male => l10n.memberGenderMale,
       Gender.female => l10n.memberGenderFemale,
@@ -342,7 +342,7 @@ class MemberDetailsPanel extends StatelessWidget {
     };
   }
 
-  String _getLevelLabel(l10n) {
+  String _getLevelLabel(dynamic l10n) {
     return switch (member.level) {
       Level.beginner => l10n.memberLevelBeginner,
       Level.intermediate => l10n.memberLevelIntermediate,
@@ -350,7 +350,7 @@ class MemberDetailsPanel extends StatelessWidget {
     };
   }
 
-  String _getSubscriptionLabel(l10n) {
+  String _getSubscriptionLabel(dynamic l10n) {
     return switch (member.subscription) {
       Subscription.free => l10n.memberSubscriptionFree,
       Subscription.premium => l10n.memberSubscriptionPremium,

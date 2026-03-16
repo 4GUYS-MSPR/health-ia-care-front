@@ -6,6 +6,10 @@ import '../../features/members/di/members_injection.dart';
 
 Future<void> registerFeatureDependencies(GetIt sl) async {
   registerAuthenticationFeature(sl);
+  registerSharedHealthDatasources(sl);
   registerNutritionFeature(sl);
   registerMembersFeature(sl);
+  registerDietRecommendationFeature(sl);
+  registerExerciseFeature(sl);
+  registerSessionFeature(sl);
 }

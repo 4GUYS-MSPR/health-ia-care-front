@@ -6,6 +6,7 @@ import '../../../../core/shared/models/pagination_info.dart';
 import '../../../../core/shared/widgets/pagination_controls.dart';
 import '../../domain/entities/nutrition_food.dart';
 import '../widgets/foods_data_table.dart';
+import '../widgets/health_stat_card.dart';
 
 /// Medium layout for displaying foods.
 class FoodsMediumLayout extends StatelessWidget {
@@ -100,32 +101,32 @@ class FoodsMediumLayout extends StatelessWidget {
 
     return Row(
       children: [
-        _QuickStatCard(
+        HealthStatCard(
           icon: Icons.restaurant,
           label: l10n.foodStatsTotal,
           value: '${foods.length}',
-          color: context.colorScheme.primary,
+          tone: HealthStatTone.primary,
         ),
         const SizedBox(width: 16),
-        _QuickStatCard(
+        HealthStatCard(
           icon: Icons.local_fire_department,
           label: l10n.foodStatsAvgCalories,
           value: stats.avgCalories.toStringAsFixed(0),
-          color: Colors.orange,
+          tone: HealthStatTone.warm,
         ),
         const SizedBox(width: 16),
-        _QuickStatCard(
+        HealthStatCard(
           icon: Icons.grain,
           label: l10n.foodStatsAvgProtein,
           value: '${stats.avgProtein.toStringAsFixed(1)}g',
-          color: Colors.green,
+          tone: HealthStatTone.success,
         ),
         const SizedBox(width: 16),
-        _QuickStatCard(
+        HealthStatCard(
           icon: Icons.bubble_chart,
           label: l10n.foodStatsAvgCarbs,
           value: '${stats.avgCarbs.toStringAsFixed(1)}g',
-          color: Colors.blue,
+          tone: HealthStatTone.cool,
         ),
       ],
     );
@@ -138,8 +139,8 @@ class FoodsMediumLayout extends StatelessWidget {
         children: [
           Text(
             l10n.foodsPageTitle,
-            style: context.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
+            style: context.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w700,
             ),
           ),
           const SizedBox(width: 8),
@@ -229,66 +230,6 @@ class FoodsMediumLayout extends StatelessWidget {
       avgCalories: totalCalories / foods.length,
       avgProtein: totalProtein / foods.length,
       avgCarbs: totalCarbs / foods.length,
-    );
-  }
-}
-
-class _QuickStatCard extends StatelessWidget {
-  const _QuickStatCard({
-    required this.icon,
-    required this.label,
-    required this.value,
-    required this.color,
-  });
-
-  final IconData icon;
-  final String label;
-  final String value;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Card(
-        margin: EdgeInsets.zero,
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: color.withAlpha(30),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(icon, color: color, size: 20),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      value,
-                      style: context.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      label,
-                      style: context.textTheme.labelSmall?.copyWith(
-                        color: context.colorScheme.onSurfaceVariant,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
