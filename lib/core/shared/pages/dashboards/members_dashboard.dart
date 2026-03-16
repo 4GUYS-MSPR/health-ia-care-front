@@ -81,7 +81,7 @@ class _MembersContent extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '${members.length} ${context.l10n.memberStatsTotal.toLowerCase()}',
+            '${members.length} ${context.l10n.memberStatsTotal}',
             style: const TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 24),
