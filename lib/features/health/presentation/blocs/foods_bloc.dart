@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/errors/server_failures.dart';
@@ -24,8 +23,7 @@ class FoodsBloc extends Bloc<FoodsEvent, FoodsState> with LoggerMixin {
   final CreateFoodUsecase createFoodUsecase;
   final UpdateFoodUsecase updateFoodUsecase;
   final DeleteFoodUsecase deleteFoodUsecase;
-
-  late NutritionRemoteDataSource _dataSource;
+  final NutritionRemoteDataSource dataSource;
   PaginationInfo? _currentPagination;
 
   FoodsBloc({
@@ -33,9 +31,8 @@ class FoodsBloc extends Bloc<FoodsEvent, FoodsState> with LoggerMixin {
     required this.createFoodUsecase,
     required this.updateFoodUsecase,
     required this.deleteFoodUsecase,
+    required this.dataSource,
   }) : super(const FoodsInitial()) {
-    _dataSource = GetIt.instance<NutritionRemoteDataSource>();
-
     on<LoadFoodsRequested>(_onLoadFoodsRequested);
     on<RefreshFoodsRequested>(_onRefreshFoodsRequested);
     on<CreateFoodRequested>(_onCreateFoodRequested);
@@ -104,8 +101,8 @@ class FoodsBloc extends Bloc<FoodsEvent, FoodsState> with LoggerMixin {
         sodium: event.sodium,
         cholesterol: event.cholesterol,
         waterIntake: event.waterIntake,
-        category: event.category,
-        mealType: event.mealType,
+        categoryId: event.categoryId,
+        mealTypeId: event.mealTypeId,
       ),
     ).run();
 
@@ -150,8 +147,8 @@ class FoodsBloc extends Bloc<FoodsEvent, FoodsState> with LoggerMixin {
         sodium: event.sodium,
         cholesterol: event.cholesterol,
         waterIntake: event.waterIntake,
-        category: event.category,
-        mealType: event.mealType,
+        categoryId: event.categoryId,
+        mealTypeId: event.mealTypeId,
       ),
     ).run();
 
@@ -267,7 +264,7 @@ class FoodsBloc extends Bloc<FoodsEvent, FoodsState> with LoggerMixin {
     emit(const FoodsLoading());
 
     try {
-      final (foods, pagination) = await _dataSource.getFoodsPage(
+      final (foods, pagination) = await dataSource.getFoodsPage(
         offset: offset,
         limit: limit,
       );

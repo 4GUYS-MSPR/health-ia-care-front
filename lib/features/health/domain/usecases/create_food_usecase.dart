@@ -54,8 +54,19 @@ class CreateFoodUsecase
       );
     }
 
+    if (params.categoryId <= 0 || params.mealTypeId <= 0) {
+      logger.warning('Validation failed: category/meal type are required');
+      return TaskEither.left(
+        const FoodValidationFailure(
+          field: 'category',
+          debugMessage: 'Category and meal type must be selected',
+        ),
+      );
+    }
+
     logger.fine('Validation passed, delegating to repository');
-    return repository.createFood(
+    final newFood = NutritionFood(
+      id: 0, // Assigned by backend
       label: params.label,
       calories: params.calories,
       protein: params.protein,
@@ -66,9 +77,12 @@ class CreateFoodUsecase
       sodium: params.sodium,
       cholesterol: params.cholesterol,
       waterIntake: params.waterIntake,
-      category: params.category,
-      mealType: params.mealType,
+      categoryId: params.categoryId,
+      mealTypeId: params.mealTypeId,
+      category: 'Uncategorized', // Resolved by repository/backend
+      mealType: 'Unknown', // Resolved by repository/backend
     );
+    return repository.createFood(newFood);
   }
 }
 
@@ -84,8 +98,8 @@ class CreateFoodUsecaseParams extends Equatable {
   final int sodium;
   final int cholesterol;
   final int waterIntake;
-  final String category;
-  final String mealType;
+  final int categoryId;
+  final int mealTypeId;
 
   const CreateFoodUsecaseParams({
     required this.label,
@@ -98,8 +112,8 @@ class CreateFoodUsecaseParams extends Equatable {
     required this.sodium,
     required this.cholesterol,
     required this.waterIntake,
-    required this.category,
-    required this.mealType,
+    required this.categoryId,
+    required this.mealTypeId,
   });
 
   @override
@@ -114,7 +128,7 @@ class CreateFoodUsecaseParams extends Equatable {
     sodium,
     cholesterol,
     waterIntake,
-    category,
-    mealType,
+    categoryId,
+    mealTypeId,
   ];
 }

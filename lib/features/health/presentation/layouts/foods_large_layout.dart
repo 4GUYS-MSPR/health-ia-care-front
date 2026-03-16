@@ -4,6 +4,7 @@ import '../../../../core/extensions/l10n_extension.dart';
 import '../../../../core/extensions/theme_extension.dart';
 import '../../../../core/shared/models/pagination_info.dart';
 import '../../../../core/shared/widgets/pagination_controls.dart';
+import '../../domain/entities/enum_item.dart';
 import '../../domain/entities/nutrition_food.dart';
 import '../widgets/food_detail_panel.dart';
 import '../widgets/food_form_panel.dart';
@@ -29,6 +30,7 @@ class FoodsLargeLayout extends StatelessWidget {
     required this.onCloseDetails,
     required this.onToggleCreateForm,
     required this.onFoodCreated,
+    required this.loadEnumByCandidates,
     this.pagination,
     required this.onNextPage,
     required this.onPreviousPage,
@@ -49,6 +51,8 @@ class FoodsLargeLayout extends StatelessWidget {
   final VoidCallback onCloseDetails;
   final VoidCallback onToggleCreateForm;
   final VoidCallback onFoodCreated;
+  final Future<List<EnumItem>> Function(List<String> candidates)
+      loadEnumByCandidates;
   final PaginationInfo? pagination;
   final VoidCallback onNextPage;
   final VoidCallback onPreviousPage;
@@ -121,6 +125,7 @@ class FoodsLargeLayout extends StatelessWidget {
       return FoodFormPanel(
         onCancel: onToggleCreateForm,
         onSaved: onFoodCreated,
+        loadEnumByCandidates: loadEnumByCandidates,
       );
     }
 

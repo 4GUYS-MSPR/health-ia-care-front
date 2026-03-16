@@ -3,11 +3,8 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/logging/logger_mixin.dart';
-import '../../domain/entities/gender.dart';
-import '../../domain/entities/level.dart';
 import '../../domain/entities/member.dart';
 import '../../domain/entities/objective.dart';
-import '../../domain/entities/subscription.dart';
 import '../../domain/usecases/create_member_usecase.dart';
 import '../../domain/usecases/delete_member_usecase.dart';
 import '../../domain/usecases/get_all_members_usecase.dart';
@@ -120,9 +117,9 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> with LoggerMixin {
         weight: event.weight,
         workoutFrequency: event.workoutFrequency,
         objectives: event.objectives,
-        gender: event.gender,
-        level: event.level,
-        subscription: event.subscription,
+        genderId: event.genderId,
+        levelId: event.levelId,
+        subscriptionId: event.subscriptionId,
       ),
     ).run();
 
@@ -159,9 +156,9 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> with LoggerMixin {
         weight: event.weight,
         workoutFrequency: event.workoutFrequency,
         objectives: event.objectives,
-        gender: event.gender,
-        level: event.level,
-        subscription: event.subscription,
+        genderId: event.genderId,
+        levelId: event.levelId,
+        subscriptionId: event.subscriptionId,
       ),
     ).run();
 

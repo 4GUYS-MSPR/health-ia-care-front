@@ -4,12 +4,14 @@ import '../../domain/entities/objective.dart';
 
 class ObjectiveModel extends Objective {
   const ObjectiveModel({
+    super.id,
     required super.description,
     required super.createdAt,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'description': description,
       'created_at': createdAt.toIso8601String(),
     };
@@ -31,6 +33,7 @@ class ObjectiveModel extends Objective {
     }
 
     return ObjectiveModel(
+      id: (map['id'] as num?)?.toInt(),
       description: parseDescription(map),
       createdAt: parseCreatedAt(map),
     );
@@ -44,6 +47,7 @@ class ObjectiveModel extends Objective {
 
   factory ObjectiveModel.fromEntity(Objective objective) {
     return ObjectiveModel(
+      id: objective.id,
       description: objective.description,
       createdAt: objective.createdAt,
     );

@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import '../../data/datasources/nutrition_remote_data_source.dart';
+import '../../domain/entities/enum_item.dart';
 import '../blocs/foods_bloc.dart';
 import '../../../../core/extensions/l10n_extension.dart';
 
 /// A panel widget for creating a new food inline (for large layouts).
 // Un formulaire simple pour ajouter un aliment, version débutant
 class FoodFormPanel extends StatefulWidget {
-  const FoodFormPanel({super.key, required this.onCancel, required this.onSaved});
+  const FoodFormPanel({
+    super.key,
+    required this.onCancel,
+    required this.onSaved,
+    required this.loadEnumByCandidates,
+  });
   final VoidCallback onCancel;
   final VoidCallback onSaved;
+  final Future<List<EnumItem>> Function(List<String> candidates)
+      loadEnumByCandidates;
   @override
   State<FoodFormPanel> createState() => _FoodFormPanelState();
 }
@@ -30,17 +36,20 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
   final _waterIntakeController = TextEditingController();
 
   // Futures pour récupérer les listes d'options
-  late Future<List<String>> _categoryOptionsFuture;
-  late Future<List<String>> _mealTypeOptionsFuture;
-  String? _selectedCategory;
-  String? _selectedMealType;
+  late Future<List<EnumItem>> _categoryOptionsFuture;
+  late Future<List<EnumItem>> _mealTypeOptionsFuture;
+  int? _selectedCategoryId;
+  int? _selectedMealTypeId;
 
   @override
   void initState() {
     super.initState();
-    final datasource = GetIt.I<NutritionRemoteDataSource>();
-    _categoryOptionsFuture = datasource.getFoodCategories();
-    _mealTypeOptionsFuture = datasource.getMealTypes();
+    _categoryOptionsFuture = widget.loadEnumByCandidates(
+      const ['FoodCategory', 'Category'],
+    );
+    _mealTypeOptionsFuture = widget.loadEnumByCandidates(
+      const ['MealType', 'Meal'],
+    );
   }
 
   @override
@@ -72,8 +81,8 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
           sodium: int.tryParse(_sodiumController.text) ?? 0,
           cholesterol: int.tryParse(_cholesterolController.text) ?? 0,
           waterIntake: int.tryParse(_waterIntakeController.text) ?? 0,
-          category: _selectedCategory ?? '',
-          mealType: _selectedMealType ?? '',
+          categoryId: _selectedCategoryId ?? 0,
+          mealTypeId: _selectedMealTypeId ?? 0,
         ),
       );
       widget.onSaved();
@@ -222,51 +231,51 @@ class _FoodFormPanelState extends State<FoodFormPanel> {
                     ),
                     const SizedBox(height: 24),
                     // Dropdown pour la catégorie
-                    FutureBuilder<List<String>>(
+                    FutureBuilder<List<EnumItem>>(
                       future: _categoryOptionsFuture,
                       builder: (context, snapshot) {
                         final options = snapshot.data ?? [];
-                        return DropdownButtonFormField<String>(
-                          initialValue: _selectedCategory,
+                        return DropdownButtonFormField<int>(
+                          initialValue: _selectedCategoryId,
                           decoration: InputDecoration(
                             labelText: l10n.foodFormCategoryLabel,
                             border: OutlineInputBorder(),
                           ),
                           items: options
                               .map(
-                                (value) =>
-                                    DropdownMenuItem<String>(value: value, child: Text(value)),
+                                (item) => DropdownMenuItem<int>(
+                                  value: item.id,
+                                  child: Text(item.value),
+                                ),
                               )
                               .toList(),
-                          onChanged: (value) => setState(() => _selectedCategory = value),
-                          validator: (value) => value == null || value.isEmpty
-                              ? l10n.foodFieldValidationRequired
-                              : null,
+                          onChanged: (value) => setState(() => _selectedCategoryId = value),
+                          validator: (value) => value == null ? l10n.foodFieldValidationRequired : null,
                         );
                       },
                     ),
                     const SizedBox(height: 12),
                     // Dropdown pour le type de repas
-                    FutureBuilder<List<String>>(
+                    FutureBuilder<List<EnumItem>>(
                       future: _mealTypeOptionsFuture,
                       builder: (context, snapshot) {
                         final options = snapshot.data ?? [];
-                        return DropdownButtonFormField<String>(
-                          initialValue: _selectedMealType,
+                        return DropdownButtonFormField<int>(
+                          initialValue: _selectedMealTypeId,
                           decoration: InputDecoration(
                             labelText: l10n.foodFormMealTypeLabel,
                             border: OutlineInputBorder(),
                           ),
                           items: options
                               .map(
-                                (value) =>
-                                    DropdownMenuItem<String>(value: value, child: Text(value)),
+                                (item) => DropdownMenuItem<int>(
+                                  value: item.id,
+                                  child: Text(item.value),
+                                ),
                               )
                               .toList(),
-                          onChanged: (value) => setState(() => _selectedMealType = value),
-                          validator: (value) => value == null || value.isEmpty
-                              ? l10n.foodFieldValidationRequired
-                              : null,
+                          onChanged: (value) => setState(() => _selectedMealTypeId = value),
+                          validator: (value) => value == null ? l10n.foodFieldValidationRequired : null,
                         );
                       },
                     ),

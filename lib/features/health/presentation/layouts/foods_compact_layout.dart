@@ -91,10 +91,16 @@ class FoodsCompactLayout extends StatelessWidget {
         children: [
           Text(
             l10n.foodsPageTitle,
-            style: context.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
+            style: context.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w700,
             ),
           ),
+          const SizedBox(width: 8),
+          if (foods.isNotEmpty)
+            Chip(
+              label: Text('${foods.length}'),
+              visualDensity: VisualDensity.compact,
+            ),
           const Spacer(),
           IconButton.outlined(
             onPressed: onRefresh,

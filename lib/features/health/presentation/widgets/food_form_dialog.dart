@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 
-import '../../data/datasources/nutrition_remote_data_source.dart';
+import '../../domain/entities/enum_item.dart';
 import '../../domain/entities/nutrition_food.dart';
 
 /// Form data for creating/editing a food.
@@ -17,8 +16,8 @@ class FoodFormData {
   final int sodium;
   final int cholesterol;
   final int waterIntake;
-  final String category;
-  final String mealType;
+  final int categoryId;
+  final int mealTypeId;
 
   const FoodFormData({
     required this.label,
@@ -31,8 +30,8 @@ class FoodFormData {
     required this.sodium,
     required this.cholesterol,
     required this.waterIntake,
-    required this.category,
-    required this.mealType,
+    required this.categoryId,
+    required this.mealTypeId,
   });
 }
 
@@ -40,17 +39,28 @@ class FoodFormData {
 class FoodFormDialog extends StatefulWidget {
   /// The food to edit, or null for creating a new food.
   final NutritionFood? food;
+  final Future<List<EnumItem>> Function(List<String> candidates)
+      loadEnumByCandidates;
 
-  const FoodFormDialog({super.key, this.food});
+  const FoodFormDialog({
+    super.key,
+    this.food,
+    required this.loadEnumByCandidates,
+  });
 
   /// Shows the dialog and returns the form data if saved, or null if cancelled.
   static Future<FoodFormData?> show(
     BuildContext context, {
     NutritionFood? food,
+    required Future<List<EnumItem>> Function(List<String> candidates)
+        loadEnumByCandidates,
   }) {
     return showDialog<FoodFormData>(
       context: context,
-      builder: (context) => FoodFormDialog(food: food),
+      builder: (context) => FoodFormDialog(
+        food: food,
+        loadEnumByCandidates: loadEnumByCandidates,
+      ),
     );
   }
 
@@ -72,11 +82,11 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
   late final TextEditingController _cholesterolController;
   late final TextEditingController _waterIntakeController;
 
-  late final Future<List<String>> _categoryOptionsFuture;
-  late final Future<List<String>> _mealTypeOptionsFuture;
+  late final Future<List<EnumItem>> _categoryOptionsFuture;
+  late final Future<List<EnumItem>> _mealTypeOptionsFuture;
 
-  String? _selectedCategory;
-  String? _selectedMealType;
+  int? _selectedCategoryId;
+  int? _selectedMealTypeId;
 
   bool get _isEditing => widget.food != null;
 
@@ -96,17 +106,14 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
     _cholesterolController = TextEditingController(text: food?.cholesterol.toString() ?? '');
     _waterIntakeController = TextEditingController(text: food?.waterIntake.toString() ?? '');
 
-    _selectedCategory = food?.category;
-    _selectedMealType = food?.mealType;
+    _selectedCategoryId = food?.categoryId;
+    _selectedMealTypeId = food?.mealTypeId;
 
-    final datasource = GetIt.I<NutritionRemoteDataSource>();
-    _categoryOptionsFuture = _loadOptions(
-      datasource.getFoodCategories,
-      _selectedCategory,
+    _categoryOptionsFuture = widget.loadEnumByCandidates(
+      const ['FoodCategory', 'Category'],
     );
-    _mealTypeOptionsFuture = _loadOptions(
-      datasource.getMealTypes,
-      _selectedMealType,
+    _mealTypeOptionsFuture = widget.loadEnumByCandidates(
+      const ['MealType', 'Meal'],
     );
   }
 
@@ -138,24 +145,11 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
         sodium: int.parse(_sodiumController.text),
         cholesterol: int.parse(_cholesterolController.text),
         waterIntake: int.parse(_waterIntakeController.text),
-        category: _selectedCategory!,
-        mealType: _selectedMealType!,
+        categoryId: _selectedCategoryId!,
+        mealTypeId: _selectedMealTypeId!,
       );
       Navigator.of(context).pop(data);
     }
-  }
-
-  Future<List<String>> _loadOptions(
-    Future<List<String>> Function() loader,
-    String? selected,
-  ) async {
-    final options = await loader();
-
-    if (selected != null && selected.isNotEmpty && !options.contains(selected)) {
-      return [selected, ...options];
-    }
-
-    return options;
   }
 
   @override
@@ -460,51 +454,73 @@ class _FoodFormDialogState extends State<FoodFormDialog> {
 
   // Affiche la liste des catégories (plus débutant)
   Widget _buildCategoryField() {
-    return FutureBuilder<List<String>>(
+    return FutureBuilder<List<EnumItem>>(
       future: _categoryOptionsFuture,
       builder: (context, asyncData) {
-        // On récupère les options reçues
-        final options = asyncData.data ?? <String>[];
-        final currentValue = options.contains(_selectedCategory) ? _selectedCategory : null;
-        // On affiche le menu déroulant
-        return DropdownButtonFormField<String>(
-          initialValue: currentValue,
+        final options = asyncData.data ?? <EnumItem>[];
+        final selected = options.any((item) => item.id == _selectedCategoryId)
+            ? _selectedCategoryId
+            : null;
+
+        return DropdownButtonFormField<int>(
+          initialValue: selected,
+          isExpanded: true,
           decoration: const InputDecoration(
             labelText: 'Category',
             border: OutlineInputBorder(),
           ),
           items: options
-              .map((value) => DropdownMenuItem<String>(value: value, child: Text(value)))
+              .map(
+                (item) => DropdownMenuItem<int>(
+                  value: item.id,
+                  child: Text(
+                    item.value,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              )
               .toList(),
           onChanged: asyncData.connectionState == ConnectionState.done
-              ? (value) => setState(() => _selectedCategory = value)
+              ? (value) => setState(() => _selectedCategoryId = value)
               : null,
-          validator: (value) => value == null || value.isEmpty ? 'Required' : null,
+          validator: (value) => value == null ? 'Required' : null,
         );
       },
     );
   }
 
-  // Affiche la liste des types de repas (plus débutant)
   Widget _buildMealTypeField() {
-    return FutureBuilder<List<String>>(
+    return FutureBuilder<List<EnumItem>>(
       future: _mealTypeOptionsFuture,
       builder: (context, asyncData) {
-        final options = asyncData.data ?? <String>[];
-        final currentValue = options.contains(_selectedMealType) ? _selectedMealType : null;
-        return DropdownButtonFormField<String>(
-          initialValue: currentValue,
+        final options = asyncData.data ?? <EnumItem>[];
+        final selected = options.any((item) => item.id == _selectedMealTypeId)
+            ? _selectedMealTypeId
+            : null;
+        return DropdownButtonFormField<int>(
+          initialValue: selected,
+          isExpanded: true,
           decoration: const InputDecoration(
             labelText: 'Meal Type',
             border: OutlineInputBorder(),
           ),
           items: options
-              .map((value) => DropdownMenuItem<String>(value: value, child: Text(value)))
+              .map(
+                (item) => DropdownMenuItem<int>(
+                  value: item.id,
+                  child: Text(
+                    item.value,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              )
               .toList(),
           onChanged: asyncData.connectionState == ConnectionState.done
-              ? (value) => setState(() => _selectedMealType = value)
+              ? (value) => setState(() => _selectedMealTypeId = value)
               : null,
-          validator: (value) => value == null || value.isEmpty ? 'Required' : null,
+          validator: (value) => value == null ? 'Required' : null,
         );
       },
     );

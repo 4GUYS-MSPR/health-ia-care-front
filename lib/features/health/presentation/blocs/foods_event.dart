@@ -30,8 +30,8 @@ final class CreateFoodRequested extends FoodsEvent {
   final int sodium;
   final int cholesterol;
   final int waterIntake;
-  final String category;
-  final String mealType;
+  final int categoryId;
+  final int mealTypeId;
 
   const CreateFoodRequested({
     required this.label,
@@ -44,8 +44,8 @@ final class CreateFoodRequested extends FoodsEvent {
     required this.sodium,
     required this.cholesterol,
     required this.waterIntake,
-    required this.category,
-    required this.mealType,
+    required this.categoryId,
+    required this.mealTypeId,
   });
 
   @override
@@ -60,8 +60,8 @@ final class CreateFoodRequested extends FoodsEvent {
     sodium,
     cholesterol,
     waterIntake,
-    category,
-    mealType,
+    categoryId,
+    mealTypeId,
   ];
 }
 
@@ -78,8 +78,8 @@ final class UpdateFoodRequested extends FoodsEvent {
   final int? sodium;
   final int? cholesterol;
   final int? waterIntake;
-  final String? category;
-  final String? mealType;
+  final int? categoryId;
+  final int? mealTypeId;
 
   const UpdateFoodRequested({
     required this.id,
@@ -93,8 +93,8 @@ final class UpdateFoodRequested extends FoodsEvent {
     this.sodium,
     this.cholesterol,
     this.waterIntake,
-    this.category,
-    this.mealType,
+    this.categoryId,
+    this.mealTypeId,
   });
 
   @override
@@ -110,8 +110,8 @@ final class UpdateFoodRequested extends FoodsEvent {
     sodium,
     cholesterol,
     waterIntake,
-    category,
-    mealType,
+    categoryId,
+    mealTypeId,
   ];
 }
 

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/extensions/l10n_extension.dart';
 import '../../../../core/extensions/theme_extension.dart';
+import '../../data/models/enum_item_model.dart';
 import '../../domain/entities/member.dart';
+import '../../domain/entities/objective.dart';
 import '../widgets/member_details_panel.dart';
 import '../widgets/member_form_panel.dart';
 import '../widgets/member_stats_card.dart';
@@ -27,6 +29,10 @@ class MembersLargeLayout extends StatelessWidget {
     required this.onCloseDetails,
     required this.onToggleCreateForm,
     required this.onMemberCreated,
+    required this.objectiveOptionsFuture,
+    required this.genderOptionsFuture,
+    required this.levelOptionsFuture,
+    required this.subscriptionOptionsFuture,
   });
 
   final List<Member> members;
@@ -44,6 +50,10 @@ class MembersLargeLayout extends StatelessWidget {
   final VoidCallback onCloseDetails;
   final VoidCallback onToggleCreateForm;
   final VoidCallback onMemberCreated;
+  final Future<List<Objective>> objectiveOptionsFuture;
+  final Future<List<EnumItemModel>> genderOptionsFuture;
+  final Future<List<EnumItemModel>> levelOptionsFuture;
+  final Future<List<EnumItemModel>> subscriptionOptionsFuture;
 
   @override
   Widget build(BuildContext context) {
@@ -68,33 +78,36 @@ class MembersLargeLayout extends StatelessWidget {
   Widget _buildMainContent(BuildContext context) {
     final l10n = context.l10n;
 
-    return Card(
-      margin: EdgeInsets.zero,
-      child: Column(
-        children: [
-          _buildHeader(context, l10n),
-          const Divider(height: 1),
-          Expanded(
-            child: Stack(
-              children: [
-                if (members.isEmpty)
-                  _buildEmptyState(context, l10n)
-                else
-                  MembersDataTable(
-                    members: members,
-                    sortColumnIndex: sortColumnIndex,
-                    sortAscending: sortAscending,
-                    onSort: onSort,
-                    onMemberTap: onMemberSelected,
-                    onMemberEdit: onMemberEdit,
-                    onMemberDelete: onMemberDelete,
-                    selectedMemberId: selectedMember?.id,
-                  ),
-                if (isLoading) _buildLoadingOverlay(context),
-              ],
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Card(
+        margin: EdgeInsets.zero,
+        child: Column(
+          children: [
+            _buildHeader(context, l10n),
+            const Divider(height: 1),
+            Expanded(
+              child: Stack(
+                children: [
+                  if (members.isEmpty)
+                    _buildEmptyState(context, l10n)
+                  else
+                    MembersDataTable(
+                      members: members,
+                      sortColumnIndex: sortColumnIndex,
+                      sortAscending: sortAscending,
+                      onSort: onSort,
+                      onMemberTap: onMemberSelected,
+                      onMemberEdit: onMemberEdit,
+                      onMemberDelete: onMemberDelete,
+                      selectedMemberId: selectedMember?.id,
+                    ),
+                  if (isLoading) _buildLoadingOverlay(context),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -106,6 +119,10 @@ class MembersLargeLayout extends StatelessWidget {
       return MemberFormPanel(
         onCancel: onToggleCreateForm,
         onSaved: onMemberCreated,
+        objectiveOptionsFuture: objectiveOptionsFuture,
+        genderOptionsFuture: genderOptionsFuture,
+        levelOptionsFuture: levelOptionsFuture,
+        subscriptionOptionsFuture: subscriptionOptionsFuture,
       );
     }
 
@@ -173,9 +190,7 @@ class MembersLargeLayout extends StatelessWidget {
         children: [
           Text(
             l10n.membersPageTitle,
-            style: context.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: context.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(width: 8),
           if (members.isNotEmpty)

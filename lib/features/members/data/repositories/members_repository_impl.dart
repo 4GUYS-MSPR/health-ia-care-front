@@ -4,14 +4,11 @@ import '../../../../core/errors/failures.dart';
 import '../../../../core/errors/network_failures.dart';
 import '../../../../core/logging/logger_mixin.dart';
 import '../../../../core/network/network_info.dart';
-import '../../domain/entities/gender.dart';
-import '../../domain/entities/level.dart';
 import '../../domain/entities/member.dart';
-import '../../domain/entities/objective.dart';
-import '../../domain/entities/subscription.dart';
 import '../../domain/errors/members_failures.dart';
 import '../../domain/repositories/members_repository.dart';
 import '../datasources/members_remote_datasources.dart';
+import '../models/member_model.dart';
 
 /// Repository implementation for member operations.
 ///
@@ -47,37 +44,16 @@ class MembersRepositoryImpl with LoggerMixin implements MembersRepository {
   }
 
   @override
-  TaskEither<Failure, Member> createMember({
-    int? age,
-    required double bmi,
-    required double fatPercentage,
-    required double height,
-    required double weight,
-    required int workoutFrequency,
-    List<Objective> objectives = const [],
-    required Gender gender,
-    required Level level,
-    required Subscription subscription,
-  }) {
+  TaskEither<Failure, Member> createMember(Member member) {
     logger.finest('createMember called');
 
     return _checkInternetConnection().flatMap(
       (_) => TaskEither.tryCatch(
         () async {
-          final member = await remoteDatasources.createMember(
-            age: age,
-            bmi: bmi,
-            fatPercentage: fatPercentage,
-            height: height,
-            weight: weight,
-            workoutFrequency: workoutFrequency,
-            objectives: objectives,
-            gender: gender,
-            level: level,
-            subscription: subscription,
-          );
-          logger.fine('Member created with id=${member.id}');
-          return member;
+          final memberModel = MemberModel.fromEntity(member);
+          final createdMember = await remoteDatasources.createMember(memberModel);
+          logger.fine('Member created with id=${createdMember.id}');
+          return createdMember;
         },
         (error, stackTrace) {
           logger.severe('Failed to create member', error, stackTrace);
@@ -155,39 +131,16 @@ class MembersRepositoryImpl with LoggerMixin implements MembersRepository {
   }
 
   @override
-  TaskEither<Failure, Member> updateMember(
-    int id, {
-    int? age,
-    double? bmi,
-    double? fatPercentage,
-    double? height,
-    double? weight,
-    int? workoutFrequency,
-    List<Objective>? objectives,
-    Gender? gender,
-    Level? level,
-    Subscription? subscription,
-  }) {
+  TaskEither<Failure, Member> updateMember(int id, Member member) {
     logger.finest('updateMember called for id=$id');
 
     return _checkInternetConnection().flatMap(
       (_) => TaskEither.tryCatch(
         () async {
-          final member = await remoteDatasources.updateMember(
-            id,
-            age: age,
-            bmi: bmi,
-            fatPercentage: fatPercentage,
-            height: height,
-            weight: weight,
-            workoutFrequency: workoutFrequency,
-            objectives: objectives,
-            gender: gender,
-            level: level,
-            subscription: subscription,
-          );
+          final memberModel = MemberModel.fromEntity(member);
+          final updatedMember = await remoteDatasources.updateMember(id, memberModel);
           logger.fine('Member $id updated');
-          return member;
+          return updatedMember;
         },
         (error, stackTrace) {
           logger.severe('Failed to update member $id', error, stackTrace);
