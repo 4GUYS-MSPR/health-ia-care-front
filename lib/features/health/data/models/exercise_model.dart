@@ -11,6 +11,11 @@ class ExerciseModel extends Exercise {
     super.equipments,
     super.secondaryMuscles,
     super.targetMuscles,
+    super.categoryName,
+    super.bodyPartNames,
+    super.equipmentNames,
+    super.targetMuscleNames,
+    super.secondaryMuscleNames,
   });
 
   factory ExerciseModel.fromJson(Map<String, dynamic> json) {
@@ -24,6 +29,11 @@ class ExerciseModel extends Exercise {
       equipments: _readIntList(json['equipments']),
       secondaryMuscles: _readIntList(json['secondary_muscles']),
       targetMuscles: _readIntList(json['target_muscles']),
+      categoryName: _readString(json['category']),
+      bodyPartNames: _readStringList(json['body_parts']),
+      equipmentNames: _readStringList(json['equipments']),
+      targetMuscleNames: _readStringList(json['target_muscles']),
+      secondaryMuscleNames: _readStringList(json['secondary_muscles']),
     );
   }
 
@@ -41,6 +51,27 @@ class ExerciseModel extends Exercise {
     return raw.map(_readInt).whereType<int>().toList();
   }
 
+  static String? _readString(dynamic raw) {
+    if (raw == null) return null;
+    if (raw is String) {
+      final trimmed = raw.trim();
+      return trimmed.isEmpty ? null : trimmed;
+    }
+    if (raw is Map) {
+      final dynamicValue = raw['value'] ?? raw['label'] ?? raw['name'];
+      if (dynamicValue is String) {
+        final trimmed = dynamicValue.trim();
+        return trimmed.isEmpty ? null : trimmed;
+      }
+    }
+    return null;
+  }
+
+  static List<String> _readStringList(dynamic raw) {
+    if (raw is! List) return const <String>[];
+    return raw.map(_readString).whereType<String>().toList();
+  }
+
   factory ExerciseModel.fromEntity(Exercise entity) {
     return ExerciseModel(
       id: entity.id,
@@ -52,6 +83,11 @@ class ExerciseModel extends Exercise {
       equipments: entity.equipments,
       secondaryMuscles: entity.secondaryMuscles,
       targetMuscles: entity.targetMuscles,
+      categoryName: entity.categoryName,
+      bodyPartNames: entity.bodyPartNames,
+      equipmentNames: entity.equipmentNames,
+      targetMuscleNames: entity.targetMuscleNames,
+      secondaryMuscleNames: entity.secondaryMuscleNames,
     );
   }
 

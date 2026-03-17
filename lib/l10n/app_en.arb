@@ -240,10 +240,6 @@
     "@navigationDestinationNutrition": {
         "description": "Navigation destination label for the nutrition page"
     },
-    "navigationDestinationMembers": "Members",
-    "@navigationDestinationMembers": {
-        "description": "Navigation destination label for the members page"
-    },
     "navigationDestinationExercises": "Exercises",
     "@navigationDestinationExercises": {
         "description": "Navigation destination label for the exercises page"
@@ -1334,5 +1330,49 @@
                 "type": "int"
             }
         }
+    },
+    "exerciseDashboardTitle": "Exercise",
+    "@exerciseDashboardTitle": {
+        "description": "Title for the exercise dashboard page"
+    },
+    "exerciseDashboardExercisesLoaded": "exercises loaded",
+    "@exerciseDashboardExercisesLoaded": {
+        "description": "Shows the number of exercises loaded in the dashboard"
+    },
+    "exerciseDashboardKpiTotalExercises": "Total exercises",
+    "@exerciseDashboardKpiTotalExercises": {
+        "description": "KPI label for total exercises"
+    },
+    "exerciseDashboardKpiAvgTargetMuscles": "Avg. Target Muscles",
+    "@exerciseDashboardKpiAvgTargetMuscles": {
+        "description": "KPI label for average target muscles"
+    },
+    "exerciseDashboardKpiAvgBodyParts": "Avg. Body Parts",
+    "@exerciseDashboardKpiAvgBodyParts": {
+        "description": "KPI label for average body parts"
+    },
+    "exerciseDashboardKpiAvgEquipments": "Avg. Equipments",
+    "@exerciseDashboardKpiAvgEquipments": {
+        "description": "KPI label for average equipments"
+    },
+    "exerciseDashboardPieCategoryTitle": "By category",
+    "@exerciseDashboardPieCategoryTitle": {
+        "description": "Pie chart title for exercise categories"
+    },
+    "exerciseDashboardPieCategoryNoData": "No data",
+    "@exerciseDashboardPieCategoryNoData": {
+        "description": "Message shown when no data is available for the chart"
+    },
+    "exerciseDashboardBarTargetMusclesTitle": "Target muscles frequency",
+    "@exerciseDashboardBarTargetMusclesTitle": {
+        "description": "Bar chart title for target muscles distribution"
+    },
+    "exerciseDashboardPieEquipmentTitle": "By equipment",
+    "@exerciseDashboardPieEquipmentTitle": {
+        "description": "Pie chart title for exercise equipment"
+    },
+    "exerciseDashboardBarBodyPartsTitle": "Body parts frequency",
+    "@exerciseDashboardBarBodyPartsTitle": {
+        "description": "Bar chart title for body parts distribution"
     }
 }
