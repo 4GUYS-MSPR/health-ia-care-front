@@ -78,3 +78,33 @@ class FoodValidationFailure extends NutritionFailure {
     debugMessage,
   ];
 }
+
+/// Failed to parse CSV file.
+class CsvParseFailure extends NutritionFailure {
+  const CsvParseFailure({super.debugMessage});
+}
+
+/// CSV import failure (some rows failed to create).
+class CsvImportFailure extends NutritionFailure {
+  final int successCount;
+  final int failureCount;
+
+  const CsvImportFailure({
+    required this.successCount,
+    required this.failureCount,
+    super.debugMessage,
+  });
+
+  @override
+  List<Object?> get props => [successCount, failureCount, debugMessage];
+}
+
+/// Bulk food import failed.
+class FoodImportFailure extends NutritionFailure {
+  const FoodImportFailure({super.debugMessage});
+}
+
+/// Food export failed.
+class FoodExportFailure extends NutritionFailure {
+  const FoodExportFailure({super.debugMessage});
+}

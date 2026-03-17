@@ -2,9 +2,11 @@ import 'package:dio/dio.dart';
 
 import '../../../../core/errors/server_failures.dart';
 import '../../../../core/logging/logger_mixin.dart';
+import '../../domain/entities/objective.dart';
 import '../../domain/errors/members_failures.dart';
 import '../models/enum_item_model.dart';
 import '../models/member_model.dart';
+import '../models/objective_model.dart';
 
 
 /// Remote datasource for members API operations.
@@ -32,11 +34,15 @@ abstract interface class MembersRemoteDatasources {
 
   /// Fetches subscription options from the enum API.
   Future<List<EnumItemModel>> getSubscriptionOptions();
+
+  /// Fetches member objectives from the dedicated objective API.
+  Future<List<Objective>> getObjectiveOptions();
 }
 
 class MembersRemoteDatasourcesImpl with LoggerMixin implements MembersRemoteDatasources {
   static const _membersEndpoint = '/api/member/';
   static const _enumEndpoint = '/api/enum/';
+  static const _objectiveEndpoint = '/api/objective/';
 
   final Dio membersClient;
 
@@ -123,18 +129,7 @@ class MembersRemoteDatasourcesImpl with LoggerMixin implements MembersRemoteData
   @override
   Future<MemberModel> updateMember(int id, MemberModel member) async {
     logger.finest('updateMember called for id=$id');
-    final payload = <String, dynamic>{
-      'age': member.age,
-      'bmi': member.bmi,
-      'fat_percentage': member.fatPercentage,
-      'height': member.height,
-      'weight': member.weight,
-      'workout_frequency': member.workoutFrequency,
-      'gender': member.genderId,
-      'level': member.levelId,
-      'subscription': member.subscriptionId,
-      'objectives': MemberModel.objectivesToApi(member.objectives),
-    }..removeWhere((_, value) => value == null);
+    final payload = member.toMap();
 
     try {
       final res = await membersClient.patch('$_membersEndpoint$id/', data: payload);
@@ -169,6 +164,20 @@ class MembersRemoteDatasourcesImpl with LoggerMixin implements MembersRemoteData
   @override
   Future<List<EnumItemModel>> getSubscriptionOptions() =>
       _fetchEnumItems('Subscription');
+
+  @override
+  Future<List<Objective>> getObjectiveOptions() async {
+    final res = await membersClient.get(_objectiveEndpoint);
+    final payload = res.data;
+    final List<dynamic> results = payload is Map<String, dynamic>
+        ? ((payload['results'] as List<dynamic>?) ?? const <dynamic>[])
+        : (payload as List<dynamic>? ?? const <dynamic>[]);
+
+    return results
+        .whereType<Map>()
+        .map((item) => ObjectiveModel.fromMap(Map<String, dynamic>.from(item)))
+        .toList();
+  }
 
   Future<List<EnumItemModel>> _fetchEnumItems(String model) async {
     final res = await membersClient.get('$_enumEndpoint$model/');

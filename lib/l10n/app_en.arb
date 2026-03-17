@@ -1259,5 +1259,80 @@
     "sessionAddButton": "Add",
     "@sessionAddButton": {
         "description": "Button label to add a session"
+    },
+    "csvImportTitle": "Import Foods from CSV",
+    "@csvImportTitle": {
+        "description": "Title for CSV import page"
+    },
+    "csvImportButton": "Import CSV",
+    "@csvImportButton": {
+        "description": "Button label for CSV import"
+    },
+    "csvImportSuccessMessage": "{count} food(s) imported successfully",
+    "@csvImportSuccessMessage": {
+        "description": "Success message after CSV import",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "csvImportPartialMessage": "{success} food(s) imported, {failure} failed",
+    "@csvImportPartialMessage": {
+        "description": "Partial success message after CSV import",
+        "placeholders": {
+            "success": {
+                "type": "int"
+            },
+            "failure": {
+                "type": "int"
+            }
+        }
+    },
+    "importExportButton": "Import / Export",
+    "@importExportButton": {
+        "description": "Button label for import/export page"
+    },
+    "importExportTitle": "Import / Export Foods",
+    "@importExportTitle": {
+        "description": "Title for import/export page"
+    },
+    "exportCsvButton": "Export CSV",
+    "@exportCsvButton": {
+        "description": "Button label for CSV export"
+    },
+    "exportJsonButton": "Export JSON",
+    "@exportJsonButton": {
+        "description": "Button label for JSON export"
+    },
+    "exportSuccessMessage": "Foods exported to {fileName}",
+    "@exportSuccessMessage": {
+        "description": "Success message after export",
+        "placeholders": {
+            "fileName": {
+                "type": "String"
+            }
+        }
+    },
+    "importSuccessMessage": "{count} food(s) imported successfully",
+    "@importSuccessMessage": {
+        "description": "Success message after import",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "importPartialMessage": "{success} food(s) imported, {failure} skipped",
+    "@importPartialMessage": {
+        "description": "Partial success message after import",
+        "placeholders": {
+            "success": {
+                "type": "int"
+            },
+            "failure": {
+                "type": "int"
+            }
+        }
     }
 }

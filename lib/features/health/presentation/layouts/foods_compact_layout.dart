@@ -20,6 +20,7 @@ class FoodsCompactLayout extends StatelessWidget {
     required this.onFoodEdit,
     required this.onFoodDelete,
     required this.onAddFood,
+    required this.onImportExport,
     required this.onRefresh,
     this.pagination,
     required this.onNextPage,
@@ -35,6 +36,7 @@ class FoodsCompactLayout extends StatelessWidget {
   final void Function(NutritionFood food) onFoodEdit;
   final void Function(int foodId) onFoodDelete;
   final VoidCallback onAddFood;
+  final VoidCallback onImportExport;
   final VoidCallback onRefresh;
   final PaginationInfo? pagination;
   final VoidCallback onNextPage;
@@ -106,6 +108,12 @@ class FoodsCompactLayout extends StatelessWidget {
             onPressed: onRefresh,
             icon: const Icon(Icons.refresh),
             tooltip: l10n.foodsRefreshButton,
+          ),
+          const SizedBox(width: 8),
+          OutlinedButton.icon(
+            onPressed: onImportExport,
+            icon: const Icon(Icons.swap_vert),
+            label: Text(l10n.importExportButton),
           ),
           const SizedBox(width: 8),
           FilledButton.icon(

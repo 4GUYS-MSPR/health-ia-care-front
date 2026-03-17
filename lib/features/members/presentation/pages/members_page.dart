@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../app/router/app_routes.dart';
 import '../../../../core/extensions/l10n_extension.dart';
 import '../../../../core/extensions/theme_extension.dart';
 import '../../../../core/shared/layouts/responsive_layout_builder.dart';
@@ -118,6 +120,7 @@ class _MembersPageContentState extends State<_MembersPageContent> {
                   onMemberEdit: _showEditDialog,
                   onMemberDelete: _showDeleteDialog,
                   onAddMember: _showCreateDialog,
+                  onImportExport: _onImportExport,
                   onRefresh: _onRefresh,
                 ),
                 medium: MembersMediumLayout(
@@ -130,6 +133,7 @@ class _MembersPageContentState extends State<_MembersPageContent> {
                   onMemberEdit: _showEditDialog,
                   onMemberDelete: _showDeleteDialog,
                   onAddMember: _showCreateDialog,
+                  onImportExport: _onImportExport,
                   onRefresh: _onRefresh,
                 ),
                 large: MembersLargeLayout(
@@ -148,6 +152,7 @@ class _MembersPageContentState extends State<_MembersPageContent> {
                   onMemberEdit: _showEditDialog,
                   onMemberDelete: _showDeleteDialog,
                   onAddMember: _showCreateDialog,
+                  onImportExport: _onImportExport,
                   onRefresh: _onRefresh,
                   onCloseDetails: _onCloseDetails,
                   onToggleCreateForm: _onToggleCreateForm,
@@ -250,6 +255,10 @@ class _MembersPageContentState extends State<_MembersPageContent> {
 
   void _onRefresh() {
     context.read<MembersBloc>().add(const RefreshMembersRequested());
+  }
+
+  void _onImportExport() {
+    context.pushNamed(AppRoutes.membersImport);
   }
 
   void _handleStateChanges(BuildContext context, MembersState state) {

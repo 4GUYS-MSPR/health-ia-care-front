@@ -35,10 +35,11 @@ class ExerciseDataTable extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minWidth: constraints.maxWidth),
-            child: DataTable(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minWidth: constraints.maxWidth),
+              child: DataTable(
               sortColumnIndex: sortColumnIndex,
               sortAscending: sortAscending,
               showCheckboxColumn: false,
@@ -52,6 +53,7 @@ class ExerciseDataTable extends StatelessWidget {
               columns: _buildColumns(l10n),
               rows: _buildRows(context, l10n),
             ),
+          ),
           ),
         );
       },

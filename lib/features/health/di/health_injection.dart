@@ -27,15 +27,18 @@ import '../domain/usecases/delete_food_usecase.dart';
 import '../domain/usecases/delete_session_usecase.dart';
 import '../domain/usecases/get_all_diet_recommendations_usecase.dart';
 import '../domain/usecases/get_all_exercises_usecase.dart';
+import '../domain/usecases/export_foods_usecase.dart';
 import '../domain/usecases/get_all_foods_usecase.dart';
 import '../domain/usecases/get_all_sessions_usecase.dart';
 import '../domain/usecases/get_food_usecase.dart';
 import '../domain/usecases/update_diet_recommendation_usecase.dart';
 import '../domain/usecases/update_exercise_usecase.dart';
+import '../domain/usecases/import_foods_usecase.dart';
 import '../domain/usecases/update_food_usecase.dart';
 import '../domain/usecases/update_session_usecase.dart';
 import '../presentation/blocs/diet_recommendations_bloc.dart';
 import '../presentation/blocs/exercises_bloc.dart';
+import '../presentation/blocs/food_import_bloc.dart';
 import '../presentation/blocs/foods_bloc.dart';
 import '../presentation/blocs/sessions_bloc.dart';
 
@@ -121,6 +124,14 @@ void _registerUsecases(GetIt sl) {
   sl.registerFactory(
     () => DeleteFoodUsecase(repository: sl()),
   );
+
+  sl.registerFactory(
+    () => ImportFoodsUsecase(repository: sl()),
+  );
+
+  sl.registerFactory(
+    () => ExportFoodsUsecase(repository: sl()),
+  );
 }
 
 void _registerBlocsAndCubits(GetIt sl) {
@@ -131,6 +142,13 @@ void _registerBlocsAndCubits(GetIt sl) {
       updateFoodUsecase: sl(),
       deleteFoodUsecase: sl(),
       dataSource: sl(),
+    ),
+  );
+
+  sl.registerFactory(
+    () => FoodImportBloc(
+      importFoodsUsecase: sl(),
+      exportFoodsUsecase: sl(),
     ),
   );
 }
