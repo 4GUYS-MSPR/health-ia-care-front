@@ -3,7 +3,6 @@ import 'dart:convert';
 import '../../domain/entities/gender.dart';
 import '../../domain/entities/level.dart';
 import '../../domain/entities/member.dart';
-import '../../domain/entities/objective.dart';
 import '../../domain/entities/subscription.dart';
 import 'objective_model.dart';
 
