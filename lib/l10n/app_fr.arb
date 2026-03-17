@@ -315,78 +315,24 @@
   "sessionSuccessDeleted": "Séance supprimée avec succès",
   "sessionAddButton": "Ajouter",
   "csvImportTitle": "Importer des aliments via CSV",
-  "@csvImportTitle": {
-    "description": "Titre de la page d'import CSV"
-  },
   "csvImportButton": "Importer CSV",
-  "@csvImportButton": {
-    "description": "Libellé du bouton d'import CSV"
-  },
   "csvImportSuccessMessage": "{count} aliment(s) importé(s) avec succès",
-  "@csvImportSuccessMessage": {
-    "description": "Message de succes apres import CSV",
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "csvImportPartialMessage": "{success} aliment(s) importé(s), {failure} échoué(s)",
-  "@csvImportPartialMessage": {
-    "description": "Message de succes partiel apres import CSV",
-    "placeholders": {
-      "success": {
-        "type": "int"
-      },
-      "failure": {
-        "type": "int"
-      }
-    }
-  },
   "importExportButton": "Import / Export",
-  "@importExportButton": {
-    "description": "Libelle du bouton import/export"
-  },
-  "importExportTitle": "Import / Export d'aliments",
-  "@importExportTitle": {
-    "description": "Titre de la page import/export"
-  },
   "exportCsvButton": "Exporter CSV",
-  "@exportCsvButton": {
-    "description": "Libelle du bouton d'export CSV"
-  },
   "exportJsonButton": "Exporter JSON",
-  "@exportJsonButton": {
-    "description": "Libelle du bouton d'export JSON"
-  },
   "exportSuccessMessage": "Aliments exportés vers {fileName}",
-  "@exportSuccessMessage": {
-    "description": "Message de succes apres export",
-    "placeholders": {
-      "fileName": {
-        "type": "String"
-      }
-    }
-  },
   "importSuccessMessage": "{count} aliment(s) importé(s) avec succès",
-  "@importSuccessMessage": {
-    "description": "Message de succes apres import",
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "importPartialMessage": "{success} aliment(s) importé(s), {failure} ignoré(s)",
-  "@importPartialMessage": {
-    "description": "Message de succes partiel apres import",
-    "placeholders": {
-      "success": {
-        "type": "int"
-      },
-      "failure": {
-        "type": "int"
-      }
-    }
-  }
+  "exerciseDashboardTitle": "Exercice",
+  "exerciseDashboardExercisesLoaded": "exercices chargés",
+  "exerciseDashboardKpiTotalExercises": "Total exercices",
+  "exerciseDashboardKpiAvgTargetMuscles": "Moy. Muscles ciblés",
+  "exerciseDashboardKpiAvgBodyParts": "Moy. Parties du corps",
+  "exerciseDashboardKpiAvgEquipments": "Moy. Équipements",
+  "exerciseDashboardPieCategoryTitle": "Par catégorie",
+  "exerciseDashboardPieCategoryNoData": "Aucune donnée",
+  "exerciseDashboardBarTargetMusclesTitle": "Fréquence des muscles ciblés",
+  "exerciseDashboardPieEquipmentTitle": "Par équipement",
+  "exerciseDashboardBarBodyPartsTitle": "Fréquence des parties du corps"
 }

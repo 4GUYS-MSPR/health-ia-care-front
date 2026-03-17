@@ -10,6 +10,11 @@ class Exercise extends Equatable {
   final List<int> equipments;
   final List<int> secondaryMuscles;
   final List<int> targetMuscles;
+  final String? categoryName;
+  final List<String> bodyPartNames;
+  final List<String> equipmentNames;
+  final List<String> targetMuscleNames;
+  final List<String> secondaryMuscleNames;
 
   const Exercise({
     required this.id,
@@ -21,6 +26,11 @@ class Exercise extends Equatable {
     this.equipments = const [],
     this.secondaryMuscles = const [],
     this.targetMuscles = const [],
+    this.categoryName,
+    this.bodyPartNames = const [],
+    this.equipmentNames = const [],
+    this.targetMuscleNames = const [],
+    this.secondaryMuscleNames = const [],
   });
 
   @override
@@ -34,5 +44,10 @@ class Exercise extends Equatable {
     equipments,
     secondaryMuscles,
     targetMuscles,
+    categoryName,
+    bodyPartNames,
+    equipmentNames,
+    targetMuscleNames,
+    secondaryMuscleNames,
   ];
 }
