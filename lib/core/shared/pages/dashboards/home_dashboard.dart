@@ -129,7 +129,7 @@ class _HomeDashboardContent extends StatelessWidget {
     return GraphCard(
       title: context.l10n.memberStatsLevelDistribution,
       child: members.isEmpty
-          ? const Center(child: Text('Aucun client'))
+          ? Center(child: Text('Aucun client'))
           : Row(
               children: [
                 Expanded(
@@ -176,7 +176,7 @@ class _HomeDashboardContent extends StatelessWidget {
     return GraphCard(
       title: context.l10n.nutritionDashboardPieMacrosTitle,
       child: foods.isEmpty
-          ? const Center(child: Text('Aucune donnée'))
+          ? Center(child: Text('Aucune donnée'))
           : Row(
               children: [
                 Expanded(
@@ -211,7 +211,7 @@ class _HomeDashboardContent extends StatelessWidget {
     return GraphCard(
       title: context.l10n.exerciseDashboardPieCategoryTitle,
       child: exercises.isEmpty
-          ? const Center(child: Text('Aucun exercice'))
+          ? Center(child: Text('Aucun exercice'))
           : Row(
               children: [
                 Expanded(
@@ -254,7 +254,7 @@ class _HomeDashboardContent extends StatelessWidget {
     return GraphCard(
       title: context.l10n.memberStatsSubscriptionDistribution,
       child: members.isEmpty
-          ? const Center(child: Text('Aucun client'))
+          ? Center(child: Text('Aucun client'))
           : Row(
               children: [
                 Expanded(
@@ -292,7 +292,7 @@ class _HomeDashboardContent extends StatelessWidget {
     return GraphCard(
       title: context.l10n.exerciseDashboardBarTargetMusclesTitle,
       child: exercises.isEmpty
-          ? const Center(child: Text('Aucun exercice'))
+          ? Center(child: Text('Aucun exercice'))
           : Row(
               children: [
                 Expanded(
@@ -334,7 +334,7 @@ class _HomeDashboardContent extends StatelessWidget {
     return GraphCard(
       title: context.l10n.nutritionDashboardPieMealTypeTitle,
       child: foods.isEmpty
-          ? const Center(child: Text('Aucun aliment'))
+          ? Center(child: Text('Aucun aliment'))
           : Row(
               children: [
                 Expanded(

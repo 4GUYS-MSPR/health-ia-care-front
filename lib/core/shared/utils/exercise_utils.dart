@@ -1,6 +1,5 @@
 import 'package:health_ia_care_app/features/health/domain/entities/exercise.dart';
 
-/// Utility functions for exercise data processing and aggregation
 class ExerciseUtils {
   // Averages for KPI cards
   static double averageTargetMuscles(List<Exercise> exercises) {
@@ -30,12 +29,12 @@ class ExerciseUtils {
     return total / exercises.length;
   }
 
-  // Counts for charts (using display names from API)
   static Map<String, int> countByCategory(List<Exercise> exercises) {
     final counts = <String, int>{};
     for (final exercise in exercises) {
-      if (exercise.categoryName != null && exercise.categoryName!.isNotEmpty) {
-        counts[exercise.categoryName!] = (counts[exercise.categoryName!] ?? 0) + 1;
+      final name = exercise.categoryName?.trim();
+      if (name != null && name.isNotEmpty) {
+        counts[name] = (counts[name] ?? 0) + 1;
       }
     }
     return counts;
@@ -45,7 +44,9 @@ class ExerciseUtils {
     final counts = <String, int>{};
     for (final exercise in exercises) {
       for (final muscle in exercise.targetMuscleNames) {
-        counts[muscle] = (counts[muscle] ?? 0) + 1;
+        final muscleName = muscle.trim();
+        if (muscleName.isEmpty) continue;
+        counts[muscleName] = (counts[muscleName] ?? 0) + 1;
       }
     }
     return counts;
@@ -55,7 +56,9 @@ class ExerciseUtils {
     final counts = <String, int>{};
     for (final exercise in exercises) {
       for (final equipment in exercise.equipmentNames) {
-        counts[equipment] = (counts[equipment] ?? 0) + 1;
+        final equipmentName = equipment.trim();
+        if (equipmentName.isEmpty) continue;
+        counts[equipmentName] = (counts[equipmentName] ?? 0) + 1;
       }
     }
     return counts;
@@ -65,7 +68,9 @@ class ExerciseUtils {
     final counts = <String, int>{};
     for (final exercise in exercises) {
       for (final part in exercise.bodyPartNames) {
-        counts[part] = (counts[part] ?? 0) + 1;
+        final partName = part.trim();
+        if (partName.isEmpty) continue;
+        counts[partName] = (counts[partName] ?? 0) + 1;
       }
     }
     return counts;

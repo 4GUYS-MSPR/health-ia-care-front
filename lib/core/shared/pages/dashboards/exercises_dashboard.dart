@@ -112,19 +112,13 @@ class _ExerciseContent extends StatelessWidget {
       _kpiCard(
         Icons.favorite,
         context.l10n.exerciseDashboardKpiAvgTargetMuscles,
-        '${ExerciseUtils.averageTargetMuscles(exercises)}',
+        ExerciseUtils.averageTargetMuscles(exercises).toStringAsFixed(1),
         Colors.red,
-      ),
-      _kpiCard(
-        Icons.accessibility,
-        context.l10n.exerciseDashboardKpiAvgBodyParts,
-        '${ExerciseUtils.averageBodyParts(exercises)}',
-        Colors.green,
       ),
       _kpiCard(
         Icons.hardware,
         context.l10n.exerciseDashboardKpiAvgEquipments,
-        '${ExerciseUtils.averageEquipments(exercises)}',
+        ExerciseUtils.averageEquipments(exercises).toStringAsFixed(1),
         Colors.amber,
       ),
     ];
@@ -183,7 +177,7 @@ class _ExerciseContent extends StatelessWidget {
     
     return GraphCard(
       title: context.l10n.exerciseDashboardPieCategoryTitle,
-      child: exercises.isEmpty
+      child: byCategory.isEmpty
           ? Center(child: Text(context.l10n.exerciseDashboardPieCategoryNoData))
           : Row(
               children: [

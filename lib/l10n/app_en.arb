@@ -240,10 +240,6 @@
     "@navigationDestinationNutrition": {
         "description": "Navigation destination label for the nutrition page"
     },
-    "navigationDestinationMembers": "Members",
-    "@navigationDestinationMembers": {
-        "description": "Navigation destination label for the members page"
-    },
     "navigationDestinationExercises": "Exercises",
     "@navigationDestinationExercises": {
         "description": "Navigation destination label for the exercises page"

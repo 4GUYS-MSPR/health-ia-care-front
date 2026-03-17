@@ -53,17 +53,23 @@ class ExerciseModel extends Exercise {
 
   static String? _readString(dynamic raw) {
     if (raw == null) return null;
-    if (raw is String) return raw;
-    if (raw is Map) return raw['value'] as String?;
+    if (raw is String) {
+      final trimmed = raw.trim();
+      return trimmed.isEmpty ? null : trimmed;
+    }
+    if (raw is Map) {
+      final dynamicValue = raw['value'] ?? raw['label'] ?? raw['name'];
+      if (dynamicValue is String) {
+        final trimmed = dynamicValue.trim();
+        return trimmed.isEmpty ? null : trimmed;
+      }
+    }
     return null;
   }
 
   static List<String> _readStringList(dynamic raw) {
     if (raw is! List) return const <String>[];
-    return raw.map((item) {
-      if (item is Map) return item['value'] as String?;
-      return item is String ? item : null;
-    }).whereType<String>().toList();
+    return raw.map(_readString).whereType<String>().toList();
   }
 
   factory ExerciseModel.fromEntity(Exercise entity) {
