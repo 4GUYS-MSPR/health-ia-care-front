@@ -19,6 +19,7 @@ class SessionCompactLayout extends StatelessWidget {
     required this.onItemEdit,
     required this.onItemDelete,
     required this.onAdd,
+    required this.onImportExport,
     required this.onRefresh,
     this.pagination,
     required this.onNextPage,
@@ -34,6 +35,7 @@ class SessionCompactLayout extends StatelessWidget {
   final void Function(WorkoutSession item) onItemEdit;
   final void Function(int itemId) onItemDelete;
   final VoidCallback onAdd;
+  final VoidCallback onImportExport;
   final VoidCallback onRefresh;
   final PaginationInfo? pagination;
   final VoidCallback onNextPage;
@@ -96,6 +98,12 @@ class SessionCompactLayout extends StatelessWidget {
           if (items.isNotEmpty) Chip(label: Text('${items.length}'), visualDensity: VisualDensity.compact),
           const Spacer(),
           IconButton.outlined(onPressed: onRefresh, icon: const Icon(Icons.refresh), tooltip: l10n.sessionsRefreshButton),
+          const SizedBox(width: 8),
+          OutlinedButton.icon(
+            onPressed: onImportExport,
+            icon: const Icon(Icons.swap_vert),
+            label: Text(l10n.importExportButton),
+          ),
           const SizedBox(width: 8),
           FilledButton.icon(onPressed: onAdd, icon: const Icon(Icons.add), label: Text(l10n.sessionAddButton)),
         ],

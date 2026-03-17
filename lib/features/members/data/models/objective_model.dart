@@ -12,14 +12,14 @@ class ObjectiveModel extends Objective {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'description': description,
+      'value': description,
       'created_at': createdAt.toIso8601String(),
     };
   }
 
   factory ObjectiveModel.fromMap(Map<String, dynamic> map) {
     String parseDescription(Map<String, dynamic> value) {
-      final raw = value['description'] ?? value['name'] ?? value['label'] ?? value['id'];
+      final raw = value['value'];
       if (raw == null) return '';
       return raw.toString();
     }

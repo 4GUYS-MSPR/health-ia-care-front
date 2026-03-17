@@ -14,6 +14,7 @@ import '../layouts/foods_medium_layout.dart';
 import '../widgets/food_delete_dialog.dart';
 import '../widgets/food_form_dialog.dart';
 import '../widgets/health_error_banner.dart';
+import 'food_import_export_page.dart';
 
 /// Page displaying all foods with CRUD functionality.
 class NutritionPage extends StatelessWidget {
@@ -93,6 +94,7 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
                   onFoodEdit: _showEditDialog,
                   onFoodDelete: _showDeleteDialog,
                   onAddFood: _showCreateDialog,
+                  onImportExport: _onImportExport,
                   onRefresh: _onRefresh,
                   onNextPage: _onNextPage,
                   onPreviousPage: _onPreviousPage,
@@ -108,6 +110,7 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
                   onFoodEdit: _showEditDialog,
                   onFoodDelete: _showDeleteDialog,
                   onAddFood: _showCreateDialog,
+                  onImportExport: _onImportExport,
                   onRefresh: _onRefresh,
                   onNextPage: _onNextPage,
                   onPreviousPage: _onPreviousPage,
@@ -125,6 +128,7 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
                   onFoodEdit: _showEditDialog,
                   onFoodDelete: _showDeleteDialog,
                   onAddFood: _showCreateDialog,
+                  onImportExport: _onImportExport,
                   onRefresh: _onRefresh,
                   onCloseDetails: _onCloseDetails,
                   onToggleCreateForm: _onToggleCreateForm,
@@ -237,6 +241,18 @@ class _NutritionPageContentState extends State<_NutritionPageContent> {
 
   void _onRefresh() {
     context.read<FoodsBloc>().add(const RefreshFoodsRequested());
+  }
+
+  Future<void> _onImportExport() async {
+    final result = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (_) => const FoodImportExportPage(),
+      ),
+    );
+    // Refresh foods if import was successful
+    if (result == true && mounted) {
+      context.read<FoodsBloc>().add(const RefreshFoodsRequested());
+    }
   }
 
   void _handleStateChanges(BuildContext context, FoodsState state) {

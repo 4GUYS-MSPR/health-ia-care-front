@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/extensions/l10n_extension.dart';
 import '../../../../core/extensions/theme_extension.dart';
+import '../../../../app/router/app_routes.dart';
 import '../../../../core/shared/layouts/responsive_layout_builder.dart';
 import '../../../../core/shared/models/pagination_info.dart';
 import '../../domain/entities/enum_item.dart';
@@ -89,6 +91,7 @@ class _ExercisesPageContentState extends State<_ExercisesPageContent> {
                   onItemEdit: _showEditDialog,
                   onItemDelete: _showDeleteDialog,
                   onAdd: _showCreateDialog,
+                  onImportExport: _onImportExport,
                   onRefresh: _onRefresh,
                   onNextPage: _onNextPage,
                   onPreviousPage: _onPreviousPage,
@@ -104,6 +107,7 @@ class _ExercisesPageContentState extends State<_ExercisesPageContent> {
                   onItemEdit: _showEditDialog,
                   onItemDelete: _showDeleteDialog,
                   onAdd: _showCreateDialog,
+                  onImportExport: _onImportExport,
                   onRefresh: _onRefresh,
                   onNextPage: _onNextPage,
                   onPreviousPage: _onPreviousPage,
@@ -121,6 +125,7 @@ class _ExercisesPageContentState extends State<_ExercisesPageContent> {
                   onItemEdit: _showEditDialog,
                   onItemDelete: _showDeleteDialog,
                   onAdd: _showCreateDialog,
+                  onImportExport: _onImportExport,
                   onRefresh: _onRefresh,
                   onCloseDetails: _onCloseDetails,
                   onToggleCreateForm: _onToggleCreateForm,
@@ -206,6 +211,10 @@ class _ExercisesPageContentState extends State<_ExercisesPageContent> {
 
   void _onCloseDetails() {
     setState(() => _selectedItem = null);
+  }
+
+  void _onImportExport() {
+    context.pushNamed(AppRoutes.exercisesImport);
   }
 
   void _onToggleCreateForm() {

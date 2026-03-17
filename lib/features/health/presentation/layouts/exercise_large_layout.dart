@@ -25,6 +25,7 @@ class ExerciseLargeLayout extends StatelessWidget {
     required this.onItemEdit,
     required this.onItemDelete,
     required this.onAdd,
+    required this.onImportExport,
     required this.onRefresh,
     required this.onCloseDetails,
     required this.onToggleCreateForm,
@@ -46,6 +47,7 @@ class ExerciseLargeLayout extends StatelessWidget {
   final void Function(Exercise item) onItemEdit;
   final void Function(int itemId) onItemDelete;
   final VoidCallback onAdd;
+  final VoidCallback onImportExport;
   final VoidCallback onRefresh;
   final VoidCallback onCloseDetails;
   final VoidCallback onToggleCreateForm;
@@ -175,6 +177,12 @@ class ExerciseLargeLayout extends StatelessWidget {
           if (items.isNotEmpty) Chip(label: Text('${items.length}'), visualDensity: VisualDensity.compact),
           const Spacer(),
           IconButton.outlined(onPressed: onRefresh, icon: const Icon(Icons.refresh), tooltip: l10n.exercisesRefreshButton),
+          const SizedBox(width: 8),
+          OutlinedButton.icon(
+            onPressed: onImportExport,
+            icon: const Icon(Icons.swap_vert),
+            label: Text(l10n.importExportButton),
+          ),
           const SizedBox(width: 8),
           FilledButton.icon(onPressed: onToggleCreateForm, icon: const Icon(Icons.add), label: Text(l10n.exerciseAddButton)),
         ],

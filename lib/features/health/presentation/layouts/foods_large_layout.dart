@@ -26,6 +26,7 @@ class FoodsLargeLayout extends StatelessWidget {
     required this.onFoodEdit,
     required this.onFoodDelete,
     required this.onAddFood,
+    required this.onImportExport,
     required this.onRefresh,
     required this.onCloseDetails,
     required this.onToggleCreateForm,
@@ -47,6 +48,7 @@ class FoodsLargeLayout extends StatelessWidget {
   final void Function(NutritionFood food) onFoodEdit;
   final void Function(int foodId) onFoodDelete;
   final VoidCallback onAddFood;
+  final VoidCallback onImportExport;
   final VoidCallback onRefresh;
   final VoidCallback onCloseDetails;
   final VoidCallback onToggleCreateForm;
@@ -207,6 +209,12 @@ class FoodsLargeLayout extends StatelessWidget {
             onPressed: onRefresh,
             icon: const Icon(Icons.refresh),
             tooltip: l10n.foodsRefreshButton,
+          ),
+          const SizedBox(width: 8),
+          OutlinedButton.icon(
+            onPressed: onImportExport,
+            icon: const Icon(Icons.swap_vert),
+            label: Text(l10n.importExportButton),
           ),
           const SizedBox(width: 8),
           FilledButton.icon(

@@ -34,10 +34,11 @@ class DietDataTable extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) => SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minWidth: constraints.maxWidth),
-          child: DataTable(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth),
+            child: DataTable(
             sortColumnIndex: sortColumnIndex,
             sortAscending: sortAscending,
             showCheckboxColumn: false,
@@ -51,6 +52,7 @@ class DietDataTable extends StatelessWidget {
             columns: _buildColumns(l10n),
             rows: _buildRows(context, l10n),
           ),
+        ),
         ),
       ),
     );

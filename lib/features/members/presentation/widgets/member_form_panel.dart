@@ -40,6 +40,7 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
   late final TextEditingController _bmiController;
   late final TextEditingController _fatPercentageController;
   late final TextEditingController _workoutFrequencyController;
+  late final TextEditingController _newObjectiveController;
   late final Future<List<Objective>> _objectiveOptionsFuture;
   late final Future<List<EnumItemModel>> _genderOptionsFuture;
   late final Future<List<EnumItemModel>> _levelOptionsFuture;
@@ -49,6 +50,8 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
   int? _levelId;
   int? _subscriptionId;
   final List<Objective> _objectives = [];
+  final List<Objective> _createdObjectiveOptions = [];
+  bool _isCreatingObjective = false;
 
   @override
   void initState() {
@@ -59,6 +62,7 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
     _bmiController = TextEditingController();
     _fatPercentageController = TextEditingController();
     _workoutFrequencyController = TextEditingController(text: '0');
+    _newObjectiveController = TextEditingController();
     _objectiveOptionsFuture = widget.objectiveOptionsFuture;
     _genderOptionsFuture = widget.genderOptionsFuture;
     _levelOptionsFuture = widget.levelOptionsFuture;
@@ -73,7 +77,47 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
     _bmiController.dispose();
     _fatPercentageController.dispose();
     _workoutFrequencyController.dispose();
+    _newObjectiveController.dispose();
     super.dispose();
+  }
+
+  bool _sameObjective(Objective a, Objective b) {
+    if (a.id != null && b.id != null) return a.id == b.id;
+    return a.description.trim().toLowerCase() == b.description.trim().toLowerCase();
+  }
+
+  Future<void> _addObjective() async {
+    final description = _newObjectiveController.text.trim();
+    if (description.isEmpty || _isCreatingObjective) return;
+
+    final alreadyExists = [
+      ..._objectives,
+      ..._createdObjectiveOptions,
+    ].any((o) => o.description.trim().toLowerCase() == description.toLowerCase());
+    if (alreadyExists) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Objective already selected')),
+      );
+      return;
+    }
+
+    setState(() => _isCreatingObjective = true);
+    final created = Objective(
+      id: null,
+      description: description,
+      createdAt: DateTime.now(),
+    );
+
+    setState(() {
+      if (!_createdObjectiveOptions.any((o) => _sameObjective(o, created))) {
+        _createdObjectiveOptions.add(created);
+      }
+      if (!_objectives.any((o) => _sameObjective(o, created))) {
+        _objectives.add(created);
+      }
+      _newObjectiveController.clear();
+      _isCreatingObjective = false;
+    });
   }
 
   void _calculateBmi() {
@@ -417,17 +461,19 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
             return Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: options.map((option) {
-                final selected = _objectives.any((o) => o.id == option.id);
+              children: [...options, ..._createdObjectiveOptions].map((option) {
+                final selected = _objectives.any((o) => _sameObjective(o, option));
                 return FilterChip(
                   selected: selected,
                   label: Text(option.description),
                   onSelected: (value) {
                     setState(() {
                       if (value) {
-                        _objectives.add(option);
+                        if (!_objectives.any((o) => _sameObjective(o, option))) {
+                          _objectives.add(option);
+                        }
                       } else {
-                        _objectives.removeWhere((o) => o.id == option.id);
+                        _objectives.removeWhere((o) => _sameObjective(o, option));
                       }
                     });
                   },
@@ -435,6 +481,33 @@ class _MemberFormPanelState extends State<MemberFormPanel> {
               }).toList(),
             );
           },
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _newObjectiveController,
+                decoration: const InputDecoration(
+                  labelText: 'New objective',
+                  border: OutlineInputBorder(),
+                ),
+                onSubmitted: (_) => _addObjective(),
+              ),
+            ),
+            const SizedBox(width: 8),
+            FilledButton.icon(
+              onPressed: _isCreatingObjective ? null : _addObjective,
+              icon: _isCreatingObjective
+                  ? const SizedBox(
+                      width: 14,
+                      height: 14,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.add),
+              label: const Text('Add'),
+            ),
+          ],
         ),
         if (_objectives.isNotEmpty) ...[
           const SizedBox(height: 12),

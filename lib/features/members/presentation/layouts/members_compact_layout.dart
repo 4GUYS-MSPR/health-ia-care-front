@@ -18,6 +18,7 @@ class MembersCompactLayout extends StatelessWidget {
     required this.onMemberEdit,
     required this.onMemberDelete,
     required this.onAddMember,
+    required this.onImportExport,
     required this.onRefresh,
   });
 
@@ -30,6 +31,7 @@ class MembersCompactLayout extends StatelessWidget {
   final void Function(Member member) onMemberEdit;
   final void Function(int memberId) onMemberDelete;
   final VoidCallback onAddMember;
+  final VoidCallback onImportExport;
   final VoidCallback onRefresh;
 
   @override
@@ -86,6 +88,12 @@ class MembersCompactLayout extends StatelessWidget {
             onPressed: onRefresh,
             icon: const Icon(Icons.refresh),
             tooltip: l10n.membersRefreshButton,
+          ),
+          const SizedBox(width: 8),
+          OutlinedButton.icon(
+            onPressed: onImportExport,
+            icon: const Icon(Icons.swap_vert),
+            label: Text(l10n.importExportButton),
           ),
           const SizedBox(width: 8),
           FilledButton.icon(

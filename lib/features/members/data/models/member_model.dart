@@ -41,7 +41,7 @@ class MemberModel extends Member {
       if (genderId != null) 'gender': genderId,
       if (levelId != null) 'level': levelId,
       if (subscriptionId != null) 'subscription': subscriptionId,
-      'objectives': objectivesToApi(objectives),
+      'objectives': objectives.map((o) => ObjectiveModel.fromEntity(o).toMap()).toList(),
     };
   }
 
@@ -60,17 +60,10 @@ class MemberModel extends Member {
       if (genderId != null) 'gender': genderId,
       if (levelId != null) 'level': levelId,
       if (subscriptionId != null) 'subscription': subscriptionId,
-      'objectives': objectivesToApi(objectives),
+      'objectives': objectives.map((o) => ObjectiveModel.fromEntity(o).toMap()).toList(),
     };
   }
 
-  /// Converts [objectives] to a list of integer IDs for API requests.
-  static List<int> objectivesToApi(List<Objective> objectives) {
-    return objectives
-        .map((o) => o.id ?? int.tryParse(o.description))
-        .whereType<int>()
-        .toList();
-  }
 
   /// Deserializes a `Map` from the API into a [MemberModel].
   factory MemberModel.fromMap(Map<String, dynamic> map) {
@@ -133,28 +126,28 @@ class MemberModel extends Member {
       subscriptionId: rawSubscriptionId,
       gender: parseGender(rawGenderId),
       level: Level.values[(parseEnumIndex(map['level']) - 1).clamp(0, Level.values.length - 1)],
-      subscription: Subscription.values[
-        (parseEnumIndex(map['subscription']) - 1).clamp(0, Subscription.values.length - 1)
-      ],
-      objectives: (map['objectives'] as List<dynamic>? ?? [])
-          .map((objective) {
-            if (objective is int) {
-              return ObjectiveModel(
-                id: objective,
-                description: objective.toString(),
-                createdAt: DateTime.fromMillisecondsSinceEpoch(0),
-              );
-            }
-            if (objective is Map) {
-              return ObjectiveModel.fromMap(Map<String, dynamic>.from(objective));
-            }
-            return ObjectiveModel(
-              id: int.tryParse(objective.toString()),
-              description: objective.toString(),
-              createdAt: DateTime.fromMillisecondsSinceEpoch(0),
-            );
-          })
-          .toList(),
+      subscription:
+          Subscription.values[(parseEnumIndex(map['subscription']) - 1).clamp(
+            0,
+            Subscription.values.length - 1,
+          )],
+      objectives: (map['objectives'] as List<dynamic>? ?? []).map((objective) {
+        if (objective is int) {
+          return ObjectiveModel(
+            id: objective,
+            description: objective.toString(),
+            createdAt: DateTime.fromMillisecondsSinceEpoch(0),
+          );
+        }
+        if (objective is Map) {
+          return ObjectiveModel.fromMap(Map<String, dynamic>.from(objective));
+        }
+        return ObjectiveModel(
+          id: int.tryParse(objective.toString()),
+          description: objective.toString(),
+          createdAt: DateTime.fromMillisecondsSinceEpoch(0),
+        );
+      }).toList(),
     );
   }
 

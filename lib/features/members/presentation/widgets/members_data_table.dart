@@ -36,24 +36,26 @@ class MembersDataTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(minWidth: MediaQuery.sizeOf(context).width),
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
         child: SingleChildScrollView(
-          child: DataTable(
-            sortColumnIndex: sortColumnIndex,
-            sortAscending: sortAscending,
-            showCheckboxColumn: false,
-            horizontalMargin: compact ? 12 : 16,
-            columnSpacing: compact ? 20 : 28,
-            dataRowMinHeight: compact ? 44 : 52,
-            dataRowMaxHeight: compact ? 56 : 64,
-            headingRowColor: WidgetStatePropertyAll(
-              context.colorScheme.surfaceContainerHighest.withAlpha(128),
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth),
+            child: DataTable(
+              sortColumnIndex: sortColumnIndex,
+              sortAscending: sortAscending,
+              showCheckboxColumn: false,
+              horizontalMargin: compact ? 12 : 16,
+              columnSpacing: compact ? 20 : 28,
+              dataRowMinHeight: compact ? 44 : 52,
+              dataRowMaxHeight: compact ? 56 : 64,
+              headingRowColor: WidgetStatePropertyAll(
+                context.colorScheme.surfaceContainerHighest.withAlpha(128),
+              ),
+              columns: _buildColumns(context, l10n),
+              rows: _buildRows(context, l10n),
             ),
-            columns: _buildColumns(context, l10n),
-            rows: _buildRows(context, l10n),
           ),
         ),
       ),

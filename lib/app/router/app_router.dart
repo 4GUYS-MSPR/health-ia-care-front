@@ -9,8 +9,12 @@ import '../../features/health/presentation/blocs/foods_bloc.dart';
 import '../../features/health/presentation/blocs/diet_recommendations_bloc.dart';
 import '../../features/health/presentation/blocs/sessions_bloc.dart';
 import '../../features/health/presentation/pages/diet_recommendations_page.dart';
+import '../../features/health/presentation/pages/diet_import_export_page.dart';
+import '../../features/health/presentation/pages/exercise_import_export_page.dart';
 import '../../features/health/presentation/pages/exercises_page.dart';
+import '../../features/health/presentation/pages/food_import_export_page.dart';
 import '../../features/health/presentation/pages/nutrition_page.dart';
+import '../../features/health/presentation/pages/session_import_export_page.dart';
 import '../../features/health/presentation/pages/sessions_page.dart';
 import '../../features/health/domain/entities/enum_item.dart';
 import '../../features/health/domain/usecases/get_health_enums_usecase.dart';
@@ -18,8 +22,10 @@ import '../../features/health/domain/usecases/get_all_exercises_usecase.dart' as
 import '../../features/members/domain/entities/member.dart';
 import '../../features/members/domain/usecases/get_all_members_usecase.dart' as member_usecase;
 import '../../features/members/domain/entities/objective.dart';
+import '../../features/members/data/datasources/members_remote_datasources.dart';
 import '../../features/members/data/models/enum_item_model.dart' as member_enum;
 import '../../features/members/presentation/bloc/members_bloc.dart';
+import '../../features/members/presentation/pages/member_import_export_page.dart';
 import '../../features/members/presentation/pages/members_page.dart';
 
 import '../../core/shared/layouts/main_layout.dart';
@@ -74,24 +80,11 @@ class AppRouter {
                 builder: (context, state) => MembersPage(
                   createBloc: () => sl<MembersBloc>(),
                   loadObjectiveOptions: () async {
-                    final result = await sl<GetHealthEnumsUsecase>()(
-                      const GetHealthEnumsParams.byName('Objective'),
-                    ).run();
-
-                    final enumItems = result.match(
-                      (_) => const <EnumItem>[],
-                      (items) => items,
-                    );
-
-                    return enumItems
-                        .map(
-                          (option) => Objective(
-                            id: option.id,
-                            description: option.value,
-                            createdAt: option.createdAt ?? DateTime.now(),
-                          ),
-                        )
-                        .toList(growable: false);
+                    try {
+                      return await sl<MembersRemoteDatasources>().getObjectiveOptions();
+                    } catch (_) {
+                      return const <Objective>[];
+                    }
                   },
                   loadGenderOptions: () async {
                     final result = await sl<GetHealthEnumsUsecase>()(
@@ -128,6 +121,11 @@ class AppRouter {
                   },
                 ),
               ),
+              ProtectedGoRoute(
+                path: '/members/import',
+                name: AppRoutes.membersImport,
+                builder: (context, state) => const MemberImportExportPage(),
+              ),
             ],
           ),
           StatefulShellBranch(
@@ -149,6 +147,11 @@ class AppRouter {
                   },
                 ),
               ),
+              ProtectedGoRoute(
+                path: '/nutrition/import',
+                name: AppRoutes.nutritionImport,
+                builder: (context, state) => const FoodImportExportPage(),
+              ),
             ],
           ),
           StatefulShellBranch(
@@ -169,6 +172,11 @@ class AppRouter {
                     );
                   },
                 ),
+              ),
+              ProtectedGoRoute(
+                path: '/exercises/import',
+                name: AppRoutes.exercisesImport,
+                builder: (context, state) => const ExerciseImportExportPage(),
               ),
             ],
           ),
@@ -197,6 +205,11 @@ class AppRouter {
                   },
                 ),
               ),
+              ProtectedGoRoute(
+                path: '/diet-recommendations/import',
+                name: AppRoutes.dietRecommendationsImport,
+                builder: (context, state) => const DietImportExportPage(),
+              ),
             ],
           ),
           StatefulShellBranch(
@@ -219,6 +232,11 @@ class AppRouter {
                     return result.getOrElse((_) => const <Exercise>[]);
                   },
                 ),
+              ),
+              ProtectedGoRoute(
+                path: '/sessions/import',
+                name: AppRoutes.sessionsImport,
+                builder: (context, state) => const SessionImportExportPage(),
               ),
             ],
           ),
